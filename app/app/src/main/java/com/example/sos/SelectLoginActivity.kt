@@ -19,18 +19,18 @@ class SelectLoginActivity : AppCompatActivity() {
             insets
         }
 
-        // 사용자 버튼을 눌렀을 때 로그인 유저 액티비티로 이동
-        val selectUserButton = findViewById<ImageButton>(R.id.select_user_button)
+        // 구급대 버튼을 눌렀을 때 로그인 구급대 액티비티로 이동
+        val selectUserButton = findViewById<ImageButton>(R.id.select_ambulance_button)
         selectUserButton.setOnClickListener {
-            val intent = Intent(this, LoginUserActivity::class.java)
+            val intent = Intent(this, LoginAmbulanceActivity::class.java)
             startActivity(intent)
         //  finish() 이건 돌아갈 필요가 없으면 finish 있으면 대기.
         }
 
-        // 구급대 버튼을 눌렀을 때 로그인 구급대 액티비티로 이동
-        // val selectAmbulanceButton = findViewById<ImageButton>(R.id.select_ambulance_button)
+        // 사용자 버튼을 눌렀을 때 로그인 사용자 액티비티로 이동
+        // val selectAmbulanceButton = findViewById<ImageButton>(R.id.select_user_button)
         // selectAmbulanceButton.setOnClickListener {
-        //     val intent = Intent(this, LoginAmbulanceActivity::class.java)
+        //     val intent = Intent(this, LoginUserActivity::class.java)
         //     startActivity(intent)
         //     finish() 이건 돌아갈 필요가 없으면 finish 있으면 대기.
         // }

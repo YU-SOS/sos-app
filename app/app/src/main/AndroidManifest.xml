@@ -16,7 +16,7 @@
             android:name=".SelectLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginUserActivity"
+            android:name=".LoginAmbulanceActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
