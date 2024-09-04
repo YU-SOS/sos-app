@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Sos"
         tools:targetApi="31">
         <activity
+            android:name=".SelectLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginUserActivity"
             android:exported="false" />
         <activity

@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         if (!checkLoginStatus()) {
-            val intent = Intent(this, LoginUserActivity::class.java)
-            startActivity(intent) // 로그인이 안되어 있을 경우 LoginUserActivity를 띄움.
+            val intent = Intent(this, SelectLoginActivity::class.java)
+            startActivity(intent) // 로그인이 안되어 있을 경우 SelectLoginActivity를 띄움.
             finish()
         }
     }
