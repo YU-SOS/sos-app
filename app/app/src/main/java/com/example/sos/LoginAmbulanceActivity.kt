@@ -17,4 +17,11 @@ class LoginAmbulanceActivity : AppCompatActivity() {
             insets
         }
     }
+
+    // 회원가입 버튼 클릭 리스너 설정
+    //val registerButton = findViewById<Button>(R.id.btn_register)
+    //registerButton.setOnClickListener {
+    //    val intent = Intent(this, RegisterAmbulanceActivity::class.java) //
+    //    startActivity(intent)
+    //}
 }
