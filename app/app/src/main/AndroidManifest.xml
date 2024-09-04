@@ -13,7 +13,10 @@
         android:theme="@style/Theme.Sos"
         tools:targetApi="31">
         <activity
-            android:name=".LoginUserActivity"
+            android:name=".SelectLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginAmbulanceActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
