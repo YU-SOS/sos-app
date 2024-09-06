@@ -8,27 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".RegisterAmbulanceActivity">
 
-  <!-- 구급대 이름 입력 -->
+  <!-- ID 입력 필드 -->
 
-  <!-- 구급대 주소 입력 -->
-
-  <ImageView
-      android:id="@+id/imageView"
-      android:layout_width="410dp"
-      android:layout_height="362dp"
-      android:layout_marginTop="16dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="1.0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/image" />
+  <!-- 비밀번호 입력 필드 -->
 
   <EditText
-      android:id="@+id/editTextAmbulanceName"
+      android:id="@+id/editTextUserId"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="336dp"
-      android:hint="구급대 이름"
+      android:layout_marginTop="110dp"
+      android:hint="아이디"
       android:inputType="text"
       android:padding="16dp"
       app:layout_constraintEnd_toEndOf="parent"
@@ -37,18 +26,44 @@
       app:layout_constraintTop_toTopOf="parent" />
 
   <EditText
-      android:id="@+id/editTextAmbulanceAddress"
+      android:id="@+id/editTextPassword"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
-      android:hint="구급대 주소"
-      android:inputType="textPostalAddress"
+      android:hint="비밀번호"
+      android:inputType="textPassword"
       android:padding="16dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceName" />
+      app:layout_constraintTop_toBottomOf="@id/editTextUserId" />
 
-  <!-- 구급대 전화번호 입력 -->
+  <!-- 비밀번호 확인 입력 필드 -->
+  <EditText
+      android:id="@+id/editTextConfirmPassword"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:hint="비밀번호 확인"
+      android:inputType="textPassword"
+      android:padding="16dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
+
+  <!-- 구급대 이름 입력 필드 -->
+  <EditText
+      android:id="@+id/editTextAmbulanceName"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:hint="구급대 이름"
+      android:inputType="text"
+      android:padding="16dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword" />
+
+  <!-- 구급대 전화번호 입력 필드 -->
   <EditText
       android:id="@+id/editTextAmbulancePhone"
       android:layout_width="0dp"
@@ -59,7 +74,20 @@
       android:padding="16dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceAddress" />
+      app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceName" />
+
+  <!-- 구급대 주소 입력 필드 -->
+  <EditText
+      android:id="@+id/editTextAmbulanceAddress"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:hint="구급대 주소"
+      android:inputType="textPostalAddress"
+      android:padding="16dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/editTextAmbulancePhone" />
 
   <!-- 제출 버튼 -->
   <Button
@@ -73,8 +101,6 @@
       android:textColor="@android:color/white"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/editTextAmbulancePhone" />
-
-  <!-- 로고 -->
+      app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
