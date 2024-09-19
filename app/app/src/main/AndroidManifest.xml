@@ -35,10 +35,10 @@
             android:name=".LoginAmbulanceActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginUserActivity"
+            android:name=".UserMainActivity"
             android:exported="false" />
         <activity
-            android:name=".UserMainActivity"
+            android:name=".LoginUserActivity"
             android:exported="false" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -48,9 +48,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="@string/kakao_app_key"
+                    android:scheme="@string/scheme_kakao_app_key"
                     android:host="oauth" />
-                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
     </application>
