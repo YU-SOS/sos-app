@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -45,6 +46,10 @@ dependencies {
     implementation(libs.v2.all) // 카카오 전체 모듈 설치
     implementation(libs.v2.user) // 카카오 로그인 API 모듈
     implementation (libs.v2.cert) // 카카오 인증 서비스 API 모듈
+    implementation(libs.retrofit) //retrofit 라이브러리
+    implementation(libs.converter.gson) //gson 라이브러리(json을 자바 클래스로 변환해줌)
+    implementation(libs.okhttp) //okhttp 라이브러리
+    implementation(libs.logging.interceptor) //okhttp 라이브러리
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
