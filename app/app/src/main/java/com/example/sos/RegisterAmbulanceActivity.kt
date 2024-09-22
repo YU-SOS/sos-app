@@ -3,34 +3,50 @@ package com.example.sos
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageButton
-import androidx.activity.enableEdgeToEdge
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterAmbulanceActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_register_ambulance)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        val selectUserButton = findViewById<Button>(R.id.buttonSubmit)
-        selectUserButton.setOnClickListener {
-            if (checkRegisterStatus()) { // 회원 가입 성공 시
-                val intent = Intent(this, MainActivity::class.java) // main 페이지로 이동 (현재 main페이지에 로그인 관련 로직이 없으므로 로그인 선택 창으로 이동될거임)
-                startActivity(intent)
-                finish() // 회원가입 액티비티는 종료 (추후 킬 이유 없음)
-            }
+        val idEditText = findViewById<EditText>(R.id.editTextUserId)
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+        val nameEditText = findViewById<EditText>(R.id.editTextAmbulanceName)
+        val phoneEditText = findViewById<EditText>(R.id.editTextAmbulancePhone)
+        val addressEditText = findViewById<EditText>(R.id.editTextAmbulanceAddress)
+        val submitButton = findViewById<Button>(R.id.buttonSubmit)
+
+        submitButton.setOnClickListener {
+            val id = idEditText.text.toString()
+            val password = passwordEditText.text.toString()
+            val name = nameEditText.text.toString()
+            val phone = phoneEditText.text.toString()
+            val address = addressEditText.text.toString()
+
+            val authService = RetrofitClientInstance.retrofitInstance.create(AuthService::class.java)
+            val registerRequest = RegisterRequest(id, password, name, phone, address)
+
+            authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
+                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@RegisterAmbulanceActivity, "success", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@RegisterAmbulanceActivity, MainActivity::class.java))
+                    } else {
+                        Toast.makeText(this@RegisterAmbulanceActivity, "fail", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    Toast.makeText(this@RegisterAmbulanceActivity, "error", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
-    }
-    private fun checkRegisterStatus(): Boolean { // 추후 회원가입 성공여부를 체크 해줄 함수 (만들어야됨)
-        return true
-        // 아마 아이디 조건, 비밀번호 조건, 주소 등등등을 확인하는 로직일거임.
     }
 }

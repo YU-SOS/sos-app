@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- 인터넷 사용 (KakaoMap) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,12 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sos"
         tools:targetApi="31"
+
         android:name=".GlobalApplication"
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-
+        android:usesCleartextTraffic="true">  <!-- android:usesCleartextTraffic="true" : KakaoMap -->
         <activity
             android:name=".RegisterAmbulanceActivity"
             android:exported="false" />
@@ -55,6 +59,12 @@
 
             </intent-filter>
         </activity>
+
+        <!-- 카카오맵 네이티브 앱 키 -->
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="ea469f6e0a9290fb5a6cc45e08ecdf37" />
+
     </application>
 
 </manifest>
