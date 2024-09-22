@@ -20,7 +20,9 @@ class LoginAmbulanceActivity : AppCompatActivity() {
         val usernameEditText = findViewById<EditText>(R.id.edit_text_username)
         val passwordEditText = findViewById<EditText>(R.id.edit_text_password)
         val loginButton = findViewById<Button>(R.id.btn_login)
+        val registerButton = findViewById<Button>(R.id.btn_register) // 회원가입 버튼 추가
 
+        // 로그인 버튼 클릭 시 작동
         loginButton.setOnClickListener {
             val id = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -44,6 +46,11 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginAmbulanceActivity, "error", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        // 회원가입 버튼 클릭 시 액티비티 이동
+        registerButton.setOnClickListener {
+            startActivity(Intent(this, RegisterAmbulanceActivity::class.java))
         }
     }
 
