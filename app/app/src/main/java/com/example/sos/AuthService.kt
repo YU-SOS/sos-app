@@ -17,8 +17,11 @@ data class RegisterRequest(
     val id: String,
     val password: String,
     val name: String,
-    val phoneNumber: String?,
-    val address: String?
+    val phoneNumber: String,
+    val address: String,
+    val longitude: String,
+    val latitude: String,
+    val imageURL: String
 )
 
 data class RegisterResponse(
@@ -27,9 +30,9 @@ data class RegisterResponse(
 )
 
 interface AuthService {
-    @POST("/auth/login")
+    @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
-    @POST("/auth/register")
+    @POST("/signup/ambulance")
     fun register(@Body request: RegisterRequest): Call<RegisterResponse>
 }

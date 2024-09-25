@@ -5,6 +5,9 @@ data class Ambulance(
     val id: String,
     val password: String,
     val name: String,
-    val phoneNumber: String? = null,
-    val address: String? = null
+    val phoneNumber: String,
+    val address: String,
+    val longitude: String,
+    val latitude: String,
+    val imageURL: String
 )
