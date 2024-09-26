@@ -25,4 +25,8 @@ object RetrofitClientInstance {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
+
+    val api: AuthService by lazy {
+        retrofitInstance.create(AuthService::class.java)
+    }
 }
