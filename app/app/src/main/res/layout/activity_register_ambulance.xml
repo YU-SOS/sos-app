@@ -8,10 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".RegisterAmbulanceActivity">
 
-  <!-- ID 입력 필드 -->
-
-  <!-- 비밀번호 입력 필드 -->
-
   <EditText
       android:id="@+id/editTextUserId"
       android:layout_width="0dp"

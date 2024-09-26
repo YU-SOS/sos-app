@@ -72,4 +72,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Log 찍어볼 때
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

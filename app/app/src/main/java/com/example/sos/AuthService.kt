@@ -5,31 +5,36 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 data class LoginRequest(
+    val role: String,
     val id: String,
     val password: String
 )
 
 data class LoginResponse(
-    val token: String
+    val status: Int,
+    val message: String,
+    val data: String?
 )
 
 data class RegisterRequest(
     val id: String,
     val password: String,
     val name: String,
-    val phoneNumber: String?,
-    val address: String?
+    val address: String,
+    val telephoneNumber: String,
+    val location: Location,
+    val imageUrl: String
 )
 
 data class RegisterResponse(
-    val success: Boolean,
+    val statusCode: String,
     val message: String
 )
 
 interface AuthService {
-    @POST("/auth/login")
+    @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 
-    @POST("/auth/register")
+    @POST("/signup/ambulance")
     fun register(@Body request: RegisterRequest): Call<RegisterResponse>
 }
