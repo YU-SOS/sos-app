@@ -34,12 +34,17 @@ class LoginUserActivity : AppCompatActivity() {
                         Log.e("KakaoLogin", "사용자 정보 요청 실패: ${meError.message}")
                     } else if (user != null) {
                         // 사용자 정보가 성공적으로 받아졌다면
-                        val name = user.kakaoAccount?.profile?.nickname ?: "이름 없음" //그럴리는 없겠지만 이름이 null값으로 들어온다면 이름 없음으로 처리
+                        val name = user.kakaoAccount?.profile?.nickname ?: "이름 없음"
                         val providerId = user.id.toString()  // 카카오 유저 고유번호
                         val email = user.kakaoAccount?.email ?: "이메일 없음"
+                        val provider = "kakao"
+                        Log.d("success login?", "name: $name")
+                        Log.d("success login?", "providerId: $providerId")
+                        Log.d("success login?", "email: $email")
+                        Log.d("success login?", "provider: $provider")
 
-                        // 받은 데이터를 바탕으로 sendToken() 호출
-                        sendToken(name, providerId, email, token.accessToken)
+                        // 가져온 사용자 정보를 서버로 전송
+                        sendUserDataToServer(name, providerId, provider, email)
 
                         val intent = Intent(this, UserMainActivity::class.java)
                         startActivity(intent)
@@ -56,31 +61,32 @@ class LoginUserActivity : AppCompatActivity() {
         }
     }
 
+    private fun sendUserDataToServer(name: String, providerId: String, provider: String, email: String) {
+        val userSignupRequest = UserSignupRequest(name, providerId, provider, email)
 
-    private fun sendToken(name: String, providerId: String, email: String, accessToken: String) {
-        // PostData 객체 생성
-        val tokenRequest = PostData(
-            name = name,
-            providerId = providerId,
-            provider = "kakao", // 로그인 제공자(고정 값)
-            email = email,
-            accessToken = accessToken
-        )
+        RetrofitClientInstance.api.loginUser(userSignupRequest).enqueue(object : Callback<UserLoginResponse> {
+            override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    Log.d("LoginUser", "로그인 성공: ${loginResponse?.message}")
 
-        // Retrofit을 통해 백엔드 서버로 POST 요청 전송
-        RetrofitBuilder.api.sendToken(tokenRequest)
-            .enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Log.d("SendData", "데이터 전송 성공")
-                    } else {
-                        Log.e("SendData", "데이터 전송 실패: ${response.code()}")
-                    }
+                    // 응답 헤더에서 accessToken과 refreshToken 읽기
+                    val accessToken = response.headers()["Authorization"]
+                    val refreshToken = response.headers()["Set-Cookie"]
+                    val statusCode = response.code()
+
+                    Log.d("LoginUser", "액세스 토큰: $accessToken")
+                    Log.d("LoginUser", "리프레시 토큰: $refreshToken")
+                    Log.d("LoginUser", "스테이터스 코드: $statusCode")
+                } else {
+                    Log.e("LoginUser", "로그인 실패: ${response.code()}")
                 }
+            }
 
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Log.e("SendData", "데이터 전송 중 오류 발생", t)
-                }
-            })
+            override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                Log.e("LoginUser", "로그인 중 오류 발생", t)
+            }
+        })
+
     }
 }
