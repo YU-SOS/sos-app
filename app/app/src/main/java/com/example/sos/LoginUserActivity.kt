@@ -12,10 +12,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginUserActivity : AppCompatActivity() {
+    // TokenManager 선언 (초기화는 나중에)
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_user)
+        tokenManager = TokenManager(this)
 
         val kakaoLoginButton: ImageButton = findViewById(R.id.kakao_login_button)
         kakaoLoginButton.setOnClickListener {
@@ -70,7 +73,6 @@ class LoginUserActivity : AppCompatActivity() {
                     val loginResponse = response.body()
                     Log.d("LoginUser", "로그인 성공: ${loginResponse?.message}")
 
-                    // 응답 헤더에서 accessToken과 refreshToken 읽기
                     val accessToken = response.headers()["Authorization"]
                     val refreshToken = response.headers()["Set-Cookie"]
                     val statusCode = response.code()
@@ -78,6 +80,13 @@ class LoginUserActivity : AppCompatActivity() {
                     Log.d("LoginUser", "액세스 토큰: $accessToken")
                     Log.d("LoginUser", "리프레시 토큰: $refreshToken")
                     Log.d("LoginUser", "스테이터스 코드: $statusCode")
+
+                    if (refreshToken != null) {
+                        tokenManager.saveRefreshToken(refreshToken)
+                    } else {
+                        Log.e("LoginUser", "리프레시 토큰을 찾을 수 없습니다.")
+                    }
+
                 } else {
                     Log.e("LoginUser", "로그인 실패: ${response.code()}")
                 }
