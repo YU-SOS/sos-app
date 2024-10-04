@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.auth0.android.jwt.JWT // JWT 라이브러리 임포트
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,6 +80,17 @@ class LoginAmbulanceActivity : AppCompatActivity() {
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("jwt_token", token).apply()
+
+        // JWT에서 만료 시간 추출
+        token?.let {
+            val jwt = JWT(it) // JWT 디코드
+            val expiration = jwt.expiresAt // 만료 시간 가져오기
+
+            // 만료 시간을 SharedPreferences에 저장
+            expiration?.let { exp ->
+                sharedPreferences.edit().putLong("token_expiration", exp.time).apply() // 밀리초 단위로 저장
+            }
+        }
     }
 
     // 리프레시 토큰을 SharedPreferences에 저장하는 함수

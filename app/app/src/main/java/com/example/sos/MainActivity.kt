@@ -7,6 +7,9 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.auth0.android.jwt.JWT
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +27,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SelectLoginActivity::class.java)
             startActivity(intent)
             finish()
+        } else {
+            // 로그인 상태가 유효하면 토큰 유효성 검사 및 리프레시 진행
+            val token = getToken()
+            if (token != null) {
+                checkTokenValidityAndRefresh(token)
+            }
         }
 
         // 로그아웃 버튼 클릭 리스너 설정
@@ -35,32 +44,80 @@ class MainActivity : AppCompatActivity() {
     // 토큰이 만료되었는지 확인하는 함수
     private fun isTokenExpired(token: String): Boolean {
         val jwt = JWT(token)
-        val expired = jwt.isExpired(0) // 토큰이 만료되었는지 체크
-
-        // 만료 여부를 로그로 출력
-        Log.d("MainActivity", "Token Expired: $expired")
-        return expired
+        return jwt.isExpired(0) // 토큰이 만료되었는지 체크
     }
 
     // 로그인 상태를 확인하는 함수
     private fun checkLoginStatus(): Boolean {
-        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt_token", null)
+        val token = getToken()
 
         // 디버깅을 위한 로그
-        Log.d("MainActivity", "토큰 Stored Token: $token")
+        Log.d("MainActivity", "Stored Token: $token")
 
-        if (token != null) {
-            if (isTokenExpired(token)) {
-                Log.d("MainActivity", "토큰 Token is expired.")
-                return false // 토큰이 만료된 경우
-            }
-            Log.d("MainActivity", "토큰 Token is valid.")
-            return true // 토큰이 유효한 경우
+        return token != null && !isTokenExpired(token) // 토큰이 유효한 경우
+    }
+
+    // JWT 토큰을 SharedPreferences에서 가져오는 함수
+    private fun getToken(): String? {
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("jwt_token", null)
+    }
+
+    // 만료 시간이 5일 미만인지 확인하고 리프레시 토큰으로 재발급 요청
+    private fun checkTokenValidityAndRefresh(token: String) {
+        val jwt = JWT(token)
+        val expirationTime = jwt.expiresAt?.time ?: 0
+        val currentTime = System.currentTimeMillis()
+        val fiveDaysInMillis = 5 * 24 * 60 * 60 * 1000 // 5일을 밀리초로 변환 (토큰이 밀리초 연산)
+
+        // 만료 기간이 5일 이하 남았는지 확인
+        if (expirationTime - currentTime <= fiveDaysInMillis) {
+            Log.d("MainActivity", "Token is about to expire. Refreshing token...")
+            refreshToken()
         }
+    }
 
-        Log.d("MainActivity", "토큰 No token found.")
-        return false // 토큰이 null인 경우
+    // 리프레시 토큰을 통해 새로운 액세스 토큰을 요청하는 함수
+    private fun refreshToken() {
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val refreshToken = sharedPreferences.getString("refresh_token", null)
+
+        // 리프레시 토큰이 null이 아닌 경우에만 요청
+        if (refreshToken != null) {
+            // Retrofit을 통해 AuthService 생성
+            val authService = RetrofitClientInstance.retrofitInstance.create(AuthService::class.java)
+            val refreshRequest = RefreshRequest(refreshToken) // 리프레시 요청 데이터 생성
+
+            // 리프레시 API 호출
+            authService.refreshToken(refreshRequest).enqueue(object : Callback<RefreshResponse> {
+                override fun onResponse(call: Call<RefreshResponse>, response: Response<RefreshResponse>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val newAccessToken = response.body()?.accessToken // 새 액세스 토큰 가져오기
+                        if (newAccessToken != null) {
+                            // 새 액세스 토큰 저장
+                            saveToken(newAccessToken)
+                            Log.d("MainActivity", "Token refreshed successfully.")
+                        } else {
+                            Log.d("MainActivity", "Failed to retrieve new access token.")
+                        }
+                    } else {
+                        Log.d("MainActivity", "Failed to refresh token.")
+                    }
+                }
+
+                override fun onFailure(call: Call<RefreshResponse>, t: Throwable) {
+                    Log.e("MainActivity", "Error refreshing token: ${t.message}")
+                }
+            })
+        } else {
+            Log.d("MainActivity", "No refresh token found.")
+        }
+    }
+
+    // JWT 토큰을 SharedPreferences에 저장하는 함수
+    private fun saveToken(token: String?) {
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("jwt_token", token).apply()
     }
 
     // 로그아웃을 처리하는 함수
