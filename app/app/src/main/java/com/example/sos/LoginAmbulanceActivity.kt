@@ -42,9 +42,15 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                     if (loginResponse != null && loginResponse.status == 200) {  // 응답 status가 200이면
                         // 서버로부터 받은 Authorization 헤더 가져오기
                         val authorizationHeader = response.headers().get("Authorization")
+                        val refreshToken = response.headers().get("Set-Cookie") // 리프레시 토큰 가져오기
+
                         if (authorizationHeader != null) {
                             // 액세스 토큰 저장
                             saveToken(authorizationHeader)
+
+                            // 리프레시 토큰 저장
+                            saveRefreshToken(refreshToken)
+
                             Toast.makeText(this@LoginAmbulanceActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginAmbulanceActivity, MainActivity::class.java)) // 메인 화면으로 이동
                         } else {
@@ -73,5 +79,16 @@ class LoginAmbulanceActivity : AppCompatActivity() {
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("jwt_token", token).apply()
+    }
+
+    // 리프레시 토큰을 SharedPreferences에 저장하는 함수
+    private fun saveRefreshToken(refreshToken: String?) {
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        // Set-Cookie에서 실제 리프레시 토큰 값만 추출하여 저장
+        refreshToken?.let {
+            // "refreshToken" 키워드를 기준으로 토큰 값 추출 (예: refreshToken="token_value")
+            val tokenValue = it.split(";").firstOrNull()?.split("=")?.get(1)
+            sharedPreferences.edit().putString("refresh_token", tokenValue).apply()
+        }
     }
 }

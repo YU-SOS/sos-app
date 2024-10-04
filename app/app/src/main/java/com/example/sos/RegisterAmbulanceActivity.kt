@@ -52,10 +52,10 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                     // 응답 성공 시 처리
-                    if (response.isSuccessful && response.body()?.statusCode == "200") {
+                    if (response.body()?.status == "201") {
                         Toast.makeText(this@RegisterAmbulanceActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                        // 메인 액티비티로 이동
-                        startActivity(Intent(this@RegisterAmbulanceActivity, MainActivity::class.java))
+                        // LoginAmbulanceActivity로 이동
+                        startActivity(Intent(this@RegisterAmbulanceActivity, LoginAmbulanceActivity::class.java))
                     } else {
                         Toast.makeText(this@RegisterAmbulanceActivity, "회원가입 실패: ${response.body()?.message}", Toast.LENGTH_SHORT).show()
                     }
