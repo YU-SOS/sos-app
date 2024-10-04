@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.auth0.android.jwt.JWT // JWT 라이브러리 임포트
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,9 +43,15 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                     if (loginResponse != null && loginResponse.status == 200) {  // 응답 status가 200이면
                         // 서버로부터 받은 Authorization 헤더 가져오기
                         val authorizationHeader = response.headers().get("Authorization")
+                        val refreshToken = response.headers().get("Set-Cookie") // 리프레시 토큰 가져오기
+
                         if (authorizationHeader != null) {
                             // 액세스 토큰 저장
                             saveToken(authorizationHeader)
+
+                            // 리프레시 토큰 저장
+                            saveRefreshToken(refreshToken)
+
                             Toast.makeText(this@LoginAmbulanceActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginAmbulanceActivity, MainActivity::class.java)) // 메인 화면으로 이동
                         } else {
@@ -73,5 +80,27 @@ class LoginAmbulanceActivity : AppCompatActivity() {
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("jwt_token", token).apply()
+
+        // JWT에서 만료 시간 추출
+        token?.let {
+            val jwt = JWT(it) // JWT 디코드
+            val expiration = jwt.expiresAt // 만료 시간 가져오기
+
+            // 만료 시간을 SharedPreferences에 저장
+            expiration?.let { exp ->
+                sharedPreferences.edit().putLong("token_expiration", exp.time).apply() // 밀리초 단위로 저장
+            }
+        }
+    }
+
+    // 리프레시 토큰을 SharedPreferences에 저장하는 함수
+    private fun saveRefreshToken(refreshToken: String?) {
+        val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        // Set-Cookie에서 실제 리프레시 토큰 값만 추출하여 저장
+        refreshToken?.let {
+            // "refreshToken" 키워드를 기준으로 토큰 값 추출 (예: refreshToken="token_value")
+            val tokenValue = it.split(";").firstOrNull()?.split("=")?.get(1)
+            sharedPreferences.edit().putString("refresh_token", tokenValue).apply()
+        }
     }
 }
