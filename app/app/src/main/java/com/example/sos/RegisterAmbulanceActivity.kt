@@ -69,7 +69,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
         val authService = RetrofitClientInstance.api
         authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                if (response.isSuccessful && response.body()?.statusCode == "200") {
+                if (response.isSuccessful && response.body()?.status == 201) {
                     Toast.makeText(this@RegisterAmbulanceActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@RegisterAmbulanceActivity, MainActivity::class.java))
                 } else {

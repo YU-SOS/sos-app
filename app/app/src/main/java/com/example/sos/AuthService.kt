@@ -28,7 +28,7 @@ data class RegisterRequest(
 )
 
 data class RegisterResponse(
-    val statusCode: String,
+    val status: Int,
     val message: String
 )
 
@@ -47,6 +47,14 @@ data class UserLoginResponse(
     @SerializedName("refreshToken") val refreshToken: String
 )
 
+data class RefreshRequest(
+    val refreshToken: String
+)
+
+data class RefreshResponse(
+    val accessToken: String,
+    val refreshToken: String
+)
 
 interface AuthService {
     @POST("/login")
@@ -57,6 +65,9 @@ interface AuthService {
 
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
+
+    @POST("/reissue-token")
+    fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
 }
 
 // 카카오 주소 검색 이용 관련
