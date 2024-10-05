@@ -42,14 +42,14 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             // 카카오 주소 검색 API 호출
             lifecycleScope.launch {
                 val kakaoService = KakaoRetrofitClientInstance.kakaoService
-                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address)
+                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address) // 키를 숨기긴 해야될 것 같음.
                 if (response.isSuccessful) {
                     val documents = response.body()?.documents
                     if (!documents.isNullOrEmpty()) {
                         val latitude = documents[0].y
                         val longitude = documents[0].x
                         val location = Location(latitude, longitude)
-                        val imageUrl = "temp" // 이미지 URL 처리
+                        val imageUrl = "temp" // 추후 이미지 URL 처리 로직 만들어서 할 것
 
                         // 회원가입 요청 보내기
                         registerAmbulance(
