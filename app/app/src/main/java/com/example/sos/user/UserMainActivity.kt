@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sos.R
+import com.example.sos.SelectLoginActivity
+import com.example.sos.token.TokenManager
 
 class UserMainActivity : AppCompatActivity() {
 
@@ -54,7 +57,7 @@ class UserMainActivity : AppCompatActivity() {
             finish()
         }
 
-        val userLogoutButton: Button = findViewById(R.id.user_logout_button)
+        val userLogoutButton: Button = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             tokenManager.clearTokens()
             val intent = Intent(this, SelectLoginActivity::class.java)

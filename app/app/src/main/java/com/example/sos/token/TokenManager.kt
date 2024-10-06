@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.token
 
 import android.content.Context
 import android.content.SharedPreferences

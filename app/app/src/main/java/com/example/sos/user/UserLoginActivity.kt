@@ -1,23 +1,29 @@
-package com.example.sos
+package com.example.sos.user
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sos.R
+import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.token.TokenManager
+import com.example.sos.retrofit.UserLoginResponse
+import com.example.sos.retrofit.UserSignupRequest
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginUserActivity : AppCompatActivity() {
+class UserLoginActivity : AppCompatActivity() {
     // TokenManager 선언 (초기화는 나중에)
     private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_user)
+
         tokenManager = TokenManager(this)
 
         val kakaoLoginButton: ImageButton = findViewById(R.id.kakao_login_button)
@@ -81,7 +87,7 @@ class LoginUserActivity : AppCompatActivity() {
                         tokenManager.saveAccessToken(accessToken)
 
                         // 토큰이 성공적으로 저장된 후에만 UserMainActivity로 이동
-                        val intent = Intent(this@LoginUserActivity, UserMainActivity::class.java)
+                        val intent = Intent(this@UserLoginActivity, UserMainActivity::class.java)
                         startActivity(intent)
                         finish()  // 현재 로그인 액티비티 종료
                     } else {

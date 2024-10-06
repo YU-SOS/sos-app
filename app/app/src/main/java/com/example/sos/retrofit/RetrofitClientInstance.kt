@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

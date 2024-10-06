@@ -1,5 +1,6 @@
-package com.example.sos
+package com.example.sos.retrofit
 
+import com.example.sos.Location
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response

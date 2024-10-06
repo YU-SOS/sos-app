@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.sos.ambulance.LoginAmbulanceActivity
+import com.example.sos.user.UserLoginActivity
 
 class SelectLoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +32,7 @@ class SelectLoginActivity : AppCompatActivity() {
         // 사용자 버튼을 눌렀을 때 로그인 사용자 액티비티로 이동
         val selectAmbulanceButton = findViewById<ImageButton>(R.id.select_user_button)
         selectAmbulanceButton.setOnClickListener {
-            val intent = Intent(this, LoginUserActivity::class.java)
+            val intent = Intent(this, UserLoginActivity::class.java)
             startActivity(intent)
             // finish() 이건 돌아갈 필요가 없으면 finish 있으면 대기.
         }
