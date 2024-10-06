@@ -2,8 +2,8 @@ package com.example.sos
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.Response
+import retrofit2.http.*
 
 data class LoginRequest(
     val role: String,
@@ -28,7 +28,7 @@ data class RegisterRequest(
 )
 
 data class RegisterResponse(
-    val status: String,
+    val status: Int,
     val message: String
 )
 
@@ -69,3 +69,23 @@ interface AuthService {
     @POST("/reissue-token")
     fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
 }
+
+// 카카오 주소 검색 이용 관련
+interface KakaoMapService {
+    @GET("/v2/local/search/address.json")
+    suspend fun searchAddress(
+        @Header("Authorization") apiKey: String,
+        @Query("query") query: String
+    ): Response<AddressSearchResponse>
+}
+
+data class AddressSearchResponse(
+    val documents: List<Document>
+)
+
+data class Document(
+    val address_name: String,  // 주소명
+    val x: String,  // 경도 (Longitude)
+    val y: String   // 위도 (Latitude)
+)
+
