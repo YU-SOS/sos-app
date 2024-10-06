@@ -32,7 +32,6 @@ data class RegisterResponse(
     val message: String
 )
 
-// 카카오 로그인 요청 데이터 클래스
 data class UserSignupRequest(
     val name: String,
     val providerId: String,
