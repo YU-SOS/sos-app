@@ -1,23 +1,29 @@
-package com.example.sos
+package com.example.sos.user
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sos.R
+import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.token.TokenManager
+import com.example.sos.retrofit.UserLoginResponse
+import com.example.sos.retrofit.UserSignupRequest
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginUserActivity : AppCompatActivity() {
+class UserLoginActivity : AppCompatActivity() {
     // TokenManager 선언 (초기화는 나중에)
     private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_user)
+
         tokenManager = TokenManager(this)
 
         val kakaoLoginButton: ImageButton = findViewById(R.id.kakao_login_button)
@@ -36,9 +42,8 @@ class LoginUserActivity : AppCompatActivity() {
                     if (meError != null) {
                         Log.e("KakaoLogin", "사용자 정보 요청 실패: ${meError.message}")
                     } else if (user != null) {
-                        // 사용자 정보가 성공적으로 받아졌다면
                         val name = user.kakaoAccount?.profile?.nickname ?: "이름 없음"
-                        val providerId = user.id.toString()  // 카카오 유저 고유번호
+                        val providerId = user.id.toString()
                         val email = user.kakaoAccount?.email ?: "이메일 없음"
                         val provider = "kakao"
                         Log.d("success login?", "name: $name")
@@ -48,10 +53,6 @@ class LoginUserActivity : AppCompatActivity() {
 
                         // 가져온 사용자 정보를 서버로 전송
                         sendUserDataToServer(name, providerId, provider, email)
-
-                        val intent = Intent(this, UserMainActivity::class.java)
-                        startActivity(intent)
-                        finish()
                     }
                 }
             }
@@ -81,10 +82,16 @@ class LoginUserActivity : AppCompatActivity() {
                     Log.d("LoginUser", "리프레시 토큰: $refreshToken")
                     Log.d("LoginUser", "스테이터스 코드: $statusCode")
 
-                    if (refreshToken != null) {
+                    if (refreshToken != null && accessToken != null) {
                         tokenManager.saveRefreshToken(refreshToken)
+                        tokenManager.saveAccessToken(accessToken)
+
+                        // 토큰이 성공적으로 저장된 후에만 UserMainActivity로 이동
+                        val intent = Intent(this@UserLoginActivity, UserMainActivity::class.java)
+                        startActivity(intent)
+                        finish()  // 현재 로그인 액티비티 종료
                     } else {
-                        Log.e("LoginUser", "리프레시 토큰을 찾을 수 없습니다.")
+                        Log.e("LoginUser", "리프레시 또는 액세스 토큰을 찾을 수 없습니다.")
                     }
 
                 } else {
@@ -96,6 +103,5 @@ class LoginUserActivity : AppCompatActivity() {
                 Log.e("LoginUser", "로그인 중 오류 발생", t)
             }
         })
-
     }
 }

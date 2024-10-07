@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.sos.retrofit.KakaoRetrofitClientInstance
+import com.example.sos.Location
+import com.example.sos.R
+import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.retrofit.RegisterRequest
+import com.example.sos.retrofit.RegisterResponse
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
