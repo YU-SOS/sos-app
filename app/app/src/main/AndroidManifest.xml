@@ -17,19 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sos"
         tools:targetApi="31"
-        android:name=".GlobalApplication"
+        android:name=".user.GlobalApplication"
         android:usesCleartextTraffic="true">
 
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="68695b0d022c083d3448cec3ccbacb8a" />
-
         <activity
-            android:name=".RegisterAmbulanceActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
+            android:name=".SelectLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,18 +30,31 @@
         </activity>
 
         <activity
-            android:name=".SelectLoginActivity"
+            android:name=".ambulance.RegisterAmbulanceActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ambulance.MainActivity"
         android:exported="true" />
 
         <activity
-            android:name=".LoginAmbulanceActivity"
+            android:name=".ambulance.LoginAmbulanceActivity"
             android:exported="false" />
+
         <activity
-            android:name=".UserMainActivity"
+            android:name=".user.UserMainActivity"
             android:exported="false" />
+
         <activity
-            android:name=".LoginUserActivity"
+            android:name=".user.UserLoginActivity"
             android:exported="false" />
+
+        <activity android:name=".user.UserMapActivity"
+            android:exported="false" />
+
+        <activity android:name=".user.UserReceptionActivity"
+            android:exported="false" />
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -63,6 +68,9 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="68695b0d022c083d3448cec3ccbacb8a" />
     </application>
 
 </manifest>

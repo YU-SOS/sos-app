@@ -4,4 +4,7 @@
     <string name="kakao_app_key">68695b0d022c083d3448cec3ccbacb8a</string>
     <string name="scheme_kakao_app_key">kakao68695b0d022c083d3448cec3ccbacb8a</string>
     <string name="kakao_login_desc">카카오 로그인 버튼</string>
+    <string name="navigation_drawer_open">Open navigation</string>
+    <string name="navigation_drawer_close">Close navigation</string>
+
 </resources>

@@ -5,15 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="유저 메인화면입니다."
-        android:textSize="30dp"
+    <ImageButton
+        android:id="@+id/user_map_button"
+        android:layout_width="241dp"
+        android:layout_height="298dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="user_map_button"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/user_map" />
+
+    <ImageButton
+        android:id="@+id/user_reception_button"
+        android:layout_width="241dp"
+        android:layout_height="298dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="user_reception_button"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/user_reception" />
+
+    <include
+        android:id="@+id/logout_button_layout"
+        layout="@layout/logout_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

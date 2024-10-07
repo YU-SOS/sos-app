@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.ambulance
 
 import android.content.Context
 import android.content.Intent
@@ -7,15 +7,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sos.R
+import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.retrofit.AuthService
+import com.example.sos.retrofit.LoginRequest
+import com.example.sos.retrofit.LoginResponse
+import com.example.sos.token.TokenManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginAmbulanceActivity : AppCompatActivity() {
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_ambulance)
+
+        tokenManager = TokenManager(this)
 
         // 사용자 입력 필드 가져오기
         val usernameEditText = findViewById<EditText>(R.id.edit_text_username)
@@ -29,7 +38,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             // Retrofit을 통해 AuthService 생성
-            val authService = RetrofitClientInstance.retrofitInstance.create(AuthService::class.java)
+            val authService = RetrofitClientInstance.getApiService(tokenManager, this)
             val loginRequest = LoginRequest("AMB", id, password) // 로그인 요청 데이터 생성
 
             // 로그인 API 호출

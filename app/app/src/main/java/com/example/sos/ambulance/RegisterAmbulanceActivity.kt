@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,16 +7,27 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.sos.retrofit.KakaoRetrofitClientInstance
+import com.example.sos.Location
+import com.example.sos.R
+import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.retrofit.RegisterRequest
+import com.example.sos.retrofit.RegisterResponse
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.sos.token.TokenManager
 
 class RegisterAmbulanceActivity : AppCompatActivity() {
+
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_ambulance)
+
+        tokenManager = TokenManager(this) // TokenManager 초기화
 
         val idEditText = findViewById<EditText>(R.id.editTextUserId)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
@@ -66,7 +77,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
     }
 
     private fun registerAmbulance(registerRequest: RegisterRequest) {
-        val authService = RetrofitClientInstance.api
+        val authService = RetrofitClientInstance.getApiService(tokenManager, this)
         authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful && response.body()?.status == 201) {
