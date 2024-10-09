@@ -26,7 +26,7 @@ class SelectLoginActivity : AppCompatActivity() {
         selectUserButton.setOnClickListener {
             val intent = Intent(this, LoginAmbulanceActivity::class.java)
             startActivity(intent)
-            // finish() 이건 돌아갈 필요가 없으면 finish 있으면 대기.
+            finish() // 로그인 후 돌아갈 필요가 없으면 finish.
         }
 
         // 사용자 버튼을 눌렀을 때 로그인 사용자 액티비티로 이동
@@ -34,7 +34,7 @@ class SelectLoginActivity : AppCompatActivity() {
         selectAmbulanceButton.setOnClickListener {
             val intent = Intent(this, UserLoginActivity::class.java)
             startActivity(intent)
-            // finish() 이건 돌아갈 필요가 없으면 finish 있으면 대기.
+            finish() // 로그인 후 돌아갈 필요가 없으면 finish.
         }
     }
 }
