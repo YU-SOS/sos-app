@@ -16,6 +16,7 @@ import com.example.sos.retrofit.KakaoRetrofitClientInstance
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.RegisterRequest
 import com.example.sos.retrofit.RegisterResponse
+import com.example.sos.retrofit.AmbulanceIdDupCheckResponse
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -46,10 +47,21 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
         val addressEditText = findViewById<EditText>(R.id.editTextAmbulanceAddress)
         val submitButton = findViewById<Button>(R.id.buttonSubmit)
         val selectImageButton = findViewById<Button>(R.id.buttonSelectImage)
+        val checkDupButton = findViewById<Button>(R.id.buttonCheckDup)
 
         selectImageButton.setOnClickListener {
             // 갤러리에서 이미지 선택
             getImage.launch("image/*")
+        }
+
+        // ID 중복 확인 버튼 클릭 시
+        checkDupButton.setOnClickListener {
+            val id = idEditText.text.toString()
+            if (id.isNotEmpty()) {
+                checkIdDuplication(id)
+            } else {
+                Toast.makeText(this, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         submitButton.setOnClickListener {
@@ -74,7 +86,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             // 카카오 주소 검색 API 호출
             lifecycleScope.launch {
                 val kakaoService = KakaoRetrofitClientInstance.kakaoService
-                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address) // 키를 숨기긴 해야될 것
+                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address)
                 if (response.isSuccessful) {
                     val documents = response.body()?.documents
                     if (!documents.isNullOrEmpty()) {
@@ -92,6 +104,24 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun checkIdDuplication(id: String) {
+        val authService = RetrofitClientInstance.api
+        authService.checkIdDuplication(id, "AMB").enqueue(object : Callback<AmbulanceIdDupCheckResponse> {
+            override fun onResponse(call: Call<AmbulanceIdDupCheckResponse>, response: Response<AmbulanceIdDupCheckResponse>) {
+                if (response.isSuccessful) {
+                    val message = response.body()?.message
+                    Toast.makeText(this@RegisterAmbulanceActivity, message, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@RegisterAmbulanceActivity, "중복된 ID 입니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<AmbulanceIdDupCheckResponse>, t: Throwable) {
+                Toast.makeText(this@RegisterAmbulanceActivity, "에러 발생: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun uploadImageAndRegister(id: String, password: String, name: String, address: String, telephoneNumber: String, location: Location) {

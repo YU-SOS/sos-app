@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+// 구급대 로그인
 data class LoginRequest(
     val role: String,
     val id: String,
@@ -18,6 +19,7 @@ data class LoginResponse(
     val data: String?
 )
 
+// 구급대 회원가입
 data class RegisterRequest(
     val id: String,
     val password: String,
@@ -56,6 +58,12 @@ data class RefreshResponse(
     val refreshToken: String
 )
 
+// 구급대 ID 중복확인 요청/응답
+data class AmbulanceIdDupCheckResponse(
+    val status: Int,
+    val message: String
+)
+
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -68,9 +76,16 @@ interface AuthService {
 
     @POST("/reissue-token")
     fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
+
+    // ID 중복 확인 - 쿼리 스트링 사용
+    @GET("/dup-check")
+    fun checkIdDuplication(
+        @Query("id") id: String,
+        @Query("role") role: String
+    ): Call<AmbulanceIdDupCheckResponse>
 }
 
-// 카카오 주소 검색 이용 관련
+// 카카오 주소 검색 관련
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
     suspend fun searchAddress(
@@ -88,4 +103,3 @@ data class Document(
     val x: String,  // 경도 (Longitude)
     val y: String   // 위도 (Latitude)
 )
-
