@@ -93,15 +93,14 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         } else {
-            Log.d("MainActivity", "No refresh token found. Cannot refresh.")
+            Log.d("MainActivity", "No refresh token found.")
         }
     }
 
     private fun logout() {
-        Log.d("MainActivity", "Logging out user.")
-        tokenManager.clearTokens()  // 모든 토큰 삭제
+        tokenManager.clearTokens()  // 토큰 삭제
         val intent = Intent(this, SelectLoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        startActivity(intent)  // 로그인 선택 화면으로 이동
+        finish()  // 현재 액티비티 종료
     }
 }
