@@ -10,8 +10,8 @@
 
   <EditText
       android:id="@+id/editTextUserId"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
+      android:layout_width="314dp"
+      android:layout_height="59dp"
       android:layout_marginTop="16dp"
       android:hint="아이디"
       android:inputType="text"
@@ -112,5 +112,16 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+      android:id="@+id/buttonCheckDup"
+      android:layout_width="92dp"
+      android:layout_height="52dp"
+      android:layout_marginTop="16dp"
+      android:text="중복"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/editTextUserId"
+      app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
