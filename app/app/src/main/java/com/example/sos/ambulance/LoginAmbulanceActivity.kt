@@ -3,6 +3,7 @@ package com.example.sos.ambulance
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -33,6 +34,8 @@ class LoginAmbulanceActivity : AppCompatActivity() {
             val id = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
+            Log.d("LoginAmbulanceActivity", "로그인 시도: ID = $id") // 로그인 시도 로그
+
             // Retrofit을 통해 AuthService 생성
             val authService = RetrofitClientInstance.retrofitInstance.create(AuthService::class.java)
             val loginRequest = LoginRequest("AMB", id, password) // 로그인 요청 데이터 생성
@@ -48,19 +51,24 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                         if (authorizationHeader != null) {
                             // 액세스 토큰 저장
                             saveToken(authorizationHeader)
+                            Log.d("LoginAmbulanceActivity", "로그인 성공: 토큰 저장 완료") // 로그인 성공 로그
+                            Log.d("LoginAmbulanceActivity", "저장된 액세스 토큰: $authorizationHeader") // 토큰 출력
                             Toast.makeText(this@LoginAmbulanceActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginAmbulanceActivity, MainActivity::class.java)) // 메인 화면으로 이동
                         } else {
+                            Log.d("LoginAmbulanceActivity", "로그인 실패: 토큰을 받지 못했습니다") // 토큰 없음 로그
                             Toast.makeText(this@LoginAmbulanceActivity, "토큰을 받지 못했습니다", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         // 상태 코드가 200이 아닌 경우 실패 메시지 표시
                         val errorMessage = loginResponse?.message ?: "로그인 실패"
+                        Log.d("LoginAmbulanceActivity", "로그인 실패: $errorMessage") // 로그인 실패 로그
                         Toast.makeText(this@LoginAmbulanceActivity, errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Log.e("LoginAmbulanceActivity", "로그인 에러: ${t.message}", t) // 로그인 에러 로그
                     Toast.makeText(this@LoginAmbulanceActivity, "에러 발생: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -68,6 +76,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
 
         // 회원가입 버튼 클릭 시 동작
         registerButton.setOnClickListener {
+            Log.d("LoginAmbulanceActivity", "회원가입 버튼 클릭") // 회원가입 클릭 로그
             startActivity(Intent(this, RegisterAmbulanceActivity::class.java)) // 회원가입 화면으로 이동
         }
     }
@@ -76,5 +85,6 @@ class LoginAmbulanceActivity : AppCompatActivity() {
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("jwt_token", token).apply()
+        Log.d("LoginAmbulanceActivity", "JWT 토큰 저장: $token") // 토큰 저장 로그
     }
 }
