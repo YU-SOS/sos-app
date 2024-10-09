@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sos">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷 사용 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 이미지 선택을 위한 권한 추가 -->
 
     <application
         android:allowBackup="true"
@@ -35,7 +36,7 @@
 
         <activity
             android:name=".ambulance.MainActivity"
-        android:exported="true" />
+            android:exported="true" />
 
         <activity
             android:name=".ambulance.LoginAmbulanceActivity"

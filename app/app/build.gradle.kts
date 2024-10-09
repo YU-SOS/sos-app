@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,12 +47,11 @@ dependencies {
 
     implementation(libs.v2.all) // 카카오 전체 모듈 설치
     implementation(libs.v2.user) // 카카오 로그인 API 모듈
-    implementation (libs.v2.cert) // 카카오 인증 서비스 API 모듈
-    implementation(libs.retrofit) //retrofit 라이브러리
-    implementation(libs.converter.gson) //gson 라이브러리(json을 자바 클래스로 변환해줌)
-    implementation(libs.okhttp) //okhttp 라이브러리
-    implementation(libs.logging.interceptor) //okhttp 라이브러리
-
+    implementation(libs.v2.cert) // 카카오 인증 서비스 API 모듈
+    implementation(libs.retrofit) // Retrofit 라이브러리
+    implementation(libs.converter.gson) // Gson 라이브러리
+    implementation(libs.okhttp) // OkHttp 라이브러리
+    implementation(libs.logging.interceptor) // OkHttp 로깅 인터셉터
 
     // KakaoMap API
     implementation("com.kakao.maps.open:android:2.11.9")
@@ -68,11 +68,17 @@ dependencies {
     // JWT 유효성 검사
     implementation("com.auth0.android:jwtdecode:2.0.0")
 
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Log 찍어볼 때
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // Fire base
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-storage-ktx:20.1.0")
+    implementation ("com.google.firebase:firebase-firestore-ktx:24.2.1")
+
 }
