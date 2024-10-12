@@ -102,9 +102,8 @@ interface AuthService {
         @Body memberInfo: AmbulanceRequest
     ): Call<AmbulanceResponse>
 
-    @POST("/logout/user")//유저 로그아웃
-    fun logout(
-        @Header("Authorization") authorization: String): Call<Void>
+    @POST("/logout") // 유저 로그아웃
+    fun logout(@Header("Authorization") authorization: String): Call<Void>
 }
 
 // 카카오 주소 검색 이용 관련

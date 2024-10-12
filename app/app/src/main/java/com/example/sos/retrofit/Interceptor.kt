@@ -25,8 +25,10 @@ class Interceptor(
 
         // 401 오류 및 토큰 만료 메시지 확인
         if (response.code == 401) {
+            Log.d("Interceptor", "401 오류 확인")
             val errorBody = response.peekBody(Long.MAX_VALUE).string()
             if (errorBody.contains("토큰 만료")) {
+                Log.d("Interceptor", "토큰 만료 메세지 확인")
                 response.close()
                 val newTokens = reissueToken()
 
