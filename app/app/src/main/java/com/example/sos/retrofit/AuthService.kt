@@ -102,7 +102,7 @@ interface AuthService {
         @Body memberInfo: AmbulanceRequest
     ): Call<AmbulanceResponse>
 
-    @POST("/logout/user")
+    @POST("/logout/user")//유저 로그아웃
     fun logout(
         @Header("Authorization") authorization: String): Call<Void>
 }
