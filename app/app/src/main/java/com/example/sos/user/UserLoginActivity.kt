@@ -69,9 +69,11 @@ class UserLoginActivity : AppCompatActivity() {
     private fun sendUserDataToServer(name: String, providerId: String, provider: String, email: String) {
         val userSignupRequest = UserSignupRequest(name, providerId, provider, email)
 
+
         val authService = RetrofitClientInstance.getApiService(tokenManager, this)
 
         authService.loginUser(userSignupRequest).enqueue(object : Callback<UserLoginResponse> {
+
             override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()

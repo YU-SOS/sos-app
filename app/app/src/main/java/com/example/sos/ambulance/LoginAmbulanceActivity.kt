@@ -13,12 +13,14 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.LoginRequest
 import com.example.sos.retrofit.LoginResponse
 import com.example.sos.token.TokenManager
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginAmbulanceActivity : AppCompatActivity() {
     private lateinit var tokenManager: TokenManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
 
             // Retrofit을 통해 AuthService 생성
             val authService = RetrofitClientInstance.getApiService(tokenManager, this)
+
             val loginRequest = LoginRequest("AMB", id, password) // 로그인 요청 데이터 생성
 
             // 로그인 API 호출

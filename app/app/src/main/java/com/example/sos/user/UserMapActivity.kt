@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+
 import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.token.TokenManager
@@ -18,7 +19,9 @@ import com.google.android.material.navigation.NavigationView
 class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
+
     private lateinit var tokenManager: TokenManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +45,16 @@ class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         val logoutButton: Button = findViewById(R.id.logout_button)
         logoutButton.setOnClickListener {
+
             logoutManager.logout() // 서버에 로그아웃 요청을 보내도록 변경
+
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_map -> {
+
                 val intent = Intent(this, UserMapActivity::class.java)
                 startActivity(intent)
                 finish()

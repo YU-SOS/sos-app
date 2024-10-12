@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivit
 import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.SelectLoginActivity
@@ -14,13 +14,16 @@ import com.example.sos.token.TokenManager
 class UserMainActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
+
     val logoutManager = LogoutManager(this, tokenManager)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_main)
         tokenManager = TokenManager(this)
         setupButtons()
+
     }
 
     private fun setupButtons() {
@@ -40,7 +43,9 @@ class UserMainActivity : AppCompatActivity() {
 
         val userLogoutButton: Button = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
+
             logoutManager.logout()
+
             val intent = Intent(this, SelectLoginActivity::class.java)
             startActivity(intent)
             finish()

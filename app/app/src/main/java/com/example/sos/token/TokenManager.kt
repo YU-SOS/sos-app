@@ -15,6 +15,7 @@ class TokenManager(context: Context) {
         sharedPreferences.edit().apply {
             putString("jwt_token", token)
             apply()  // 동기적으로 저장
+
         }
         Log.d("TokenManager", "액세스 토큰 저장 완료")
     }

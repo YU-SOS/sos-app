@@ -2,12 +2,14 @@ package com.example.sos.retrofit
 
 import android.content.Context
 import com.example.sos.token.TokenManager
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientInstance {
+
 
     private const val BASE_URL = "http://3.35.136.82:8080/"
 
@@ -39,6 +41,7 @@ object RetrofitClientInstance {
         return getRetrofitInstance(tokenManager, context).create(AuthService::class.java)
     }
 }
+
 // 카카오 주소 검색 API 설정
 object KakaoRetrofitClientInstance {
 
@@ -55,3 +58,4 @@ object KakaoRetrofitClientInstance {
         retrofitInstance.create(KakaoMapService::class.java)
     }
 }
+

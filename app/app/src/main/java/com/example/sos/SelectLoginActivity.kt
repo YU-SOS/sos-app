@@ -15,6 +15,7 @@ import com.example.sos.token.TokenManager
 import com.example.sos.user.UserLoginActivity
 import com.example.sos.user.UserMainActivity
 
+
 class SelectLoginActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
@@ -56,6 +57,7 @@ class SelectLoginActivity : AppCompatActivity() {
         selectAmbulanceButton.setOnClickListener {
             val intent = Intent(this, LoginAmbulanceActivity::class.java)
             startActivity(intent)
+
         }
 
         val selectUserButton = findViewById<ImageButton>(R.id.select_user_button)
@@ -73,6 +75,7 @@ class SelectLoginActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("SelectLoginActivity", "에러: ${e.message}")
             null
+
         }
     }
 }

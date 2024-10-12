@@ -10,9 +10,9 @@
 
   <EditText
       android:id="@+id/editTextUserId"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="110dp"
+      android:layout_width="314dp"
+      android:layout_height="59dp"
+      android:layout_marginTop="16dp"
       android:hint="아이디"
       android:inputType="text"
       android:padding="16dp"
@@ -33,7 +33,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/editTextUserId" />
 
-  <!-- 비밀번호 확인 입력 필드 -->
   <EditText
       android:id="@+id/editTextConfirmPassword"
       android:layout_width="0dp"
@@ -46,7 +45,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
 
-  <!-- 구급대 이름 입력 필드 -->
   <EditText
       android:id="@+id/editTextAmbulanceName"
       android:layout_width="0dp"
@@ -59,7 +57,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword" />
 
-  <!-- 구급대 전화번호 입력 필드 -->
   <EditText
       android:id="@+id/editTextAmbulancePhone"
       android:layout_width="0dp"
@@ -72,7 +69,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceName" />
 
-  <!-- 구급대 주소 입력 필드 -->
   <EditText
       android:id="@+id/editTextAmbulanceAddress"
       android:layout_width="0dp"
@@ -85,18 +81,47 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/editTextAmbulancePhone" />
 
-  <!-- 제출 버튼 -->
+  <!-- 이미지 선택 버튼 -->
+
+  <!-- 선택된 이미지 표시 -->
+
+  <Button
+      android:id="@+id/buttonSelectImage"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="72dp"
+      android:backgroundTint="#FF2121"
+      android:padding="12dp"
+      android:text="이미지 선택"
+      android:textColor="@android:color/white"
+      app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent" />
+
   <Button
       android:id="@+id/buttonSubmit"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
+      android:layout_marginBottom="64dp"
       android:backgroundTint="#FF2121"
       android:padding="12dp"
       android:text="회원가입"
       android:textColor="@android:color/white"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/editTextAmbulanceAddress" />
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+      android:id="@+id/buttonCheckDup"
+      android:layout_width="92dp"
+      android:layout_height="52dp"
+      android:layout_marginTop="16dp"
+      android:text="중복"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/editTextUserId"
+      app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,9 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
         val logoutButton: Button = findViewById(R.id.logout_button)
         logoutButton.setOnClickListener {
+
             logoutManager.logout()
+
             val intent = Intent(this, SelectLoginActivity::class.java)
             startActivity(intent)
             finish()

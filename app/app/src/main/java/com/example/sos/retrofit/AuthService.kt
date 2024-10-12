@@ -1,11 +1,14 @@
 package com.example.sos.retrofit
 
+
 import com.example.sos.Hospital
+
 import com.example.sos.Location
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+
 
 data class LoginRequest(
     val role: String,
@@ -18,6 +21,7 @@ data class LoginResponse(
     val message: String,
     val data: String?
 )
+
 
 data class RegisterRequest(
     val id: String,
@@ -56,6 +60,7 @@ data class RefreshResponse(
     val accessToken: String,
     val refreshToken: String
 )
+
 //환자 정보 요청(수정중)
 data class ReceptionRequest(
     val Authorization: String,
@@ -75,6 +80,11 @@ data class AmbulanceRequest(//수정중
 )
 
 data class AmbulanceResponse(//수정중
+
+
+// 구급대 ID 중복확인 요청/응답
+data class AmbulanceIdDupCheckResponse(
+
     val status: Int,
     val message: String
 )
@@ -89,8 +99,6 @@ interface AuthService {
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
 
-    @GET("/reissue-token")
-    fun refreshToken(@Header("Cookie") refreshToken: String): Call<RefreshResponse>
 
     @GET("/reception/id")//접수된 환자의 정보 요청(수정해야됨)
     fun reception(@Body request: ReceptionRequest): Call<ReceptionResponse>
@@ -107,6 +115,18 @@ interface AuthService {
 }
 
 // 카카오 주소 검색 이용 관련
+    @POST("/reissue-token")
+    fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
+
+    // ID 중복 확인 - 쿼리 스트링 사용
+    @GET("/dup-check")
+    fun checkIdDuplication(
+        @Query("id") id: String,
+        @Query("role") role: String
+    ): Call<AmbulanceIdDupCheckResponse>
+}
+
+// 카카오 주소 검색 관련
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
     suspend fun searchAddress(
@@ -124,4 +144,3 @@ data class Document(
     val x: String,  // 경도 (Longitude)
     val y: String   // 위도 (Latitude)
 )
-

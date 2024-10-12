@@ -23,9 +23,11 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     private lateinit var logoutButton: Button
+
     private lateinit var testButton: Button // 테스트 버튼 추가
     private lateinit var tokenManager: TokenManager // TokenManager 선언
     val logoutManager = LogoutManager(this, tokenManager)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
