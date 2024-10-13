@@ -7,10 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object RetrofitClientInstance {
-
-
     private const val BASE_URL = "http://3.35.136.82:8080/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -18,14 +17,12 @@ object RetrofitClientInstance {
     }
 
     private fun getHttpClient(tokenManager: TokenManager, context: Context): OkHttpClient {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(Interceptor(tokenManager, retrofit)) // AuthInterceptor 추가
+            .addInterceptor(loggingInterceptor) // loggingInterceptor가 첫 번째로 추가
+            .addInterceptor(Interceptor(tokenManager, Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build())) // AuthInterceptor 추가
             .build()
     }
 

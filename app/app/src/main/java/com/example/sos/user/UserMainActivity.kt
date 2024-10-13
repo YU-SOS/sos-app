@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivit
+import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.SelectLoginActivity

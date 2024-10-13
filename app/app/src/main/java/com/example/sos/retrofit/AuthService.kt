@@ -79,12 +79,12 @@ data class AmbulanceRequest(//수정중
     val phoneNumber: String
 )
 
-data class AmbulanceResponse(//수정중
-
+data class AmbulanceResponse( //수정중
+    val name: String
+)
 
 // 구급대 ID 중복확인 요청/응답
 data class AmbulanceIdDupCheckResponse(
-
     val status: Int,
     val message: String
 )
@@ -112,11 +112,10 @@ interface AuthService {
 
     @POST("/logout") // 유저 로그아웃
     fun logout(@Header("Authorization") authorization: String): Call<Void>
-}
 
 // 카카오 주소 검색 이용 관련
     @POST("/reissue-token")
-    fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
+    fun refreshToken(@Body request: String): Call<RefreshResponse>
 
     // ID 중복 확인 - 쿼리 스트링 사용
     @GET("/dup-check")

@@ -24,27 +24,24 @@ class Interceptor(
         val response = chain.proceed(request)
 
         // 401 오류 및 토큰 만료 메시지 확인
-        if (response.code == 401) {
-            Log.d("Interceptor", "401 오류 확인")
-            val errorBody = response.peekBody(Long.MAX_VALUE).string()
-            if (errorBody.contains("토큰 만료")) {
-                Log.d("Interceptor", "토큰 만료 메세지 확인")
-                response.close()
-                val newTokens = reissueToken()
+        if (response.code == 401 && response.peekBody(Long.MAX_VALUE).string().contains("JWT expired")) {
+            Log.d("Interceptor", "401 오류 및 토큰 만료 메세지 확인")
+            response.close()
+            val newTokens = reissueToken()
 
-                return if (newTokens != null) {
-                    tokenManager.saveAccessToken(newTokens.accessToken)
-                    tokenManager.saveRefreshToken(newTokens.refreshToken)
+            return if (newTokens != null) {
+                tokenManager.saveAccessToken(newTokens.accessToken)
+                tokenManager.saveRefreshToken(newTokens.refreshToken)
 
-                    // 새로운 토큰으로 재시도
-                    val newRequest = addAuthorizationHeader(request, newTokens.accessToken)
-                    chain.proceed(newRequest)
-                } else {
-                    // 토큰 재발급 실패 시 기존 응답 반환
-                    response
-                }
+                // 새로운 토큰으로 재시도
+                val newRequest = addAuthorizationHeader(request, newTokens.accessToken)
+                chain.proceed(newRequest)
+            } else {
+                // 토큰 재발급 실패 시 기존 응답 반환
+                response
             }
         }
+
 
         return response
     }
@@ -63,11 +60,12 @@ class Interceptor(
         }
 
         Log.d("AuthInterceptor", "리프레시 토큰으로 액세스 토큰 재발급 요청")
-        val call = retrofit.create(AuthService::class.java).refreshToken(refreshToken)
+        val call = retrofit.create(AuthService::class.java).refreshToken("$refreshToken")
         val response = call.execute()
 
         return if (response.isSuccessful) {
             response.body()?.apply {
+                tokenManager.saveAccessToken(accessToken)
                 Log.d("AuthInterceptor", "토큰 재발급 성공 - 새로운 액세스 토큰 저장")
             }
         } else {
