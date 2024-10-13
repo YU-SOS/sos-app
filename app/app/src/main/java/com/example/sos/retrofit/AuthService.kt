@@ -1,12 +1,15 @@
 package com.example.sos.retrofit
 
+
+import com.example.sos.Hospital
+
 import com.example.sos.Location
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
-// 구급대 로그인
+
 data class LoginRequest(
     val role: String,
     val id: String,
@@ -19,7 +22,7 @@ data class LoginResponse(
     val data: String?
 )
 
-// 구급대 회원가입
+
 data class RegisterRequest(
     val id: String,
     val password: String,
@@ -58,8 +61,30 @@ data class RefreshResponse(
     val refreshToken: String
 )
 
+//환자 정보 요청(수정중)
+data class ReceptionRequest(
+    val Authorization: String,
+    val receptionId: String
+)
+//환자 정보 응답(수정중)
+data class ReceptionResponse(
+    val status: Int,
+    val message: String,
+    val hospitalInfo: Hospital,
+
+    )
+
+data class AmbulanceRequest(//수정중
+    val name: String,
+    val phoneNumber: String
+)
+
+data class AmbulanceResponse(//수정중
+
+
 // 구급대 ID 중복확인 요청/응답
 data class AmbulanceIdDupCheckResponse(
+
     val status: Int,
     val message: String
 )
@@ -74,6 +99,22 @@ interface AuthService {
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
 
+
+    @GET("/reception/id")//접수된 환자의 정보 요청(수정해야됨)
+    fun reception(@Body request: ReceptionRequest): Call<ReceptionResponse>
+
+    @POST("/{ambulanceId}/member")//수정해야됨
+    fun ambulanceMember(
+        @Header("Authorization") authorization: String,
+        @Path("ambulanceId") ambulanceId: String,
+        @Body memberInfo: AmbulanceRequest
+    ): Call<AmbulanceResponse>
+
+    @POST("/logout") // 유저 로그아웃
+    fun logout(@Header("Authorization") authorization: String): Call<Void>
+}
+
+// 카카오 주소 검색 이용 관련
     @POST("/reissue-token")
     fun refreshToken(@Body request: RefreshRequest): Call<RefreshResponse>
 

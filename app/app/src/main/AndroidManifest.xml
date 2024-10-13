@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ambulance.MainActivity"
+            android:name=".SelectLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +33,11 @@
         <activity
             android:name=".ambulance.RegisterAmbulanceActivity"
             android:exported="false" />
+
+        <activity
+
+            android:name=".ambulance.MainActivity"
+        android:exported="true" />
 
         <activity
             android:name=".ambulance.LoginAmbulanceActivity"
@@ -46,17 +51,11 @@
             android:name=".user.UserLoginActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".user.UserMapActivity"
+        <activity android:name=".user.UserMapActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".user.UserReceptionActivity"
+        <activity android:name=".user.UserReceptionActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".SelectLoginActivity"
-        android:exported="true" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

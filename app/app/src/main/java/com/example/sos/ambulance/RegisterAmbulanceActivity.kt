@@ -1,43 +1,33 @@
 package com.example.sos.ambulance
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.sos.retrofit.KakaoRetrofitClientInstance
 import com.example.sos.Location
 import com.example.sos.R
-import com.example.sos.retrofit.KakaoRetrofitClientInstance
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.RegisterRequest
 import com.example.sos.retrofit.RegisterResponse
-import com.example.sos.retrofit.AmbulanceIdDupCheckResponse
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.example.sos.token.TokenManager
 
 class RegisterAmbulanceActivity : AppCompatActivity() {
 
-    private var selectedImageUri: Uri? = null
-
-    // ActivityResultLauncher 초기화
-    private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            selectedImageUri = uri
-            Toast.makeText(this, "이미지 선택됨", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register_ambulance)
+
+        tokenManager = TokenManager(this) // TokenManager 초기화
 
         val idEditText = findViewById<EditText>(R.id.editTextUserId)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
@@ -46,6 +36,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
         val phoneEditText = findViewById<EditText>(R.id.editTextAmbulancePhone)
         val addressEditText = findViewById<EditText>(R.id.editTextAmbulanceAddress)
         val submitButton = findViewById<Button>(R.id.buttonSubmit)
+
         val selectImageButton = findViewById<Button>(R.id.buttonSelectImage)
         val checkDupButton = findViewById<Button>(R.id.buttonCheckDup)
 
@@ -64,6 +55,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             }
         }
 
+
         submitButton.setOnClickListener {
             val id = idEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -71,6 +63,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             val name = nameEditText.text.toString()
             val telephoneNumber = phoneEditText.text.toString()
             val address = addressEditText.text.toString()
+
 
             // 입력 유효성 검사
             if (id.isEmpty() || password.isEmpty() || name.isEmpty() || telephoneNumber.isEmpty() || address.isEmpty()) {
@@ -86,13 +79,16 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             // 카카오 주소 검색 API 호출
             lifecycleScope.launch {
                 val kakaoService = KakaoRetrofitClientInstance.kakaoService
-                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address)
+
+                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address) // 키를 숨기긴 해야될 것 같음.
+
                 if (response.isSuccessful) {
                     val documents = response.body()?.documents
                     if (!documents.isNullOrEmpty()) {
                         val latitude = documents[0].y
                         val longitude = documents[0].x
                         val location = Location(latitude, longitude)
+
 
                         // 이미지 URL 업로드 및 회원가입 요청
                         uploadImageAndRegister(id, password, name, address, telephoneNumber, location)
@@ -105,6 +101,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun checkIdDuplication(id: String) {
         val authService = RetrofitClientInstance.api
@@ -148,6 +145,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
 
     private fun registerAmbulance(registerRequest: RegisterRequest) {
         val authService = RetrofitClientInstance.api
+
         authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful && response.body()?.status == 201) {

@@ -14,7 +14,8 @@ class TokenManager(context: Context) {
     fun saveAccessToken(token: String) {
         sharedPreferences.edit().apply {
             putString("jwt_token", token)
-            apply()  // 비동기적으로 저장
+            apply()  // 동기적으로 저장
+
         }
         Log.d("TokenManager", "액세스 토큰 저장 완료")
     }
@@ -46,20 +47,5 @@ class TokenManager(context: Context) {
             apply()
         }
         Log.d("TokenManager", "토큰 삭제 완료")
-    }
-
-    // 토큰 만료 여부 확인
-    fun isTokenExpired(token: String): Boolean {
-        val jwt = JWT(token)
-        return jwt.isExpired(0) // 현재 시간을 기준으로 토큰 만료 여부 체크
-    }
-
-    // 토큰 유효성 검사
-    fun isTokenExpiringSoon(token: String, days: Int): Boolean {
-        val jwt = JWT(token)
-        val expirationTime = jwt.expiresAt?.time ?: 0
-        val currentTime = System.currentTimeMillis()
-        val daysInMillis = days * 24 * 60 * 60 * 1000 // n일을 밀리초로 변환
-        return expirationTime - currentTime <= daysInMillis // 만료가 가까운지 확인
     }
 }

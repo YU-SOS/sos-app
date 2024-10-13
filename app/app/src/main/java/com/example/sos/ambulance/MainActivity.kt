@@ -4,13 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sos.LogoutManager
 import com.example.sos.R
+import com.example.sos.retrofit.AmbulanceRequest
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.SelectLoginActivity
+import com.example.sos.retrofit.AmbulanceResponse
 import com.example.sos.token.TokenManager
 import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.LoginResponse
 import com.example.sos.retrofit.RefreshRequest
 import com.example.sos.retrofit.RefreshResponse
 import retrofit2.Call
@@ -20,7 +23,11 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     private lateinit var logoutButton: Button
+
+    private lateinit var testButton: Button // 테스트 버튼 추가
     private lateinit var tokenManager: TokenManager // TokenManager 선언
+    val logoutManager = LogoutManager(this, tokenManager)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,79 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)  // TokenManager 초기화
         logoutButton = findViewById(R.id.logout)
-
-        // 로그인 상태 확인 및 자동 로그인
-        if (!checkLoginStatus()) {
-            Log.d("MainActivity", "User is not logged in. Redirecting to SelectLoginActivity.")
-            val intent = Intent(this, SelectLoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            val token = tokenManager.getAccessToken()  // 토큰 가져오기
-            Log.d("MainActivity", "Stored Token: $token")
-            if (token != null) {
-                autoLoginWithToken(token)
-            } else {
-                Log.d("MainActivity", "No access token found.")
-            }
-        }
+        testButton = findViewById(R.id.test_button) // 테스트 버튼 연결
 
         logoutButton.setOnClickListener {
-            logout()
+            logoutManager.logout()
         }
-    }
-
-    private fun checkLoginStatus(): Boolean {
-        val token = tokenManager.getAccessToken()  // 액세스 토큰 가져오기
-        Log.d("MainActivity", "Checking login status. Stored Token: $token")
-        val isLoggedIn = token != null && !tokenManager.isTokenExpired(token) // 토큰 만료 여부 확인
-        Log.d("MainActivity", "User login status: $isLoggedIn")
-        return isLoggedIn
-    }
-
-    private fun autoLoginWithToken(token: String) {
-        if (tokenManager.isTokenExpiringSoon(token, 5 * 24 * 60)) { // 5일 미만 체크 (분 단위)
-            Log.d("MainActivity", "Token is about to expire in less than 5 days. Refreshing token...")
-            refreshToken()
-        } else {
-            Log.d("MainActivity", "Token is valid and not expiring soon.")
-        }
-    }
-
-    private fun refreshToken() {
-        val refreshToken = tokenManager.getRefreshToken()  // 리프레시 토큰 가져오기
-        Log.d("MainActivity", "Attempting to refresh token. Refresh Token: $refreshToken")
-        if (refreshToken != null) {
-            val authService = RetrofitClientInstance.retrofitInstance.create(AuthService::class.java)
-            val refreshRequest = RefreshRequest(refreshToken)
-            authService.refreshToken(refreshRequest).enqueue(object : Callback<RefreshResponse> {
-                override fun onResponse(call: Call<RefreshResponse>, response: Response<RefreshResponse>) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val newAccessToken = response.body()?.accessToken
-                        if (newAccessToken != null) {
-                            tokenManager.saveAccessToken(newAccessToken)  // 토큰 저장
-                            Log.d("MainActivity", "Token refreshed successfully. New Access Token: $newAccessToken")
-                        } else {
-                            Log.d("MainActivity", "No new access token received.")
-                        }
-                    } else {
-                        Log.e("MainActivity", "Error refreshing token: ${response.message()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<RefreshResponse>, t: Throwable) {
-                    Log.e("MainActivity", "Error refreshing token: ${t.message}")
-                }
-            })
-        } else {
-            Log.d("MainActivity", "No refresh token found.")
-        }
-    }
-
-    private fun logout() {
-        tokenManager.clearTokens()  // 토큰 삭제
-        val intent = Intent(this, SelectLoginActivity::class.java)
-        startActivity(intent)  // 로그인 선택 화면으로 이동
-        finish()  // 현재 액티비티 종료
     }
 }
