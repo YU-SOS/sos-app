@@ -2,75 +2,39 @@ package com.example.sos.retrofit
 
 import android.util.Log
 import com.example.sos.token.TokenManager
-import okhttp3.Interceptor
-import okhttp3.Response
-import okhttp3.Request
-import retrofit2.Retrofit
 
-class Interceptor(
-    private val tokenManager: TokenManager,
-    private val retrofit: Retrofit
-) : Interceptor {
+class Interceptor(private val tokenManager: TokenManager, private val authService: AuthService) : okhttp3.Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-        Log.d("Interceptor", "인터셉터 실행")
-        var request = chain.request()
+    override fun intercept(chain: okhttp3.Interceptor.Chain): okhttp3.Response {
         val accessToken = tokenManager.getAccessToken()
 
+        // Access Token이 없는 경우(로그인 요청)에는 헤더 추가 안 함
+        val requestBuilder = chain.request().newBuilder()
         if (!accessToken.isNullOrEmpty()) {
-            request = addAuthorizationHeader(request, accessToken)
+            requestBuilder.header("Authorization", "Bearer $accessToken")
         }
 
-        val response = chain.proceed(request)
+        val response = chain.proceed(requestBuilder.build())
 
-        // 401 오류 및 토큰 만료 메시지 확인
         if (response.code == 401 && response.peekBody(Long.MAX_VALUE).string().contains("JWT expired")) {
-            Log.d("Interceptor", "401 오류 및 토큰 만료 메세지 확인")
             response.close()
-            val newTokens = reissueToken()
+            val refreshToken = tokenManager.getRefreshToken()
+            val tokenResponse = authService.refreshToken("$refreshToken").execute()
 
-            return if (newTokens != null) {
-                tokenManager.saveAccessToken(newTokens.accessToken)
-                tokenManager.saveRefreshToken(newTokens.refreshToken)
+            if (tokenResponse.isSuccessful) {
+                tokenResponse.body()?.let {
+                    tokenManager.saveAccessToken(it.accessToken)
+                    tokenManager.saveRefreshToken(it.refreshToken)
 
-                // 새로운 토큰으로 재시도
-                val newRequest = addAuthorizationHeader(request, newTokens.accessToken)
-                chain.proceed(newRequest)
-            } else {
-                // 토큰 재발급 실패 시 기존 응답 반환
-                response
+                    val newRequest = chain.request().newBuilder()
+                        .header("Authorization", "Bearer ${it.accessToken}")
+                        .build()
+
+                    return chain.proceed(newRequest)
+                }
             }
         }
-
 
         return response
-    }
-
-    private fun addAuthorizationHeader(request: Request, token: String): Request {
-        return request.newBuilder()
-            .header("Authorization", "Bearer $token")
-            .build()
-    }
-
-    private fun reissueToken(): RefreshResponse? {
-        val refreshToken = tokenManager.getRefreshToken()
-        if (refreshToken.isNullOrEmpty()) {
-            Log.e("AuthInterceptor", "리프레시 토큰 없음 - 재발급 불가")
-            return null
-        }
-
-        Log.d("AuthInterceptor", "리프레시 토큰으로 액세스 토큰 재발급 요청")
-        val call = retrofit.create(AuthService::class.java).refreshToken("$refreshToken")
-        val response = call.execute()
-
-        return if (response.isSuccessful) {
-            response.body()?.apply {
-                tokenManager.saveAccessToken(accessToken)
-                Log.d("AuthInterceptor", "토큰 재발급 성공 - 새로운 액세스 토큰 저장")
-            }
-        } else {
-            Log.e("AuthInterceptor", "토큰 재발급 실패 - 응답 코드: ${response.code()}")
-            null
-        }
     }
 }

@@ -113,9 +113,8 @@ interface AuthService {
     @POST("/logout") // 유저 로그아웃
     fun logout(@Header("Authorization") authorization: String): Call<Void>
 
-// 카카오 주소 검색 이용 관련
     @POST("/reissue-token")
-    fun refreshToken(@Body request: String): Call<RefreshResponse>
+    fun refreshToken(@Header("Cookie") refreshToken: String): Call<RefreshResponse>
 
     // ID 중복 확인 - 쿼리 스트링 사용
     @GET("/dup-check")

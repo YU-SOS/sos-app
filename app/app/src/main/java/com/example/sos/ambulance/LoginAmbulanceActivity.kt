@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.R
 import com.example.sos.retrofit.RetrofitClientInstance
-import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.LoginRequest
 import com.example.sos.retrofit.LoginResponse
 import com.example.sos.token.TokenManager
@@ -40,7 +39,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
 
             // Retrofit을 통해 AuthService 생성
-            val authService = RetrofitClientInstance.getApiService(tokenManager, this)
+            val authService = RetrofitClientInstance.getApiService(tokenManager)
 
             val loginRequest = LoginRequest("AMB", id, password) // 로그인 요청 데이터 생성
 

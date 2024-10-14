@@ -15,7 +15,6 @@ import com.example.sos.token.TokenManager
 import com.example.sos.user.UserLoginActivity
 import com.example.sos.user.UserMainActivity
 
-
 class SelectLoginActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
