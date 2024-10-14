@@ -14,16 +14,14 @@ import com.example.sos.token.TokenManager
 class UserMainActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
-
-    val logoutManager = LogoutManager(this, tokenManager)
-
+    private lateinit var logoutManager: LogoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_main)
         tokenManager = TokenManager(this)
+        logoutManager = LogoutManager(this, tokenManager)
         setupButtons()
-
     }
 
     private fun setupButtons() {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import retrofit2.Call
@@ -18,7 +17,7 @@ class LogoutManager(private val context: Context, private val tokenManager: Toke
         Log.d("LogoutManager", "Bearer $accessToken")
 
         if (accessToken != null) {
-            val authService = RetrofitClientInstance.getApiService(tokenManager, context)
+            val authService = RetrofitClientInstance.getApiService(tokenManager)
             val authorizationHeader = "Bearer $accessToken"
 
             authService.logout(authorizationHeader).enqueue(object : Callback<Void> {

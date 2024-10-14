@@ -1,43 +1,45 @@
 package com.example.sos.retrofit
 
-import android.content.Context
 import com.example.sos.token.TokenManager
-
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object RetrofitClientInstance {
     private const val BASE_URL = "http://3.35.136.82:8080/"
+    private var retrofit: Retrofit? = null
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    private fun getHttpClient(tokenManager: TokenManager, context: Context): OkHttpClient {
+    // Interceptor가 포함된 HttpClient 설정
+    private fun getHttpClient(tokenManager: TokenManager): OkHttpClient {
+        val authService = getBasicRetrofitInstance().create(AuthService::class.java)
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor) // loggingInterceptor가 첫 번째로 추가
-            .addInterceptor(Interceptor(tokenManager, Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build())) // AuthInterceptor 추가
+            .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+            .addInterceptor(Interceptor(tokenManager, authService))
             .build()
     }
 
-    fun getRetrofitInstance(tokenManager: TokenManager, context: Context): Retrofit {
+    // 기본 Retrofit 인스턴스 설정
+    private fun getBasicRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(getHttpClient(tokenManager, context)) // OkHttpClient 설정
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    fun getApiService(tokenManager: TokenManager, context: Context): AuthService {
-        return getRetrofitInstance(tokenManager, context).create(AuthService::class.java)
+    // 모든 API 호출에서 Interceptor가 적용된 AuthService 반환
+    fun getApiService(tokenManager: TokenManager): AuthService {
+        if (retrofit == null) {
+            retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(getHttpClient(tokenManager))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        return retrofit!!.create(AuthService::class.java)
     }
 }
+
 
 // 카카오 주소 검색 API 설정
 object KakaoRetrofitClientInstance {
@@ -55,4 +57,3 @@ object KakaoRetrofitClientInstance {
         retrofitInstance.create(KakaoMapService::class.java)
     }
 }
-

@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.R
-import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import com.example.sos.retrofit.UserLoginResponse
@@ -70,7 +69,7 @@ class UserLoginActivity : AppCompatActivity() {
         val userSignupRequest = UserSignupRequest(name, providerId, provider, email)
 
 
-        val authService = RetrofitClientInstance.getApiService(tokenManager, this)
+        val authService = RetrofitClientInstance.getApiService(tokenManager)
 
         authService.loginUser(userSignupRequest).enqueue(object : Callback<UserLoginResponse> {
 

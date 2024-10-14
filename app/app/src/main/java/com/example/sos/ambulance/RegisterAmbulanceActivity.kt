@@ -3,7 +3,6 @@ package com.example.sos.ambulance
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -104,7 +103,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
     }
 
     private fun checkIdDuplication(id: String) {
-        val authService = RetrofitClientInstance.getApiService(tokenManager, this)
+        val authService = RetrofitClientInstance.getApiService(tokenManager)
         authService.checkIdDuplication(id, "AMB").enqueue(object : Callback<AmbulanceIdDupCheckResponse> {
             override fun onResponse(call: Call<AmbulanceIdDupCheckResponse>, response: Response<AmbulanceIdDupCheckResponse>) {
                 if (response.isSuccessful) {
@@ -142,7 +141,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
     }
 
     private fun registerAmbulance(registerRequest: RegisterRequest) {
-        val authService = RetrofitClientInstance.getApiService(tokenManager, this)
+        val authService = RetrofitClientInstance.getApiService(tokenManager)
         authService.register(registerRequest).enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful && response.body()?.status == 201) {
