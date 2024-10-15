@@ -6,8 +6,6 @@ import android.util.Log
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.LoginAmbulanceActivity
 import com.example.sos.ambulance.MainActivity
@@ -46,23 +44,18 @@ class SelectLoginActivity : AppCompatActivity() {
             }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
         val selectAmbulanceButton = findViewById<ImageButton>(R.id.select_ambulance_button)
         selectAmbulanceButton.setOnClickListener {
             val intent = Intent(this, LoginAmbulanceActivity::class.java)
             startActivity(intent)
-
+            finish()
         }
 
         val selectUserButton = findViewById<ImageButton>(R.id.select_user_button)
         selectUserButton.setOnClickListener {
             val intent = Intent(this, UserLoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

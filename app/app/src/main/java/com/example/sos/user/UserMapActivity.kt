@@ -19,7 +19,6 @@ import com.google.android.material.navigation.NavigationView
 class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
-
     private lateinit var tokenManager: TokenManager
 
 
@@ -45,9 +44,7 @@ class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         val logoutButton: Button = findViewById(R.id.logout_button)
         logoutButton.setOnClickListener {
-
             logoutManager.logout() // 서버에 로그아웃 요청을 보내도록 변경
-
         }
     }
 

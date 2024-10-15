@@ -19,6 +19,7 @@
         android:theme="@style/Theme.Sos"
         tools:targetApi="31"
         android:name=".user.GlobalApplication"
+        android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true">
 
         <activity
@@ -55,6 +56,14 @@
             android:exported="false" />
 
         <activity android:name=".user.UserReceptionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ambulance.AmbulanceSearchHospitalActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ambulance.AmbulanceAddPatientActivity"
             android:exported="false" />
 
         <activity

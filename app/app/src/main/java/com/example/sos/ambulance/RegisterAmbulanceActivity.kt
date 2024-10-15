@@ -3,6 +3,7 @@ package com.example.sos.ambulance
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -84,7 +85,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 val kakaoService = KakaoRetrofitClientInstance.kakaoService
-                val response = kakaoService.searchAddress("KakaoAK YOUR_API_KEY", address)
+                val response = kakaoService.searchAddress("KakaoAK 24a76ea9dc5ffd6677de0900eedb7f72", address)
                 if (response.isSuccessful) {
                     val documents = response.body()?.documents
                     if (!documents.isNullOrEmpty()) {
@@ -93,10 +94,10 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
                         val location = Location(latitude, longitude)
                         uploadImageAndRegister(id, password, name, address, telephoneNumber, location)
                     } else {
-                        Toast.makeText(this@RegisterAmbulanceActivity, "주소 검색 실패", Toast.LENGTH_SHORT).show()
+                        Log.d("RegisterAmbulanceActivity", "주소 검색 실패")
                     }
                 } else {
-                    Toast.makeText(this@RegisterAmbulanceActivity, "주소 검색 실패 : ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Log.d("RegisterAmbulanceActivity", "주소 검색 실패 : ${response.message()}")
                 }
             }
         }

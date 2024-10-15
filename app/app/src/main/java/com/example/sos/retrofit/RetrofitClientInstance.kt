@@ -40,10 +40,8 @@ object RetrofitClientInstance {
     }
 }
 
-
 // 카카오 주소 검색 API 설정
 object KakaoRetrofitClientInstance {
-
     private const val KAKAO_BASE_URL = "https://dapi.kakao.com/"
 
     val retrofitInstance: Retrofit by lazy {

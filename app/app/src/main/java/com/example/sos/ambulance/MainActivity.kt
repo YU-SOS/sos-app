@@ -2,29 +2,16 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
-import com.example.sos.retrofit.AmbulanceRequest
-import com.example.sos.retrofit.RetrofitClientInstance
-import com.example.sos.SelectLoginActivity
-import com.example.sos.retrofit.AmbulanceResponse
 import com.example.sos.token.TokenManager
-import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.RefreshRequest
-import com.example.sos.retrofit.RefreshResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var logoutButton: Button
     private lateinit var tokenManager: TokenManager // TokenManager 선언
-    val logoutManager = LogoutManager(this, tokenManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +19,21 @@ class MainActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)  // TokenManager 초기화
         logoutButton = findViewById(R.id.logout)
+        val logoutManager = LogoutManager(this, tokenManager)
+
+        val searchHospitalButton = findViewById<Button>(R.id.search_hospital_button)
+        searchHospitalButton.setOnClickListener {
+            val intent = Intent(this, AmbulanceSearchHospitalActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val addPatientButton = findViewById<Button>(R.id.add_patient_button)
+        addPatientButton.setOnClickListener {
+            val intent = Intent(this, AmbulanceAddPatientActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         logoutButton.setOnClickListener {
             logoutManager.logout()

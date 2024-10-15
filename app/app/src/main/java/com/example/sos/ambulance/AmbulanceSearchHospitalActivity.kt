@@ -3,6 +3,8 @@ package com.example.sos.ambulance
 import HospitalAdapter
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,16 +14,16 @@ import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.SearchHospitalResponse
 import com.example.sos.token.TokenManager
 import com.example.sos.Hospital
+import com.example.sos.LogoutManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AmbulanceSearchHostpialActivity : AppCompatActivity() {
+class AmbulanceSearchHospitalActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
     private lateinit var apiService: AuthService
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: HospitalAdapter
+    private lateinit var hospitalListTextView: TextView  // TextView 추가
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +31,19 @@ class AmbulanceSearchHostpialActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
         apiService = RetrofitClientInstance.getApiService(tokenManager)
-
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val logoutManager = LogoutManager(this, tokenManager)
+        // TextView 초기화
+        hospitalListTextView = findViewById(R.id.hospitalListTextView)
 
         val accessToken = tokenManager.getAccessToken()
         val categories = listOf("소아과", "정형외과")
 
         searchHospitals(accessToken, categories)
+
+        val logoutButton: Button = findViewById(R.id.logout_button)
+        logoutButton.setOnClickListener {
+            logoutManager.logout()
+        }
     }
 
     private fun searchHospitals(accessToken: String?, categories: List<String>) {
@@ -45,7 +52,7 @@ class AmbulanceSearchHostpialActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<SearchHospitalResponse>, response: Response<SearchHospitalResponse>) {
                     if (response.isSuccessful) {
                         response.body()?.let { hospitalResponse ->
-                            displayHospitals(hospitalResponse)
+                            displayHospital(hospitalResponse)
                         }
                     } else {
                         Log.e("HospitalActivity", "Request failed: ${response.message()}")
@@ -59,18 +66,25 @@ class AmbulanceSearchHostpialActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayHospital(response: SearchHospitalResponse) {
+        // 응답 데이터가 null인지 확인
+        if (response.id == null || response.name == null) {
+            Log.e("AmbulanceSearchHospitalActivity", "응답 데이터가 유효하지 않습니다.")
+            return
+        }
 
-    private fun displayHospitals(response: SearchHospitalResponse) {
-        val hospital = Hospital(
-            id = response.id,
-            name = response.name,
-            address = response.address,
-            imageUrl = response.imageUrl,
-            telephoneNumber = response.telephoneNumber,
-            location = response.location,
-            categories = response.categories
-        )
-        adapter = HospitalAdapter(listOf(hospital))  // List 형식으로 병원 추가
-        recyclerView.adapter = adapter
+        // 유효한 데이터로 병원 정보 생성
+        val hospitalData = """
+        병원 ID: ${response.id}
+        병원 이름: ${response.name}
+        병원 주소: ${response.address}
+        병원 전화번호: ${response.telephoneNumber}
+        병원 위치: ${response.location}
+        병원 카테고리: ${response.categories.joinToString(", ")}
+    """.trimIndent()
+
+        // 병원 정보를 텍스트 뷰에 설정
+        hospitalListTextView.text = hospitalData
     }
+
 }

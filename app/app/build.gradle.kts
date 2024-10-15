@@ -15,7 +15,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,46 +39,30 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation(libs.v2.all) // 카카오 전체 모듈 설치
-    implementation(libs.v2.user) // 카카오 로그인 API 모듈
-    implementation(libs.v2.cert) // 카카오 인증 서비스 API 모듈
-    implementation(libs.retrofit) // Retrofit 라이브러리
-    implementation(libs.converter.gson) // Gson 라이브러리
-    implementation(libs.okhttp) // OkHttp 라이브러리
-    implementation(libs.logging.interceptor) // OkHttp 로깅 인터셉터
-
-    // KakaoMap API
-    implementation("com.kakao.maps.open:android:2.11.9")
-
-    // Retrofit for HTTP requests
+    implementation(libs.v2.all)
+    implementation(libs.v2.user)
+    implementation(libs.v2.cert)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    // Retrofit converter for JSON (Gson)
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // OkHttp (Retrofit's dependency for HTTP)
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-
-    // JWT 유효성 검사
     implementation("com.auth0.android:jwtdecode:2.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // Log 찍어볼 때
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-
-    // Fire base
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-storage-ktx:20.1.0")
-    implementation ("com.google.firebase:firebase-firestore-ktx:24.2.1")
-
 }
+
+apply(plugin = "com.google.gms.google-services")
