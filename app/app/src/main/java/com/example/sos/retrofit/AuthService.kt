@@ -87,11 +87,11 @@ data class AmbulanceIdDupCheckResponse(
     val message: String
 )
 
-data class SearchHospitalResponse(
+data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
     val status: Int,
     val message: String,
-    val id: String,
-    val name: String,
+    val id: String?,
+    val name: String?,
     val address: String,
     val imageUrl: String,
     val telephoneNumber: String,
