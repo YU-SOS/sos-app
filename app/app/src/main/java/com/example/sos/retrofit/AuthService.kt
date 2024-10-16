@@ -99,6 +99,38 @@ data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
     val categories: List<Locale.Category>,
     val page: PdfDocument.Page
 )
+
+// 구급대원 등록
+data class MemberRequest(
+    val name: String,
+    val phoneNumber: String
+)
+
+data class MemberResponse(
+    val status: Int,
+    val message: String,
+    val data: String?
+)
+
+// 카카오 주소 검색 관련
+interface KakaoMapService {
+    @GET("/v2/local/search/address.json")
+    suspend fun searchAddress(
+        @Header("Authorization") apiKey: String,
+        @Query("query") query: String
+    ): Response<AddressSearchResponse>
+}
+
+data class AddressSearchResponse(
+    val documents: List<Document>
+)
+
+data class Document(
+    val address_name: String,  // 주소명
+    val x: String,  // 경도 (Longitude)
+    val y: String   // 위도 (Latitude)
+)
+
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -139,23 +171,13 @@ interface AuthService {
         @Header("Authorization") authorization: String,
         @Query("categories") categoreis: List<String>
     ): Call<SearchHospitalResponse>
+
+    // Ambulance 멤버 추가 API 호출
+    @POST("/{ambulanceId}/member")
+    fun addAmbulanceMember(
+        @Header("Authorization") token: String,
+        @Path("ambulanceId") ambulanceId: String,
+        @Body body: MemberRequest
+    ): Call<MemberResponse>
 }
 
-// 카카오 주소 검색 관련
-interface KakaoMapService {
-    @GET("/v2/local/search/address.json")
-    suspend fun searchAddress(
-        @Header("Authorization") apiKey: String,
-        @Query("query") query: String
-    ): Response<AddressSearchResponse>
-}
-
-data class AddressSearchResponse(
-    val documents: List<Document>
-)
-
-data class Document(
-    val address_name: String,  // 주소명
-    val x: String,  // 경도 (Longitude)
-    val y: String   // 위도 (Latitude)
-)
