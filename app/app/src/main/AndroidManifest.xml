@@ -1,81 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sos">
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷 사용 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 이미지 선택을 위한 권한 추가 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".user.GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sos"
-        tools:targetApi="31"
-        android:name=".user.GlobalApplication"
-        android:enableOnBackInvokedCallback="true"
-        android:usesCleartextTraffic="true">
-
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".ambulance.AmbulanceAddMember"
+            android:exported="false"
+            android:theme="@style/Theme.Sos" />
         <activity
             android:name=".SelectLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ambulance.RegisterAmbulanceActivity"
             android:exported="false" />
-
         <activity
-
             android:name=".ambulance.MainActivity"
-        android:exported="true" />
-
+            android:exported="true" />
         <activity
             android:name=".ambulance.LoginAmbulanceActivity"
             android:exported="false" />
-
         <activity
             android:name=".user.UserMainActivity"
             android:exported="false" />
-
         <activity
             android:name=".user.UserLoginActivity"
             android:exported="false" />
-
-        <activity android:name=".user.UserMapActivity"
+        <activity
+            android:name=".user.UserMapActivity"
             android:exported="false" />
-
-        <activity android:name=".user.UserReceptionActivity"
+        <activity
+            android:name=".user.UserReceptionActivity"
             android:exported="false" />
-
         <activity
             android:name=".ambulance.AmbulanceSearchHospitalActivity"
             android:exported="false" />
-
         <activity
             android:name=".ambulance.AmbulanceAddPatientActivity"
             android:exported="false" />
-
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="@string/scheme_kakao_app_key"
-                    android:host="oauth" />
+                    android:host="oauth"
+                    android:scheme="@string/scheme_kakao_app_key" />
             </intent-filter>
         </activity>
 
