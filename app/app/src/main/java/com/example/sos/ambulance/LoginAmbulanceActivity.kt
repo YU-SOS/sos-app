@@ -12,7 +12,6 @@ import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.LoginRequest
 import com.example.sos.retrofit.LoginResponse
 import com.example.sos.token.TokenManager
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,6 +55,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                             saveToken(authorizationHeader)
                             Toast.makeText(this@LoginAmbulanceActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginAmbulanceActivity, MainActivity::class.java)) // 메인 화면으로 이동
+                            finish()
                         } else {
                             Toast.makeText(this@LoginAmbulanceActivity, "토큰을 받지 못했습니다", Toast.LENGTH_SHORT).show()
                         }
@@ -75,6 +75,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
         // 회원가입 버튼 클릭 시 동작
         registerButton.setOnClickListener {
             startActivity(Intent(this, RegisterAmbulanceActivity::class.java)) // 회원가입 화면으로 이동
+            finish()
         }
     }
 

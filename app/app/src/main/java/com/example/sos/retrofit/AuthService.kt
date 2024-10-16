@@ -1,6 +1,7 @@
 package com.example.sos.retrofit
 
 
+import android.graphics.pdf.PdfDocument
 import com.example.sos.Hospital
 
 import com.example.sos.Location
@@ -8,6 +9,7 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.Locale
 
 
 data class LoginRequest(
@@ -52,10 +54,6 @@ data class UserLoginResponse(
     @SerializedName("refreshToken") val refreshToken: String
 )
 
-data class RefreshRequest(
-    val refreshToken: String
-)
-
 data class RefreshResponse(
     val accessToken: String,
     val refreshToken: String
@@ -89,6 +87,18 @@ data class AmbulanceIdDupCheckResponse(
     val message: String
 )
 
+data class SearchHospitalResponse(
+    val status: Int,
+    val message: String,
+    val id: String,
+    val name: String,
+    val address: String,
+    val imageUrl: String,
+    val telephoneNumber: String,
+    val location: Location,
+    val categories: List<Locale.Category>,
+    val page: PdfDocument.Page
+)
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -122,6 +132,13 @@ interface AuthService {
         @Query("id") id: String,
         @Query("role") role: String
     ): Call<AmbulanceIdDupCheckResponse>
+
+    //응급실 목록 조회
+    @GET("/?categories=")
+    fun searchHospital(
+        @Header("Authorization") authorization: String,
+        @Query("categories") categoreis: List<String>
+    ): Call<SearchHospitalResponse>
 }
 
 // 카카오 주소 검색 관련

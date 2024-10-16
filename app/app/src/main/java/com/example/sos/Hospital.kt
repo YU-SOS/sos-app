@@ -1,11 +1,11 @@
 package com.example.sos
 
-data class Hospital (
+data class Hospital(
+    val id: String,
     val name: String,
     val address: String,
+    val imageUrl: String,
+    val telephoneNumber: String,
     val location: Location,
-    val telephone: String,
-    val imageUrl: String
+    val categories: List<String>
 )
-
-// 알맞게 변경 해야 됨.
