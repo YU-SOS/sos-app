@@ -11,14 +11,13 @@ import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.MemberRequest
 import com.example.sos.retrofit.MemberResponse
+import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class AmbulanceAddMember : AppCompatActivity() {
+class AmbulanceAddMemberActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
     private lateinit var authService: AuthService
@@ -28,15 +27,12 @@ class AmbulanceAddMember : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_ambulance_add_member)
 
-        // TokenManager 및 Retrofit 초기화
+        // TokenManager 초기화
         tokenManager = TokenManager(this)
-        val retrofit = Retrofit.Builder()
-            .baseUrl("YOUR_API_BASE_URL") // 실제 API의 base URL로 변경하세요
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        authService = retrofit.create(AuthService::class.java)
 
-        // EditText와 Button 연결
+        // RetrofitClientInstance를 사용하여 AuthService 초기화
+        authService = RetrofitClientInstance.getApiService(tokenManager)
+
         val nameEditText = findViewById<EditText>(R.id.edit_text_name_member)
         val phoneEditText = findViewById<EditText>(R.id.edit_text_member_phone)
         val addButton = findViewById<Button>(R.id.button)
@@ -54,7 +50,7 @@ class AmbulanceAddMember : AppCompatActivity() {
     }
 
     private fun addMember(name: String, phoneNumber: String) {
-        val ambulanceId = "YOUR_AMBULANCE_ID" // 구급대 조회 완성 후 여기로 가져와서 보내기.
+        val ambulanceId = tokenManager.getTokenId() // AmbulanceID 가져오기
         val authorization = "Bearer ${tokenManager.getAccessToken()}" // JWT 토큰 가져오기
 
         val memberRequest = MemberRequest(name, phoneNumber)
@@ -63,17 +59,17 @@ class AmbulanceAddMember : AppCompatActivity() {
             override fun onResponse(call: Call<MemberResponse>, response: Response<MemberResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        Toast.makeText(this@AmbulanceAddMember, it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AmbulanceAddMemberActivity, it.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("AmbulanceAddMember", "Error: ${response.code()} - ${response.message()}")
-                    Toast.makeText(this@AmbulanceAddMember, "등록 실패", Toast.LENGTH_SHORT).show()
+                    Log.e("AmbulanceAddMemberActivity", "Error: ${response.code()} - ${response.message()}")
+                    Toast.makeText(this@AmbulanceAddMemberActivity, "등록 실패", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
-                Log.e("AmbulanceAddMember", "Failure: ${t.message}")
-                Toast.makeText(this@AmbulanceAddMember, "서버 연결 오류", Toast.LENGTH_SHORT).show()
+                Log.e("AmbulanceAddMemberActivity", "Failure: ${t.message}")
+                Toast.makeText(this@AmbulanceAddMemberActivity, "서버 연결 오류", Toast.LENGTH_SHORT).show()
             }
         })
     }
