@@ -39,4 +39,26 @@
         app:layout_constraintHorizontal_bias="0.209"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/add_member_button"
+        android:layout_width="143dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="32dp"
+        android:text="구급대원추가"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_patient_button" />
+
+    <Button
+        android:id="@+id/load_member_button"
+        android:layout_width="143dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="32dp"
+        android:text="구급대원 정보"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_hospital_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

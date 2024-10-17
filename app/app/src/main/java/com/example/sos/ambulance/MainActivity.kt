@@ -25,14 +25,28 @@ class MainActivity : AppCompatActivity() {
         searchHospitalButton.setOnClickListener {
             val intent = Intent(this, AmbulanceSearchHospitalActivity::class.java)
             startActivity(intent)
-            finish()
+            //finish()
         }
 
         val addPatientButton = findViewById<Button>(R.id.add_patient_button)
         addPatientButton.setOnClickListener {
             val intent = Intent(this, AmbulanceAddPatientActivity::class.java)
             startActivity(intent)
-            finish()
+            //finish()
+        }
+
+        val addMemberButton = findViewById<Button>(R.id.add_member_button)
+        addMemberButton.setOnClickListener{
+            val intent = Intent(this, AmbulanceAddMemberActivity::class.java)
+            startActivity(intent)
+            //finish()
+        }
+
+        val loadMemberButton = findViewById<Button>(R.id.load_member_button)
+        loadMemberButton.setOnClickListener{
+            val intent = Intent(this, AmbulanceLoadMemberActivity::class.java)
+            startActivity(intent)
+            //finish() 메인 화면은 그대로 유지되는 것이 맞지 않을까요?
         }
 
         logoutButton.setOnClickListener {

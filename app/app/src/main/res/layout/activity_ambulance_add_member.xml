@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ambulance.AmbulanceAddMember">
+    tools:context=".ambulance.AmbulanceAddMemberActivity">
 
     <EditText
         android:id="@+id/edit_text_name_member"
@@ -14,7 +14,7 @@
         android:layout_marginTop="184dp"
         android:ems="10"
         android:inputType="text"
-        android:text="이름"
+        android:hint="이름"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_marginTop="72dp"
         android:ems="10"
         android:inputType="text"
-        android:text="전화번호"
+        android:hint="전화번호"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"

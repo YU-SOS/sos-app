@@ -2,6 +2,7 @@ package com.example.sos.retrofit
 
 
 import android.graphics.pdf.PdfDocument
+import com.example.sos.AmbulanceRes
 import com.example.sos.Hospital
 
 import com.example.sos.Location
@@ -100,6 +101,14 @@ data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
     val page: PdfDocument.Page
 )
 
+// 구급대원 조회
+data class MemberLoadResponse(
+    val status: Int,
+    val message: String,
+    val data: AmbulanceRes,
+    val imageUrl: String
+)
+
 // 구급대원 등록
 data class MemberRequest(
     val name: String,
@@ -172,12 +181,20 @@ interface AuthService {
         @Query("categories") categoreis: List<String>
     ): Call<SearchHospitalResponse>
 
-    // Ambulance 멤버 추가 API 호출
+    // Ambulance 멤버 추가
     @POST("/{ambulanceId}/member")
     fun addAmbulanceMember(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String,
         @Body body: MemberRequest
     ): Call<MemberResponse>
+
+    // 구급대 정보 조회
+    @GET("/{ambulanceId}")
+    fun getAmbulanceMember(
+        @Header("Authorization") authorization: String,
+        @Path("ambulanceId") ambulanceId: String
+    ): Call<MemberLoadResponse>
+
 }
 
