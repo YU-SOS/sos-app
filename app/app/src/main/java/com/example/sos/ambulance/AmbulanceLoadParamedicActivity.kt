@@ -62,7 +62,7 @@ class AmbulanceLoadParamedicActivity : AppCompatActivity() {
     }
 
     private fun loadParamedics(ambulanceId: String) {
-        val authorization = "Bearer ${tokenManager.getAccessToken()}"
+        val authorization = "Bearer ${tokenManager.getAccessToken()}" // JWT 토큰 설정
 
         authService.getParamedics(authorization, ambulanceId).enqueue(object : Callback<List<ParamedicsRes>> {
             override fun onResponse(

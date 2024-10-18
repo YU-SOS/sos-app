@@ -129,6 +129,11 @@ data class ParamedicsResponse(
     val data: List<ParamedicsRes>
 )
 
+data class ParamedicModifyRequest(
+    val name: String,
+    val phoneNumber: String
+)
+
 // 카카오 주소 검색 관련
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
@@ -204,10 +209,20 @@ interface AuthService {
         @Path("ambulanceId") ambulanceId: String
     ): Call<AmbulanceLoadResponse>
 
+    // 구급대원 정보 조회
     @GET("/{ambulanceId}/paramedic/paramedic")
     fun getParamedics(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String
     ): Call<List<ParamedicsRes>>
+
+    // 구급대원 정보 수정
+    @PUT("/ambulance/{ambulanceId}/member/{memberId}")
+    fun modifyParamedic(
+        @Header("Authorization") authorization: String,
+        @Path("ambulanceId") ambulanceId: String,
+        @Path("memberId") memberId: String,
+        @Body paramedicUpdateRequest: ParamedicModifyRequest
+    ): Call<Void>
 }
 

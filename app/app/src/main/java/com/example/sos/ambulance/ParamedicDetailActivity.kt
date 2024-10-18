@@ -1,6 +1,8 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,5 +40,15 @@ class ParamedicDetailActivity : AppCompatActivity() {
         paramedicIdTextView.text = paramedicId
         paramedicNameTextView.text = paramedicName
         paramedicPhoneTextView.text = paramedicPhoneNumber
+
+        // 수정 버튼 클릭 리스너 설정
+        val paramedicModifyButton = findViewById<Button>(R.id.paramedic_modify_button)
+        paramedicModifyButton.setOnClickListener {
+            val intent = Intent(this, AmbulanceParamedicModifyActivity::class.java)
+            intent.putExtra("id", paramedicId) // id 전달
+            intent.putExtra("name", paramedicName) // 이름 전달
+            intent.putExtra("phoneNumber", paramedicPhoneNumber) // 전화번호 전달
+            startActivity(intent)
+        }
     }
 }
