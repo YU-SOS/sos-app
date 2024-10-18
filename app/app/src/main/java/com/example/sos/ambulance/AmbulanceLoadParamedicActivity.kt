@@ -1,6 +1,7 @@
 package com.example.sos.ambulance
 
 import ParamedicsAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
@@ -43,6 +44,20 @@ class AmbulanceLoadParamedicActivity : AppCompatActivity() {
             loadParamedics(ambulanceId)
         } else {
             Log.e("ParamedicsLoad", "Error: Ambulance ID is null")
+        }
+
+        // 리스트 아이템 클릭 리스너 추가
+        paramedicsListView.setOnItemClickListener { parent, view, position, id ->
+            val selectedParamedic = (paramedicsListView.adapter as ParamedicsAdapter).getItem(position)
+            selectedParamedic?.let {
+                // 선택한 항목의 정보를 넘기기 위한 Intent 생성
+                val intent = Intent(this, ParamedicDetailActivity::class.java)
+                intent.putExtra("id", it.id) // ID 전달
+                intent.putExtra("name", it.name) // 이름 전달
+                intent.putExtra("phoneNumber", it.phoneNumber) // 전화번호 전달
+
+                startActivity(intent) // 새로운 액티비티로 이동
+            }
         }
     }
 
