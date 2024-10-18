@@ -90,16 +90,16 @@ data class AmbulanceIdDupCheckResponse(
 )
 
 data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
-    val status: Int,
+    val status: String,
     val message: String,
-    val id: String?,
-    val name: String?,
+    val id: String,
+    val name: String,
     val address: String,
     val imageUrl: String,
     val telephoneNumber: String,
-    val location: Location,
-    val categories: List<Locale.Category>,
-    val page: PdfDocument.Page
+    val location: Location?,
+    val categories: List<Locale.Category>?,
+    val page: PdfDocument.Page?
 )
 
 // 구급대원 조회
@@ -160,6 +160,20 @@ data class Document(
     val y: String   // 위도 (Latitude)
 )
 
+data class HospitalDetailResponse(
+    val status: Int,
+    val message: String,
+    val id: String,
+    val name: String,
+    val address: String,
+    val telephoneNumber: String,
+    val imageUrl: String,
+    val location: Location,
+    val categories: List<Locale.Category>,
+    val emergencyRoomStatus: String
+)
+
+
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -200,6 +214,13 @@ interface AuthService {
         @Header("Authorization") authorization: String,
         @Query("categories") categoreis: List<String>
     ): Call<SearchHospitalResponse>
+
+    //응급실 상세 조회
+    @GET("/{hospitalId}")
+    fun getHospitalDetails(
+        @Header("Authorization") authorization: String,
+        @Path("hospitalId") hospitalId: String
+    ): Call<HospitalDetailResponse>
 
     // Ambulance 멤버 추가
     @POST("/{ambulanceId}/member")
