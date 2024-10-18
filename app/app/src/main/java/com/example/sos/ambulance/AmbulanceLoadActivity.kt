@@ -12,14 +12,14 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.MemberLoadResponse
+import com.example.sos.retrofit.AmbulanceLoadResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AmbulanceLoadMemberActivity : AppCompatActivity() {
+class AmbulanceLoadActivity : AppCompatActivity() {
     private lateinit var tokenManager: TokenManager
     private lateinit var authService: AuthService
 
@@ -57,8 +57,8 @@ class AmbulanceLoadMemberActivity : AppCompatActivity() {
         val authorization = "Bearer ${tokenManager.getAccessToken()}" // JWT 토큰 가져오기
 
         // API 호출
-        authService.getAmbulanceMember(authorization, ambulanceId).enqueue(object : Callback<MemberLoadResponse> {
-            override fun onResponse(call: Call<MemberLoadResponse>, response: Response<MemberLoadResponse>) {
+        authService.getAmbulanceMember(authorization, ambulanceId).enqueue(object : Callback<AmbulanceLoadResponse> {
+            override fun onResponse(call: Call<AmbulanceLoadResponse>, response: Response<AmbulanceLoadResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { MemberLoadResponse ->
                         // 멤버 정보 가져오기
@@ -70,14 +70,14 @@ class AmbulanceLoadMemberActivity : AppCompatActivity() {
                         loadImageFromFirebase(MemberLoadResponse.imageUrl)
                     }
                 } else {
-                    Log.e("AmbulanceLoadMemberActivity", "Error: ${response.code()} - ${response.message()}")
-                    Toast.makeText(this@AmbulanceLoadMemberActivity, "정보 로드 실패", Toast.LENGTH_SHORT).show()
+                    Log.e("AmbulanceLoadActivity", "Error: ${response.code()} - ${response.message()}")
+                    Toast.makeText(this@AmbulanceLoadActivity, "정보 로드 실패", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<MemberLoadResponse>, t: Throwable) {
-                Log.e("AmbulanceLoadMemberActivity", "Failure: ${t.message}")
-                Toast.makeText(this@AmbulanceLoadMemberActivity, "서버 연결 오류", Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<AmbulanceLoadResponse>, t: Throwable) {
+                Log.e("AmbulanceLoadActivity", "Failure: ${t.message}")
+                Toast.makeText(this@AmbulanceLoadActivity, "서버 연결 오류", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -6,6 +6,7 @@ import com.example.sos.AmbulanceRes
 import com.example.sos.Hospital
 
 import com.example.sos.Location
+import com.example.sos.ParamedicsRes
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
@@ -102,7 +103,7 @@ data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
 )
 
 // 구급대원 조회
-data class MemberLoadResponse(
+data class AmbulanceLoadResponse(
     val status: Int,
     val message: String,
     val data: AmbulanceRes,
@@ -119,6 +120,13 @@ data class MemberResponse(
     val status: Int,
     val message: String,
     val data: String?
+)
+
+// 구급대원 조회
+data class ParamedicsResponse(
+    val status: Int,
+    val message: String,
+    val data: List<ParamedicsRes>
 )
 
 // 카카오 주소 검색 관련
@@ -194,7 +202,12 @@ interface AuthService {
     fun getAmbulanceMember(
         @Header("Authorization") authorization: String,
         @Path("ambulanceId") ambulanceId: String
-    ): Call<MemberLoadResponse>
+    ): Call<AmbulanceLoadResponse>
 
+    @GET("/{ambulanceId}/paramedic/paramedic")
+    fun getParamedics(
+        @Header("Authorization") token: String,
+        @Path("ambulanceId") ambulanceId: String
+    ): Call<List<ParamedicsRes>>
 }
 
