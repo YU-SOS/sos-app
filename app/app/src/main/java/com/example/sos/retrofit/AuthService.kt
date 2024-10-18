@@ -134,6 +134,13 @@ data class ParamedicModifyRequest(
     val phoneNumber: String
 )
 
+data class ParamedicDeleteResponse(
+    val status: Int,
+    val message: String,
+    val data: Any?
+)
+
+
 // 카카오 주소 검색 관련
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
@@ -224,5 +231,13 @@ interface AuthService {
         @Path("memberId") memberId: String,
         @Body paramedicUpdateRequest: ParamedicModifyRequest
     ): Call<Void>
+
+    // 구급대원 삭제
+    @DELETE("/:ambulanceId/member/:memberId")
+    fun deleteParamedic(
+        @Header("Authorization") authorization: String,
+        @Path("ambulanceId") ambulanceId: String,
+        @Path("memberId") memberId: String
+    ): Call<ParamedicDeleteResponse>
 }
 
