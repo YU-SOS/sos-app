@@ -1,10 +1,8 @@
 package com.example.sos.ambulance
 
-import HospitalAdapter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,8 +11,6 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.SearchHospitalResponse
 import com.example.sos.token.TokenManager
-import com.example.sos.Hospital
-import com.example.sos.LogoutManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,7 +19,7 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
     private lateinit var apiService: AuthService
-    private lateinit var hospitalListTextView: TextView  // TextView 추가
+    private val hospitalList = mutableListOf<SearchHospitalResponse>() // 병원 정보를 담을 리스트
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,60 +27,41 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
         apiService = RetrofitClientInstance.getApiService(tokenManager)
-        val logoutManager = LogoutManager(this, tokenManager)
-        // TextView 초기화
-        hospitalListTextView = findViewById(R.id.hospitalListTextView)
 
-        val accessToken = tokenManager.getAccessToken()
-        val categories = listOf("소아과", "정형외과")
-
-        searchHospitals(accessToken, categories)
-
-        val logoutButton: Button = findViewById(R.id.logout_button)
-        logoutButton.setOnClickListener {
-            logoutManager.logout()
+        val searchButton = findViewById<Button>(R.id.search_hospital_button)
+        searchButton.setOnClickListener {
+            searchHospitalDetails() // 병원 검색 버튼 클릭 시 병원 정보 가져오기
         }
     }
 
-    private fun searchHospitals(accessToken: String?, categories: List<String>) {
+    // 병원 정보를 리스트에 추가
+    private fun searchHospitalDetails() {
+        val accessToken = tokenManager.getAccessToken()
+
         accessToken?.let {
-            apiService.searchHospital("Bearer $it", categories).enqueue(object : Callback<SearchHospitalResponse> {
+            apiService.searchHospital("Bearer $it", listOf("소아과", "정형외과")).enqueue(object : Callback<SearchHospitalResponse> {
                 override fun onResponse(call: Call<SearchHospitalResponse>, response: Response<SearchHospitalResponse>) {
                     if (response.isSuccessful) {
                         response.body()?.let { hospitalResponse ->
-                            displayHospital(hospitalResponse)
+                            hospitalList.add(hospitalResponse) // 병원 정보를 리스트에 추가
+                            displayHospitals() // 병원 목록을 화면에 표시
                         }
                     } else {
-                        Log.e("HospitalActivity", "Request failed: ${response.message()}")
+                        Log.e("HospitalSearch", "Request failed")
                     }
                 }
 
                 override fun onFailure(call: Call<SearchHospitalResponse>, t: Throwable) {
-                    Log.e("HospitalActivity", "Error: ${t.message}")
+                    Log.e("HospitalSearch", "Error: ${t.message}")
                 }
             })
         }
     }
 
-    private fun displayHospital(response: SearchHospitalResponse) {
-        // 응답 데이터가 null인지 확인
-        if (response.id == null || response.name == null) {
-            Log.e("AmbulanceSearchHospitalActivity", "응답 데이터가 유효하지 않습니다.")
-            return
-        }
-
-        // 유효한 데이터로 병원 정보 생성
-        val hospitalData = """
-        병원 ID: ${response.id}
-        병원 이름: ${response.name}
-        병원 주소: ${response.address}
-        병원 전화번호: ${response.telephoneNumber}
-        병원 위치: ${response.location}
-        병원 카테고리: ${response.categories.joinToString(", ")}
-    """.trimIndent()
-
-        // 병원 정보를 텍스트 뷰에 설정
-        hospitalListTextView.text = hospitalData
+    // 병원 목록을 화면에 표시
+    private fun displayHospitals() {
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = HospitalAdapter(hospitalList, apiService, tokenManager) // RecyclerView 어댑터에 병원 목록 전달
     }
-
 }
