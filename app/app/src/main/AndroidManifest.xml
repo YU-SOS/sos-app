@@ -21,7 +21,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ambulance.AmbulanceLoadMemberActivity"
+            android:name=".ambulance.ParamedicDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ambulance.AmbulanceLoadParamedicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ambulance.AmbulanceLoadActivity"
             android:exported="false" />
         <activity
             android:name=".ambulance.AmbulanceAddMemberActivity"
