@@ -1,12 +1,13 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.sos.HospitalRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
@@ -26,6 +27,7 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
     // 체크박스 선언
     private lateinit var pediatricsCheckBox: CheckBox
     private lateinit var orthopedicsCheckBox: CheckBox
+    private lateinit var hospitalContainer: LinearLayout // 병원 정보를 표시할 LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,7 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
         // 체크박스 초기화
         pediatricsCheckBox = findViewById(R.id.checkBoxPediatrics)
         orthopedicsCheckBox = findViewById(R.id.checkBoxOrthopedics)
+        hospitalContainer = findViewById(R.id.recyclerView) // 병원 정보를 표시할 레이아웃
 
         val searchButton = findViewById<Button>(R.id.search_hospital_button)
         searchButton.setOnClickListener {
@@ -93,8 +96,19 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
 
     // 병원 목록을 화면에 표시
     private fun displayHospitals() {
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = HospitalAdapter(hospitalList) // RecyclerView 어댑터에 병원 목록 전달
+        hospitalContainer.removeAllViews() // 기존 병원 정보 삭제
+
+        for (hospital in hospitalList) {
+            val hospitalTextView = TextView(this).apply {
+                text = hospital.name // 병원 이름 표시
+                setOnClickListener {
+                    // HospitalDetailActivity로 이동하고 병원 ID 전달
+                    val intent = Intent(this@AmbulanceSearchHospitalActivity, HospitalDetailActivity::class.java)
+                    intent.putExtra("HOSPITAL_ID", hospital.id) // 병원 ID 전송
+                    startActivity(intent)
+                }
+            }
+            hospitalContainer.addView(hospitalTextView) // LinearLayout에 추가
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.example.sos.AmbulanceRes
 import com.example.sos.CategoryRes
 import com.example.sos.Data
 import com.example.sos.Hospital
+import com.example.sos.HospitalRes
 import com.example.sos.Location
 import com.example.sos.ParamedicsRes
 import com.example.sos.ReceptionRes
@@ -146,24 +147,18 @@ data class Document(
     val y: String   // 위도 (Latitude)
 )
 
-data class HospitalDetailResponse(
-    val status: Int,
-    val message: String,
-    val id: String,
-    val name: String,
-    val address: String,
-    val telephoneNumber: String,
-    val imageUrl: String,
-    val location: Location,
-    val categories: List<Locale.Category>,
-    val emergencyRoomStatus: String
-)
-
 data class ReceptionInfoResponse(
     val status: Int,
     val message: String,
     val data: ReceptionRes
 )
+
+data class HospitalDetailResponse(
+    val status: Int,
+    val message: String,
+    val data: HospitalRes // HospitalRes는 병원 정보를 담고 있는 데이터 클래스
+)
+
 
 interface AuthService {
     @POST("/login")
@@ -207,9 +202,9 @@ interface AuthService {
     ): Call<SearchHospitalResponse>
 
     // 응급실 상세 조회
-    @GET("/{hospitalId}")
+    @GET("/hospital/{hospitalId}")
     fun getHospitalDetails(
-        @Header("Authorization") authorization: String,
+        @Header("Authorization") authHeader: String,
         @Path("hospitalId") hospitalId: String
     ): Call<HospitalDetailResponse>
 
