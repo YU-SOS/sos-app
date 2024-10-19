@@ -169,8 +169,6 @@ interface AuthService {
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
 
-
-
     @POST("/logout") // 유저 로그아웃
     fun logout(@Header("Authorization") authorization: String): Call<Void>
 
@@ -239,7 +237,7 @@ interface AuthService {
     ): Call<ParamedicDeleteResponse>
 
     // 응급실 접수 조회
-    @GET("/reception/{receptionId}")
+    @GET("/{receptionId}")
     fun getReceptionInfo(
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String

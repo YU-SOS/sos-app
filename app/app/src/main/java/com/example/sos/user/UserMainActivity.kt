@@ -34,9 +34,9 @@ class UserMainActivity : AppCompatActivity() {
 
         val selectUserReceptionButton = findViewById<ImageButton>(R.id.user_reception_button)
         selectUserReceptionButton.setOnClickListener {
-            //val intent = Intent(this, UserReceptionActivity::class.java)
-            //startActivity(intent)
-            //finish()
+            val intent = Intent(this, UserReceptionActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         val userLogoutButton: Button = findViewById(R.id.logout_button)
