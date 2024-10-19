@@ -70,6 +70,9 @@
             android:name=".user.UserMapActivity"
             android:exported="false" />
         <activity
+            android:name=".user.UserReceptionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ambulance.AmbulanceSearchHospitalActivity"
             android:exported="true" />
         <activity
