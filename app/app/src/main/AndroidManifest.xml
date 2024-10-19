@@ -20,40 +20,46 @@
         android:theme="@style/Theme.Sos"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ambulance.HospitalDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ambulance.AmbulanceReceiptActivity"
+            android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceParamedicModifyActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.ParamedicDetailActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceLoadParamedicActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceLoadActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceAddMemberActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.Sos" />
         <activity
             android:name=".SelectLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ambulance.RegisterAmbulanceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.MainActivity"
             android:exported="true" />
         <activity
             android:name=".ambulance.LoginAmbulanceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".user.UserMainActivity"
             android:exported="false" />
@@ -64,23 +70,18 @@
             android:name=".user.UserMapActivity"
             android:exported="false" />
         <activity
-            android:name=".user.UserReceptionActivity"
-            android:exported="false" />
-        <activity
             android:name=".ambulance.AmbulanceSearchHospitalActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceAddPatientActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="oauth"
                     android:scheme="@string/scheme_kakao_app_key" />

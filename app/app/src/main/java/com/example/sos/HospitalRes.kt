@@ -1,7 +1,7 @@
 package com.example.sos
 
 data class HospitalRes (
-    val id: Int,
+    val id: String,
     val name: String ,
     val address: String,
     val telephoneNumber: String,
