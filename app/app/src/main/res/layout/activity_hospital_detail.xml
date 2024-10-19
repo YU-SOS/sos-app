@@ -31,4 +31,10 @@
         android:layout_height="wrap_content"
         android:paddingTop="4dp" />
 
+    <Button
+        android:id="@+id/receipt_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="접수하기" />
+
 </LinearLayout>

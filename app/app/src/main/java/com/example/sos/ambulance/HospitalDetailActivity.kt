@@ -1,7 +1,9 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,7 @@ class HospitalDetailActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
     private lateinit var apiService: AuthService
+    private lateinit var hospitalName: String  // 병원 이름 저장용 변수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,14 @@ class HospitalDetailActivity : AppCompatActivity() {
 
         // 병원 상세 정보 요청
         getHospitalDetails(hospitalId)
+
+        val receiptButton = findViewById<Button>(R.id.receipt_button)
+        receiptButton.setOnClickListener {
+            val intent = Intent(this, AmbulanceReceiptActivity::class.java)
+            intent.putExtra("HOSPITAL_NAME", hospitalName)  // 병원 이름 전달
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun getHospitalDetails(hospitalId: String) {
@@ -58,6 +69,7 @@ class HospitalDetailActivity : AppCompatActivity() {
     }
 
     private fun displayHospitalDetails(hospital: HospitalRes) {
+        hospitalName = hospital.name  // 병원 이름 저장
         findViewById<TextView>(R.id.hospitalNameTextView).text = hospital.name
         findViewById<TextView>(R.id.hospitalAddressTextView).text = hospital.address
         findViewById<TextView>(R.id.hospitalTelephoneTextView).text = hospital.telephoneNumber

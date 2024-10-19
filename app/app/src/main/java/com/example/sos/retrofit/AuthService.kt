@@ -1,19 +1,21 @@
 package com.example.sos.retrofit
 
-import android.graphics.pdf.PdfDocument
 import com.example.sos.AmbulanceRes
-import com.example.sos.CategoryRes
 import com.example.sos.Data
 import com.example.sos.Hospital
 import com.example.sos.HospitalRes
 import com.example.sos.Location
 import com.example.sos.ParamedicsRes
+import com.example.sos.PatientReq
 import com.example.sos.ReceptionRes
+import com.google.firebase.StartupTime
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import java.util.Locale
+import java.time.*
+import java.util.UUID
+
 
 data class LoginRequest(
     val role: String,
@@ -59,17 +61,6 @@ data class UserLoginResponse(
 data class RefreshResponse(
     val accessToken: String,
     val refreshToken: String
-)
-
-data class ReceptionRequest(
-    val Authorization: String,
-    val receptionId: String
-)
-
-data class ReceptionResponse(
-    val status: Int,
-    val message: String,
-    val hospitalInfo: Hospital
 )
 
 data class AmbulanceRequest(
@@ -127,7 +118,18 @@ data class ParamedicDeleteResponse(
     val data: String?
 )
 
+data class ReceptionRequest(
+    val patient: PatientReq,
+    val hospitalName: String,
+    val startTime: LocalDateTime,
+    val paramedicId: String
+)
 
+data class ReceptionResponse(
+    val status: Int,
+    val message: String,
+    val data: String // 접수 고유 번호
+)
 
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
@@ -169,9 +171,6 @@ interface AuthService {
 
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
-
-    @GET("/reception/id") // 접수된 환자의 정보 요청
-    fun reception(@Body request: ReceptionRequest): Call<ReceptionResponse>
 
     @POST("/{ambulanceId}/member") // 구급대원 추가
     fun ambulanceMember(
@@ -253,4 +252,11 @@ interface AuthService {
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String
     ): Call<ReceptionInfoResponse>
+
+    // 응급실 접수 생성
+    @POST("/reception/")
+    fun addReception(
+        @Header("Authorization") token: String,
+        @Body body: ReceptionRequest
+    ): Call<ReceptionResponse>
 }
