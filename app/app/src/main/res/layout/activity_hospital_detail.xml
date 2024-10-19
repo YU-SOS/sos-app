@@ -6,15 +6,34 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- 병원 상세 정보를 표시하는 TextView -->
     <TextView
-        android:id="@+id/hospitalDetailsTextView"
+        android:id="@+id/hospitalNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="16dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/hospitalAddressTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/hospitalNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/hospitalTelephoneTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/hospitalAddressTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 추가적인 상세정보를 위한 TextView를 여기에 추가할 수 있습니다. -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

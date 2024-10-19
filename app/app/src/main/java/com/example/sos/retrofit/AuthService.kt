@@ -1,10 +1,10 @@
 package com.example.sos.retrofit
 
-
 import android.graphics.pdf.PdfDocument
 import com.example.sos.AmbulanceRes
+import com.example.sos.CategoryRes
+import com.example.sos.Data
 import com.example.sos.Hospital
-
 import com.example.sos.Location
 import com.example.sos.ParamedicsRes
 import com.example.sos.ReceptionRes
@@ -13,7 +13,6 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.Locale
-
 
 data class LoginRequest(
     val role: String,
@@ -26,7 +25,6 @@ data class LoginResponse(
     val message: String,
     val data: String?
 )
-
 
 data class RegisterRequest(
     val id: String,
@@ -62,48 +60,37 @@ data class RefreshResponse(
     val refreshToken: String
 )
 
-//환자 정보 요청(수정중)
 data class ReceptionRequest(
     val Authorization: String,
     val receptionId: String
 )
-//환자 정보 응답(수정중)
+
 data class ReceptionResponse(
     val status: Int,
     val message: String,
-    val hospitalInfo: Hospital,
+    val hospitalInfo: Hospital
+)
 
-    )
-
-data class AmbulanceRequest(//수정중
+data class AmbulanceRequest(
     val name: String,
     val phoneNumber: String
 )
 
-data class AmbulanceResponse( //수정중
+data class AmbulanceResponse(
     val name: String
 )
 
-// 구급대 ID 중복확인 요청/응답
 data class AmbulanceIdDupCheckResponse(
     val status: Int,
     val message: String
 )
 
-data class SearchHospitalResponse( // 널세이프티 테스트 시 수정
-    val status: String,
+data class SearchHospitalResponse(
+    val status: Int,
     val message: String,
-    val id: String,
-    val name: String,
-    val address: String,
-    val imageUrl: String,
-    val telephoneNumber: String,
-    val location: Location?,
-    val categories: List<Locale.Category>?,
-    val page: PdfDocument.Page?
+    val data: Data
 )
 
-// 구급대원 조회
 data class AmbulanceLoadResponse(
     val status: Int,
     val message: String,
@@ -111,7 +98,6 @@ data class AmbulanceLoadResponse(
     val imageUrl: String
 )
 
-// 구급대원 등록
 data class MemberRequest(
     val name: String,
     val phoneNumber: String
@@ -123,7 +109,6 @@ data class MemberResponse(
     val data: String?
 )
 
-// 구급대원 조회
 data class ParamedicsResponse(
     val status: Int,
     val message: String,
@@ -138,11 +123,11 @@ data class ParamedicModifyRequest(
 data class ParamedicDeleteResponse(
     val status: Int,
     val message: String,
-    val data: Any?
+    val data: String?
 )
 
 
-// 카카오 주소 검색 관련
+
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
     suspend fun searchAddress(
@@ -180,7 +165,6 @@ data class ReceptionInfoResponse(
     val data: ReceptionRes
 )
 
-
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -191,11 +175,10 @@ interface AuthService {
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
 
-
-    @GET("/reception/id")//접수된 환자의 정보 요청(수정해야됨)
+    @GET("/reception/id") // 접수된 환자의 정보 요청
     fun reception(@Body request: ReceptionRequest): Call<ReceptionResponse>
 
-    @POST("/{ambulanceId}/member")//수정해야됨
+    @POST("/{ambulanceId}/member") // 구급대원 추가
     fun ambulanceMember(
         @Header("Authorization") authorization: String,
         @Path("ambulanceId") ambulanceId: String,
@@ -208,21 +191,22 @@ interface AuthService {
     @POST("/reissue-token")
     fun refreshToken(@Header("Cookie") refreshToken: String): Call<RefreshResponse>
 
-    // ID 중복 확인 - 쿼리 스트링 사용
+    // ID 중복 확인
     @GET("/dup-check")
     fun checkIdDuplication(
         @Query("id") id: String,
         @Query("role") role: String
     ): Call<AmbulanceIdDupCheckResponse>
 
-    //응급실 목록 조회
-    @GET("/?categories=")
+    // 응급실 목록 조회
+    @GET("/hospitals/")
     fun searchHospital(
-        @Header("Authorization") authorization: String,
-        @Query("categories") categoreis: List<String>
+        @Header("Authorization") token: String,
+        @Query("categories") categories: List<String>,
+        @Query("page") page: Int
     ): Call<SearchHospitalResponse>
 
-    //응급실 상세 조회
+    // 응급실 상세 조회
     @GET("/{hospitalId}")
     fun getHospitalDetails(
         @Header("Authorization") authorization: String,
@@ -261,7 +245,7 @@ interface AuthService {
     ): Call<Void>
 
     // 구급대원 삭제
-    @DELETE("/:ambulanceId/member/:memberId")
+    @DELETE("/{ambulanceId}/member/{memberId}") // 수정: ":" 제거
     fun deleteParamedic(
         @Header("Authorization") authorization: String,
         @Path("ambulanceId") ambulanceId: String,
@@ -275,4 +259,3 @@ interface AuthService {
         @Path("receptionId") receptionId: String
     ): Call<ReceptionInfoResponse>
 }
-

@@ -1,62 +1,27 @@
 package com.example.sos.ambulance
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.R
-import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.HospitalDetailResponse
-import com.example.sos.retrofit.RetrofitClientInstance
-import com.example.sos.token.TokenManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HospitalDetailActivity : AppCompatActivity() {
-
-    private lateinit var tokenManager: TokenManager
-    private lateinit var apiService: AuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hospital_detail)
 
-        tokenManager = TokenManager(this)
-        apiService = RetrofitClientInstance.getApiService(tokenManager)
+        // Intent에서 데이터 가져오기
+        val hospitalId = intent.getStringExtra("HOSPITAL_ID") ?: return
+        val hospitalName = intent.getStringExtra("HOSPITAL_NAME") ?: return
+        val hospitalAddress = intent.getStringExtra("HOSPITAL_ADDRESS") ?: return
+        val hospitalTelephone = intent.getStringExtra("HOSPITAL_TELEPHONE") ?: return
+        val hospitalImageUrl = intent.getStringExtra("HOSPITAL_IMAGE_URL") ?: return
 
-        val hospitalId = intent.getStringExtra("hospitalId") ?: return
-        fetchHospitalDetails(hospitalId)
-    }
-
-    private fun fetchHospitalDetails(hospitalId: String) {
-        val accessToken = tokenManager.getAccessToken()
-        apiService.getHospitalDetails("Bearer $accessToken", hospitalId).enqueue(object :
-            Callback<HospitalDetailResponse> {
-            override fun onResponse(call: Call<HospitalDetailResponse>, response: Response<HospitalDetailResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { details ->
-                        // 병원 상세 정보를 화면에 표시
-                        displayHospitalDetails(details)
-                    }
-                } else {
-                    Log.e("HospitalDetail", "Failed to fetch details")
-                }
-            }
-
-            override fun onFailure(call: Call<HospitalDetailResponse>, t: Throwable) {
-                Log.e("HospitalDetail", "Error: ${t.message}")
-            }
-        })
-    }
-
-    private fun displayHospitalDetails(details: HospitalDetailResponse) {
-        val detailsTextView: TextView = findViewById(R.id.hospitalDetailsTextView)
-        detailsTextView.text = """
-            병원 이름: ${details.name}
-            주소: ${details.address}
-            전화번호: ${details.telephoneNumber}
-            응급실 상태: ${details.emergencyRoomStatus}
-        """.trimIndent()
+        // TextView에 병원 상세 정보 설정
+        findViewById<TextView>(R.id.hospitalNameTextView).text = hospitalName
+        findViewById<TextView>(R.id.hospitalAddressTextView).text = hospitalAddress
+        findViewById<TextView>(R.id.hospitalTelephoneTextView).text = hospitalTelephone
+        // 이미지가 필요하다면 Glide 또는 다른 이미지 로딩 라이브러리로 로드할 수 있습니다.
     }
 }
