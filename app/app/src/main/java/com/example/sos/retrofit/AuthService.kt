@@ -8,13 +8,11 @@ import com.example.sos.Location
 import com.example.sos.ParamedicsRes
 import com.example.sos.PatientReq
 import com.example.sos.ReceptionRes
-import com.google.firebase.StartupTime
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.*
-import java.util.UUID
 
 
 data class LoginRequest(
@@ -161,7 +159,6 @@ data class HospitalDetailResponse(
     val data: HospitalRes // HospitalRes는 병원 정보를 담고 있는 데이터 클래스
 )
 
-
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -172,12 +169,7 @@ interface AuthService {
     @POST("/login/user")
     fun loginUser(@Body request: UserSignupRequest): Call<UserLoginResponse>
 
-    @POST("/{ambulanceId}/member") // 구급대원 추가
-    fun ambulanceMember(
-        @Header("Authorization") authorization: String,
-        @Path("ambulanceId") ambulanceId: String,
-        @Body memberInfo: AmbulanceRequest
-    ): Call<AmbulanceResponse>
+
 
     @POST("/logout") // 유저 로그아웃
     fun logout(@Header("Authorization") authorization: String): Call<Void>
@@ -247,7 +239,7 @@ interface AuthService {
     ): Call<ParamedicDeleteResponse>
 
     // 응급실 접수 조회
-    @GET("/recepion/{receptionId}")
+    @GET("/reception/{receptionId}")
     fun getReceptionInfo(
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String

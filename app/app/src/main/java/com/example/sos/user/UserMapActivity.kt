@@ -57,9 +57,9 @@ class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 finish()
             }
             R.id.nav_reception -> {
-                val intent = Intent(this, UserReceptionActivity::class.java)
-                startActivity(intent)
-                finish()
+                //val intent = Intent(this, UserReceptionActivity::class.java)
+                //startActivity(intent)
+                //finish()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
