@@ -209,7 +209,7 @@ interface AuthService {
     ): Call<HospitalDetailResponse>
 
     // Ambulance 멤버 추가
-    @POST("/{ambulanceId}/member")
+    @POST("/ambulance/{ambulanceId}/member")
     fun addAmbulanceMember(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String,
@@ -217,14 +217,14 @@ interface AuthService {
     ): Call<MemberResponse>
 
     // 구급대 정보 조회
-    @GET("/{ambulanceId}")
+    @GET("/ambulance/{ambulanceId}")
     fun getAmbulanceMember(
         @Header("Authorization") authorization: String,
         @Path("ambulanceId") ambulanceId: String
     ): Call<AmbulanceLoadResponse>
 
     // 구급대원 정보 조회
-    @GET("/{ambulanceId}/paramedic/paramedic")
+    @GET("/ambulance/{ambulanceId}/paramedic/paramedic")
     fun getParamedics(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String
@@ -240,7 +240,7 @@ interface AuthService {
     ): Call<Void>
 
     // 구급대원 삭제
-    @DELETE("/{ambulanceId}/member/{memberId}") // 수정: ":" 제거
+    @DELETE("/ambulance/{ambulanceId}/member/{memberId}") // 수정: ":" 제거
     fun deleteParamedic(
         @Header("Authorization") authorization: String,
         @Path("ambulanceId") ambulanceId: String,
@@ -248,7 +248,7 @@ interface AuthService {
     ): Call<ParamedicDeleteResponse>
 
     // 응급실 접수 조회
-    @GET("/{receptionId}")
+    @GET("/recepion/{receptionId}")
     fun getReceptionInfo(
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String
