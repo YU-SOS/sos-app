@@ -7,6 +7,7 @@ import com.example.sos.Hospital
 
 import com.example.sos.Location
 import com.example.sos.ParamedicsRes
+import com.example.sos.ReceptionRes
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
@@ -173,6 +174,12 @@ data class HospitalDetailResponse(
     val emergencyRoomStatus: String
 )
 
+data class ReceptionInfoResponse(
+    val status: Int,
+    val message: String,
+    val data: ReceptionRes
+)
+
 
 interface AuthService {
     @POST("/login")
@@ -260,5 +267,12 @@ interface AuthService {
         @Path("ambulanceId") ambulanceId: String,
         @Path("memberId") memberId: String
     ): Call<ParamedicDeleteResponse>
+
+    // 응급실 접수 조회
+    @GET("/{receptionId}")
+    fun getReceptionInfo(
+        @Header("Authorization") authorization: String,
+        @Path("receptionId") receptionId: String
+    ): Call<ReceptionInfoResponse>
 }
 
