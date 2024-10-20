@@ -166,6 +166,11 @@ data class HospitalDetailResponse(
     val data: HospitalRes // HospitalRes는 병원 정보를 담고 있는 데이터 클래스
 )
 
+data class ReceptionCommentResponse(
+    val status: Int,
+    val message: String,
+    val data: String?
+)
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -264,4 +269,11 @@ interface AuthService {
         @Path("receptionId") receptionId: String
     ): Call<LoadReceptionResponse> // 변경된 이름 사용
 
+    // 코멘트 작성 (접수 후)
+    @POST("/{receptionId}/comment")
+    fun addComment(
+        @Header("Authorization") token: String,
+        @Path("receptionId") receptionId: String,
+        @Body body: String
+    ): Call<ReceptionCommentResponse>
 }

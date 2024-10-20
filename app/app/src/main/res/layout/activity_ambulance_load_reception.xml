@@ -25,4 +25,10 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:text="성별" />
+
+    <Button
+        android:id="@+id/add_comment_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="코멘트 추가" />
 </LinearLayout>
