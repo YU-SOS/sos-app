@@ -15,7 +15,6 @@ import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.SelectLoginActivity
 import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.HospitalDetailResponse
 import com.example.sos.retrofit.ReceptionInfoResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
@@ -35,32 +34,33 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         setContentView(R.layout.activity_user_reception)
 
         tokenManager = TokenManager(this)
-
         apiService = RetrofitClientInstance.getApiService(tokenManager)
 
+        // 뷰 초기화
         val receptionIdInput: EditText = findViewById(R.id.reception_id_input)
         val getHospitalInfoButton: Button = findViewById(R.id.get_hospital_info_button)
-
         val hospitalNameTextView: TextView = findViewById(R.id.hospital_name_textview)
         val hospitalLocationTextView: TextView = findViewById(R.id.hospital_location_textview)
         val hospitalPhoneTextView: TextView = findViewById(R.id.hospital_phone_textview)
         val hospitalCommentTextView: TextView = findViewById(R.id.hospital_comment_textview)
 
-        val logoutButton: Button = findViewById(R.id.logout_button)
-        logoutButton.setOnClickListener {
+        // 네비게이션 바 설정
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-            val logoutManager = LogoutManager(this, tokenManager)
-            logoutManager.logout()
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
-            val intent = Intent(this, SelectLoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        val navigationView: NavigationView = findViewById(R.id.navigation_view)
+        navigationView.setNavigationItemSelectedListener(this)
 
-        // 버튼 클릭 시 서버 요청
+        // 병원 정보 조회 버튼 클릭 리스너
         getHospitalInfoButton.setOnClickListener {
             val receptionId = receptionIdInput.text.toString()
-
             if (receptionId.isNotEmpty()) {
                 getReceptionInfo(
                     receptionId,
@@ -91,19 +91,16 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let { receptionInfoResponse ->
-                            // 병원 정보 가져오기
                             val hospital = receptionInfoResponse.data.hospital
                             val comments = receptionInfoResponse.data.comments
 
-                            // 병원 이름, 위치, 전화번호, 코멘트 설정
+                            // 병원 정보 설정
                             hospitalNameTextView.text = "Hospital Name: ${hospital.name}"
-                            hospitalLocationTextView.text =
-                                "Location: ${hospital.location.longitude}, ${hospital.location.latitude}"
+                            hospitalLocationTextView.text = "Location: ${hospital.location.longitude}, ${hospital.location.latitude}"
                             hospitalPhoneTextView.text = "Phone: ${hospital.telephoneNumber}"
 
                             // 코멘트가 있는 경우 첫 번째 코멘트를 표시
-                            val comment =
-                                if (comments.isNotEmpty()) comments[0].content else "No comments"
+                            val comment = if (comments.isNotEmpty()) comments[0].content else "No comments"
                             hospitalCommentTextView.text = "Comment: $comment"
                         }
                     } else {
@@ -116,34 +113,18 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 }
             })
         }
-
-    drawerLayout = findViewById(R.id.drawer_layout)
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        val navigationView: NavigationView = findViewById(R.id.navigation_view)
-        navigationView.setNavigationItemSelectedListener(this)
     }
 
+    // 네비게이션 아이템 선택 이벤트 처리
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_map -> {
-                // Navigate to Map Activity
                 val intent = Intent(this, UserMapActivity::class.java)
                 startActivity(intent)
                 finish()
             }
             R.id.nav_reception -> {
-                // Navigate to Reception Activity
-                val intent = Intent(this, UserReceptionActivity::class.java)
-                startActivity(intent)
-                finish()
+                // 현재 화면이므로 별도의 액션 없음
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
