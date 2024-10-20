@@ -129,6 +129,13 @@ data class ReceptionResponse(
     val data: String // 접수 고유 번호
 )
 
+data class LoadReceptionResponse(
+    val status: Int,
+    val message: String,
+    val data: ReceptionRes
+)
+
+
 interface KakaoMapService {
     @GET("/v2/local/search/address.json")
     suspend fun searchAddress(
@@ -249,4 +256,12 @@ interface AuthService {
         @Header("Authorization") token: String,
         @Body body: ReceptionRequest
     ): Call<ReceptionResponse>
+
+    // 앰뷸런스 응급실 접수 조회
+    @GET("/reception/{receptionId}")
+    fun getReceptionDetails(
+        @Header("Authorization") token: String,
+        @Path("receptionId") receptionId: String
+    ): Call<LoadReceptionResponse> // 변경된 이름 사용
+
 }
