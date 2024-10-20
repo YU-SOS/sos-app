@@ -23,10 +23,24 @@
         android:layout_height="wrap_content"
         android:text="병원 검색" />
 
+    <!--
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" /> <!-- RecyclerView가 남은 공간을 차지하도록 설정 -->
+        android:layout_weight="1" /> RecyclerView가 남은 공간을 차지하도록 설정 -->
 
+    <!-- 병원 목록을 동적으로 추가할 LinearLayout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="병원 목록을 스크롤할 수 있는 영역입니다.">
+
+        <LinearLayout
+            android:id="@+id/hospitalContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>

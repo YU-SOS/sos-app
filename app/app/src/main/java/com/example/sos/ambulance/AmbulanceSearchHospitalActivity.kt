@@ -8,6 +8,8 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sos.HospitalRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
@@ -39,7 +41,7 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
         // 체크박스 초기화
         pediatricsCheckBox = findViewById(R.id.checkBoxPediatrics)
         orthopedicsCheckBox = findViewById(R.id.checkBoxOrthopedics)
-        hospitalContainer = findViewById(R.id.recyclerView) // 병원 정보를 표시할 레이아웃
+        hospitalContainer = findViewById(R.id.hospitalContainer) // 병원 정보를 표시할 레이아웃
 
         val searchButton = findViewById<Button>(R.id.search_hospital_button)
         searchButton.setOnClickListener {
@@ -99,16 +101,24 @@ class AmbulanceSearchHospitalActivity : AppCompatActivity() {
         hospitalContainer.removeAllViews() // 기존 병원 정보 삭제
 
         for (hospital in hospitalList) {
-            val hospitalTextView = TextView(this).apply {
-                text = hospital.name // 병원 이름 표시
-                setOnClickListener {
-                    // HospitalDetailActivity로 이동하고 병원 ID 전달
-                    val intent = Intent(this@AmbulanceSearchHospitalActivity, HospitalDetailActivity::class.java)
-                    intent.putExtra("HOSPITAL_ID", hospital.id) // 병원 ID 전송
-                    startActivity(intent)
-                }
+            val hospitalView = layoutInflater.inflate(R.layout.hospital_item, hospitalContainer, false)
+
+            val hospitalNameTextView = hospitalView.findViewById<TextView>(R.id.hospitalName)
+            val hospitalAddressTextView = hospitalView.findViewById<TextView>(R.id.hospitalAddress)
+
+            // 병원 정보 설정
+            hospitalNameTextView.text = hospital.name
+            hospitalAddressTextView.text = hospital.address
+
+            // 클릭 시 상세 정보 화면으로 이동
+            hospitalView.setOnClickListener {
+                val intent = Intent(this, HospitalDetailActivity::class.java)
+                intent.putExtra("HOSPITAL_ID", hospital.id)
+                startActivity(intent)
             }
-            hospitalContainer.addView(hospitalTextView) // LinearLayout에 추가
+
+            // 병원 정보를 LinearLayout에 추가
+            hospitalContainer.addView(hospitalView)
         }
     }
 }
