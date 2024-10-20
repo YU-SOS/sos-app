@@ -66,6 +66,9 @@
                 android:orientation="vertical" />
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/logout_button_layout"
+        layout="@layout/logout_button" />
 
     <!-- 네비게이션 바 설정 -->
     <com.google.android.material.navigation.NavigationView

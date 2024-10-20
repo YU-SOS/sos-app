@@ -77,13 +77,37 @@
             android:exported="false" />
         <activity
             android:name=".user.UserReceptionActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 딥링크 처리할 데이터 -->
+                <data android:scheme="https"
+                    android:host="play.google.com"
+                    android:pathPrefix="/store/apps/details" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ambulance.AmbulanceSearchHospitalActivity"
             android:exported="true" />
         <activity
             android:name=".ambulance.AmbulanceAddPatientActivity"
             android:exported="true" />
+
+        <activity android:name=".GuestSearchReceptionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="kakao68695b0d022c083d3448cec3ccbacb8a" android:host="kakaolink" />
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
