@@ -21,6 +21,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ambulance.AmbulanceAddCommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ambulance.AmbulanceLoadReceptionActivity"
             android:exported="false" />
         <activity
