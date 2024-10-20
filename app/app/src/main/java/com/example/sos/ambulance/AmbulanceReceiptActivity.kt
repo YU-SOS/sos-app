@@ -52,7 +52,7 @@ class AmbulanceReceiptActivity : AppCompatActivity() {
         val accessToken = tokenManager.getAccessToken()
 
         accessToken?.let {
-            apiService.getParamedics("Bearer $it", ambulanceId).enqueue(object : Callback<List<ParamedicsRes>> { // ParamedicsRes로 수정
+            apiService.getParamedics("Bearer $it", ambulanceId).enqueue(object : Callback<List<ParamedicsRes>> {
                 override fun onResponse(call: Call<List<ParamedicsRes>>, response: Response<List<ParamedicsRes>>) {
                     if (response.isSuccessful) {
                         response.body()?.let { paramedics ->
@@ -71,7 +71,7 @@ class AmbulanceReceiptActivity : AppCompatActivity() {
     }
 
     // Spinner에 구급대원 목록 설정
-    private fun setupParamedicSpinner(paramedics: List<ParamedicsRes>) { // ParamedicsRes로 수정
+    private fun setupParamedicSpinner(paramedics: List<ParamedicsRes>) {
         val paramedicNames = paramedics.map { it.name } // 구급대원 이름 목록
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, paramedicNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -119,7 +119,11 @@ class AmbulanceReceiptActivity : AppCompatActivity() {
                 apiService.addReception("Bearer $it", receptionRequest).enqueue(object : Callback<ReceptionResponse> {
                     override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@AmbulanceReceiptActivity, "접수 성공", Toast.LENGTH_LONG).show()
+                            // 접수 성공, 접수 고유 번호를 저장
+                            response.body()?.let { receptionResponse ->
+                                tokenManager.saveReceptionId(receptionResponse.data)
+                                Toast.makeText(this@AmbulanceReceiptActivity, "접수 성공, 고유 번호: ${receptionResponse.data}", Toast.LENGTH_LONG).show()
+                            }
                         } else {
                             Toast.makeText(this@AmbulanceReceiptActivity, "접수 실패: ${response.message()}", Toast.LENGTH_LONG).show()
                         }

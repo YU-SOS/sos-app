@@ -87,8 +87,23 @@ class TokenManager(context: Context) {
             remove("userId")  // 사용자 ID 삭제
             remove("userRole")  // 역할 삭제
             remove("tokenType")  // 토큰 타입 삭제
+            remove("reception_id")  // 접수 고유 번호 삭제
             apply()
         }
         Log.d("TokenManager", "토큰 삭제 완료")
+    }
+
+    // 구급대 입장 환자 접수 고유 번호 저장
+    fun saveReceptionId(receptionId: String) {
+        sharedPreferences.edit().apply {
+            putString("reception_id", receptionId)
+            apply()
+        }
+        Log.d("TokenManager", "접수 고유 번호 저장 완료")
+    }
+
+    // 접수 고유 번호 가져오기
+    fun getReceptionId(): String? {
+        return sharedPreferences.getString("reception_id", null)
     }
 }
