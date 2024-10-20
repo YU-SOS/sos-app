@@ -7,6 +7,7 @@ import com.example.sos.HospitalRes
 import com.example.sos.Location
 import com.example.sos.ParamedicsRes
 import com.example.sos.PatientReq
+import com.example.sos.ReceptionGuestRes
 import com.example.sos.ReceptionRes
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
@@ -171,6 +172,13 @@ data class ReceptionCommentResponse(
     val message: String,
     val data: String?
 )
+
+data class ReceptionGuestResponse(
+    val status: Int,
+    val message: String,
+    val data: ReceptionGuestRes
+)
+
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -276,4 +284,9 @@ interface AuthService {
         @Path("receptionId") receptionId: String,
         @Body body: String
     ): Call<ReceptionCommentResponse>
+
+    @GET("/{receptionId}/guest")
+    fun getReceptionGuest(
+        @Path("receptionId") receptionId: String
+    ): Call<ReceptionGuestResponse>
 }

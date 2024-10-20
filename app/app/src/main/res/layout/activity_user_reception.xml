@@ -81,6 +81,16 @@
             app:layout_constraintTop_toBottomOf="@id/hospital_phone_textview"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="16dp" />
+
+        <Button
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="104dp"
+            android:text="카카오톡 공유"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hospital_comment_textview" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 네비게이션 바 설정 -->

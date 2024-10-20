@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.sos.HospitalRes
 import com.example.sos.LogoutManager
 import com.example.sos.R
+import com.example.sos.SelectLoginActivity
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.SearchHospitalResponse
@@ -32,6 +33,7 @@ class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private lateinit var pediatricsCheckBox: CheckBox
     private lateinit var orthopedicsCheckBox: CheckBox
     private lateinit var searchButton: Button
+    private lateinit var logoutManager: LogoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +45,19 @@ class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         pediatricsCheckBox = findViewById(R.id.checkBoxPediatrics)
         orthopedicsCheckBox = findViewById(R.id.checkBoxOrthopedics)
         searchButton = findViewById(R.id.search_hospital_button)
+        logoutManager = LogoutManager(this, tokenManager)
 
         searchButton.setOnClickListener {
             searchHospitalDetails()
+        }
+        val userLogoutButton: Button = findViewById(R.id.logout_button)
+        userLogoutButton.setOnClickListener {
+
+            logoutManager.logout()
+
+            val intent = Intent(this, SelectLoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         // 네비게이션 바 설정
