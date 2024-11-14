@@ -3,145 +3,128 @@ package com.example.sos.user
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.example.sos.HospitalRes
-import com.example.sos.LogoutManager
 import com.example.sos.R
-import com.example.sos.SelectLoginActivity
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.SearchHospitalResponse
 import com.example.sos.token.TokenManager
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.MapLifeCycleCallback
+import com.kakao.vectormap.MapView
+import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.LabelManager
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.LabelTextBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserMapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class UserMapActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var tokenManager: TokenManager
-    private lateinit var hospitalContainer: LinearLayout
-    private lateinit var pediatricsCheckBox: CheckBox
-    private lateinit var orthopedicsCheckBox: CheckBox
-    private lateinit var searchButton: Button
-    private lateinit var logoutManager: LogoutManager
+    private lateinit var mapView: MapView
+    private lateinit var authService: AuthService
+    private var kakaoMap: KakaoMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_map)
 
         tokenManager = TokenManager(this)
+        authService = RetrofitClientInstance.getApiService(tokenManager)
 
-        hospitalContainer = findViewById(R.id.hospitalContainer)
-        pediatricsCheckBox = findViewById(R.id.checkBoxPediatrics)
-        orthopedicsCheckBox = findViewById(R.id.checkBoxOrthopedics)
-        searchButton = findViewById(R.id.search_hospital_button)
-        logoutManager = LogoutManager(this, tokenManager)
+        mapView = findViewById(R.id.map_view)
+        initializeMapView()
 
-        searchButton.setOnClickListener {
-            searchHospitalDetails()
-        }
-        val userLogoutButton: Button = findViewById(R.id.logout_button)
-        userLogoutButton.setOnClickListener {
-
-            logoutManager.logout()
-
-            val intent = Intent(this, SelectLoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-        // 네비게이션 바 설정
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        val navigationView: NavigationView = findViewById(R.id.navigation_view)
-        navigationView.setNavigationItemSelectedListener(this)
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_map -> {
-                Log.d("UserMapActivity", "Map selected")
-                // 현재 화면이므로 별도 액션 필요 없음
-            }
-            R.id.nav_reception -> {
-                Log.d("UserMapActivity", "Reception selected")
-                // 다른 액티비티로 이동
-                val intent = Intent(this, UserReceptionActivity::class.java)
-                startActivity(intent)
-                finish()
+        // BottomNavigationView 설정
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_map -> true // 현재 화면이므로 아무 동작도 하지 않음
+                R.id.nav_reception -> {
+                    val intent = Intent(this, UserReceptionActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> false
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+
+        fetchHospitalData()
     }
 
-    private fun searchHospitalDetails() {
-        val accessToken = tokenManager.getAccessToken()
-        val selectedCategories = mutableListOf<String>()
+    private fun initializeMapView() {
+        mapView.start(object : MapLifeCycleCallback() {
+            override fun onMapDestroy() {
+                Log.d("UserMapActivity", "Map destroyed")
+            }
 
-        if (pediatricsCheckBox.isChecked) {
-            selectedCategories.add("소아과")
-        }
-        if (orthopedicsCheckBox.isChecked) {
-            selectedCategories.add("정형외과")
-        }
+            override fun onMapError(exception: Exception?) {
+                Log.e("UserMapActivity", "Map error: ${exception?.message}")
+            }
+        }, object : KakaoMapReadyCallback() {
+            override fun onMapReady(map: KakaoMap) {
+                kakaoMap = map
+                val yuCenter = LatLng.from(35.8264595, 128.754132) // 영남대 좌표
+                kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(yuCenter, 15)) // 지도 중심 설정
+            }
+        })
+    }
 
-        if (selectedCategories.isEmpty()) {
-            Log.d("UserMapActivity", "카테고리를 선택해주세요.")
-            return
-        }
+    private fun fetchHospitalData() {
+        val accessToken = tokenManager.getAccessToken() ?: ""
+        val token = "Bearer $accessToken"
+        val categories = listOf("산부인과", "정형외과", "흉부외과", "화상외과", "내과")
+        val page = 1
 
-        accessToken?.let {
-            val apiService = RetrofitClientInstance.getApiService(tokenManager)
-            apiService.searchHospital("Bearer $it", selectedCategories, 0).enqueue(object : Callback<SearchHospitalResponse> {
-                override fun onResponse(call: Call<SearchHospitalResponse>, response: Response<SearchHospitalResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { hospitalResponse ->
-                            displayHospitals(hospitalResponse.data.hospitals)
-                        }
-                    } else {
-                        Log.e("UserMapActivity", "Request failed: ${response.message()}")
+        authService.searchHospital(token, categories, page).enqueue(object : Callback<SearchHospitalResponse> {
+            override fun onResponse(call: Call<SearchHospitalResponse>, response: Response<SearchHospitalResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.data?.hospitals?.let { hospitals ->
+                        addLabelsToMap(hospitals)
                     }
+                } else {
+                    Log.e("UserMapActivity", "Response Error: ${response.message()}")
                 }
+            }
 
-                override fun onFailure(call: Call<SearchHospitalResponse>, t: Throwable) {
-                    Log.e("UserMapActivity", "Request failed: ${t.message}")
-                }
-            })
-        }
+            override fun onFailure(call: Call<SearchHospitalResponse>, t: Throwable) {
+                Log.e("UserMapActivity", "Request Failure: ${t.message}")
+            }
+        })
     }
 
-    private fun displayHospitals(hospitals: List<HospitalRes>) {
-        hospitalContainer.removeAllViews()
+    private fun addLabelsToMap(hospitals: List<HospitalRes>) {
+        val labelManager: LabelManager? = kakaoMap?.labelManager
 
-        for (hospital in hospitals) {
-            val hospitalTextView = TextView(this).apply {
-                text = """
-                    이름: ${hospital.name}
-                    전화번호: ${hospital.telephoneNumber}
-                """.trimIndent()
-                textSize = 16f
-                setPadding(16, 16, 16, 16)
-            }
-            hospitalContainer.addView(hospitalTextView)
+        hospitals.forEach { hospital ->
+            val latitude = hospital.location.latitude.toDouble()
+            val longitude = hospital.location.longitude.toDouble()
+            val position = LatLng.from(latitude, longitude)
+
+            val labelStyles = LabelStyles.from(
+                "hospitalStyle",
+                LabelStyle.from(R.drawable.user_map).setZoomLevel(8),
+                LabelStyle.from(R.drawable.user_map).setZoomLevel(11)
+                    .setTextStyles(32, android.graphics.Color.BLACK, 1, android.graphics.Color.GRAY)
+            )
+
+            val labelText = LabelTextBuilder()
+                .setTexts(hospital.name, hospital.telephoneNumber)
+
+            val labelOptions = LabelOptions.from(position)
+                .setStyles(labelStyles)
+                .setTexts(labelText)
+
+            labelManager?.layer?.addLabel(labelOptions)
         }
     }
 }

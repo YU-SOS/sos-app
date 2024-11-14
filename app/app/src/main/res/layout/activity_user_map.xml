@@ -5,76 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 메인 컨텐츠를 포함하는 레이아웃 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 툴바를 상단에 고정 -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:title="Map/Reception"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- 카테고리 선택 체크박스들 -->
-        <CheckBox
-            android:id="@+id/checkBoxPediatrics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="소아과"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
-
-        <CheckBox
-            android:id="@+id/checkBoxOrthopedics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="정형외과"
-            app:layout_constraintTop_toBottomOf="@id/checkBoxPediatrics"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
-
-        <!-- 병원 검색 버튼 -->
-        <Button
-            android:id="@+id/search_hospital_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="병원 검색"
-            app:layout_constraintTop_toBottomOf="@id/checkBoxOrthopedics"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
-
-        <!-- 병원 목록을 표시할 LinearLayout -->
-        <ScrollView
+        <!-- 지도 UI 요소 (MapView 등) -->
+        <com.kakao.vectormap.MapView
+            android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="@id/search_hospital_button"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
 
-            <LinearLayout
-                android:id="@+id/hospitalContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+        <!-- BottomNavigationView 추가 -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/navigation_menu"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <include
-        android:id="@+id/logout_button_layout"
-        layout="@layout/logout_button" />
 
-    <!-- 네비게이션 바 설정 -->
+    <!-- 네비게이션 뷰 -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemIconTint="@null"
         app:menu="@menu/navigation_menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

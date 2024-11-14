@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientInstance {
-    private const val BASE_URL = "http://api.yu-sos.co.kr"
+    private const val BASE_URL = "https://api.yu-sos.co.kr"
     private var retrofit: Retrofit? = null
 
     // Interceptor가 포함된 HttpClient 설정
