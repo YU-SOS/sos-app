@@ -77,10 +77,12 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.14.2")
     kapt("com.github.bumptech.glide:compiler:4.14.2")
 
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
 
     implementation("com.kakao.maps.open:android:2.12.8")
     implementation("com.getkeepsafe.relinker:relinker:1.4.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
 }
 
 apply(plugin = "com.google.gms.google-services")

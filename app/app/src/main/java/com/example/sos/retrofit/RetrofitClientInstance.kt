@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientInstance {
-    private const val BASE_URL = "http://api.yu-sos.co.kr:8080"
+    private const val BASE_URL = "http://43.203.205.27:8080/"
     private var retrofit: Retrofit? = null
 
     // HttpClient 생성

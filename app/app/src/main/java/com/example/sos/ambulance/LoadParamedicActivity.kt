@@ -2,6 +2,7 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sos.ParamedicsRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
+import com.example.sos.retrofit.ParamedicsResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import retrofit2.Call
@@ -28,6 +30,7 @@ class LoadParamedicActivity : AppCompatActivity() {
 
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)
+
         recyclerView = findViewById(R.id.recycler_view_paramedics)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -37,40 +40,55 @@ class LoadParamedicActivity : AppCompatActivity() {
 
     private fun fetchParamedics(ambulanceId: String) {
         val jwtToken = tokenManager.getAccessToken()
-        if (jwtToken != null) {
-            authService.getParamedics("Bearer $jwtToken", ambulanceId).enqueue(object : Callback<List<ParamedicsRes>> {
-                override fun onResponse(call: Call<List<ParamedicsRes>>, response: Response<List<ParamedicsRes>>) {
+        if (jwtToken.isNullOrEmpty()) {
+            showToast("토큰 오류: 로그인이 필요합니다.")
+            return
+        }
+
+        Log.d("LoadParamedicActivity", "Fetching paramedics for ambulanceId: $ambulanceId")
+        authService.getParamedics("Bearer $jwtToken", ambulanceId)
+            .enqueue(object : Callback<ParamedicsResponse> {
+                override fun onResponse(call: Call<ParamedicsResponse>, response: Response<ParamedicsResponse>) {
                     if (response.isSuccessful) {
-                        val paramedicsList = response.body()
+                        val paramedicsList = response.body()?.data?.paraResList
+                        Log.d("LoadParamedicActivity", "API Response: $paramedicsList")
                         if (!paramedicsList.isNullOrEmpty()) {
-                            setupRecyclerView(paramedicsList)
+                            setupRecyclerView(paramedicsList, ambulanceId)
                         } else {
+                            Log.d("LoadParamedicActivity", "Paramedics list is empty")
                             showToast("구급대원이 없습니다.")
                         }
                     } else {
-                        showToast("구급대원 로딩 실패")
+                        Log.e("LoadParamedicActivity", "API Response Error: ${response.message()}")
+                        showToast("구급대원 로딩 실패: ${response.message()}")
                     }
                 }
 
-                override fun onFailure(call: Call<List<ParamedicsRes>>, t: Throwable) {
-                    showToast("Error: ${t.message}")
+                override fun onFailure(call: Call<ParamedicsResponse>, t: Throwable) {
+                    Log.e("LoadParamedicActivity", "API Call Failed: ${t.message}")
+                    showToast("서버 연결 실패: ${t.message}")
                 }
             })
-        } else {
-            showToast("토큰 오류")
-        }
     }
 
-    private fun setupRecyclerView(paramedicsList: List<ParamedicsRes>) {
+    private fun setupRecyclerView(paramedicsList: List<ParamedicsRes>, ambulanceId: String) {
+        if (paramedicsList.isEmpty()) {
+            showToast("표시할 구급대원이 없습니다.")
+            return
+        }
+
         val adapter = ParamedicsAdapter(paramedicsList) { selectedParamedic ->
             val intent = Intent(this, DetailParamedicActivity::class.java).apply {
                 putExtra("paramedicId", selectedParamedic.id)
                 putExtra("paramedicName", selectedParamedic.name)
                 putExtra("paramedicPhone", selectedParamedic.phoneNumber)
+                putExtra("ambulanceId", ambulanceId) // 구급대 ID 추가
             }
             startActivity(intent)
         }
+
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun showToast(message: String) {

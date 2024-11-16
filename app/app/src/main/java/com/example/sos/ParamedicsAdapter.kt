@@ -4,22 +4,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sos.ParamedicsRes
 import com.example.sos.R
 
-class ParamedicsAdapter(context: Context, paramedicsList: List<ParamedicsRes>) :
-    ArrayAdapter<ParamedicsRes>(context, 0, paramedicsList) {
+class ParamedicsAdapter(
+    private val paramedicsList: List<ParamedicsRes>,
+    private val onItemClick: (ParamedicsRes) -> Unit
+) : RecyclerView.Adapter<ParamedicsAdapter.ViewHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val paramedic = getItem(position)
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_paramedic, parent, false)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val paramedicName: TextView = view.findViewById(R.id.text_view_paramedic_name)
+        val paramedicPhone: TextView = view.findViewById(R.id.text_view_paramedic_name)
 
-        val nameTextView = view.findViewById<TextView>(R.id.text_view_name)
-        val phoneTextView = view.findViewById<TextView>(R.id.text_view_phone)
+        fun bind(paramedic: ParamedicsRes) {
+            paramedicName.text = paramedic.name
+            paramedicPhone.text = paramedic.phoneNumber
 
-        nameTextView.text = paramedic?.name
-        phoneTextView.text = paramedic?.phoneNumber
-
-        return view
+            itemView.setOnClickListener { onItemClick(paramedic) }
+        }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_paramedic, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(paramedicsList[position])
+    }
+
+    override fun getItemCount(): Int = paramedicsList.size
 }
+

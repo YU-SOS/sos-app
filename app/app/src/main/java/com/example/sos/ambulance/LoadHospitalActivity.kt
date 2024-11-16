@@ -2,7 +2,6 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,11 +34,14 @@ class LoadHospitalActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycler_view_hospitals)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        hospitalAdapter = HospitalAdapter { hospitalId ->
+
+        // hospitalAdapter를 클릭 리스너와 함께 초기화
+        hospitalAdapter = HospitalAdapter(emptyList()) { hospitalId ->
             val intent = Intent(this, DetailHospitalActivity::class.java)
-            intent.putExtra("hospitalId", hospitalId)
+            intent.putExtra("hospitalId", hospitalId)  // hospitalId를 전달
             startActivity(intent)
         }
+
         recyclerView.adapter = hospitalAdapter
 
         // 초기 병원 목록 로드

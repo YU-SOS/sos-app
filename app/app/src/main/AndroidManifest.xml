@@ -23,54 +23,29 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ambulance.AddParamedicActivity"
+            android:exported="true" />
+        <activity
             android:name=".ambulance.ModifyParamedicActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.LoadParamedicActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.LoadHospitalActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.LoadAmbulanceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.DetailParamedicActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.DetailHospitalActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ambulance.AddPatientActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ambulance.AmbulanceAddCommentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ambulance.AmbulanceLoadReceptionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ambulance.HospitalDetailActivity"
             android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceReceiptActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceParamedicModifyActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.ParamedicDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceLoadParamedicActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceLoadActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceAddMemberActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Sos" />
         <activity
             android:name=".SelectLoginActivity"
             android:exported="true">
@@ -114,12 +89,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ambulance.AmbulanceSearchHospitalActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ambulance.AmbulanceAddPatientActivity"
-            android:exported="true" />
         <activity
             android:name=".GuestSearchReceptionActivity"
             android:exported="true">

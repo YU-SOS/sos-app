@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.ParamedicsRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
+import com.example.sos.retrofit.ParamedicsResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import retrofit2.Call
@@ -38,8 +39,15 @@ class LoadAmbulanceActivity : AppCompatActivity() {
         fetchParamedics(ambulanceId)
 
         val loadParamedicButton = findViewById<Button>(R.id.btn_load_paramedic)
-        loadParamedicButton.setOnClickListener{
+        loadParamedicButton.setOnClickListener {
             val intent = Intent(this, LoadParamedicActivity::class.java)
+            startActivity(intent)
+        }
+
+        val addParamedicButton = findViewById<Button>(R.id.btn_add_paramedic)
+        addParamedicButton.setOnClickListener {
+            val intent = Intent(this, AddParamedicActivity::class.java)
+            intent.putExtra("ambulanceId", ambulanceId) // 구급대 ID 전달
             startActivity(intent)
         }
     }
@@ -47,26 +55,29 @@ class LoadAmbulanceActivity : AppCompatActivity() {
     private fun fetchParamedics(ambulanceId: String) {
         val jwtToken = tokenManager.getAccessToken()
         if (jwtToken != null) {
-            authService.getParamedics("Bearer $jwtToken", ambulanceId).enqueue(object : Callback<List<ParamedicsRes>> {
-                override fun onResponse(call: Call<List<ParamedicsRes>>, response: Response<List<ParamedicsRes>>) {
-                    if (response.isSuccessful) {
-                        val paramedicsList = response.body()
-                        if (!paramedicsList.isNullOrEmpty()) {
-                            val paramedicNames = paramedicsList.map { it.name }
-                            setupParamedicSpinner(paramedicsList, paramedicNames)
+            authService.getParamedics("Bearer $jwtToken", ambulanceId)
+                .enqueue(object : Callback<ParamedicsResponse> {
+                    override fun onResponse(
+                        call: Call<ParamedicsResponse>,
+                        response: Response<ParamedicsResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val paramedicsList = response.body()?.data?.paraResList
+                            if (!paramedicsList.isNullOrEmpty()) {
+                                val paramedicNames = paramedicsList.map { it.name }
+                                setupParamedicSpinner(paramedicsList, paramedicNames)
+                            } else {
+                                setupParamedicSpinner(emptyList(), listOf("구급대원이 없습니다."))
+                            }
                         } else {
-                            // 구급대원이 없는 경우
-                            setupParamedicSpinner(emptyList(), listOf("구급대원이 없습니다."))
+                            showToast("구급대원 로딩 실패")
                         }
-                    } else {
-                        showToast("구급대원 로딩 실패")
                     }
-                }
 
-                override fun onFailure(call: Call<List<ParamedicsRes>>, t: Throwable) {
-                    showToast("Error: ${t.message}")
-                }
-            })
+                    override fun onFailure(call: Call<ParamedicsResponse>, t: Throwable) {
+                        showToast("Error: ${t.message}")
+                    }
+                })
         } else {
             showToast("토큰 오류")
         }
@@ -79,10 +90,12 @@ class LoadAmbulanceActivity : AppCompatActivity() {
 
         paramedicSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                selectedParamedic = paramedicsList[position]
-                selectedParamedic?.let {
-                    tokenManager.saveSelectedParamedicId(it.id) // 선택된 구급대원의 ID 저장 (JWT처럼)
-                    showToast("Selected Paramedic: ${it.name}")
+                if (paramedicsList.isNotEmpty()) {
+                    selectedParamedic = paramedicsList[position]
+                    selectedParamedic?.let {
+                        tokenManager.saveSelectedParamedicId(it.id) // 선택된 구급대원의 ID 저장
+                        showToast("Selected Paramedic: ${it.name}")
+                    }
                 }
             }
 

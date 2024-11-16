@@ -62,4 +62,10 @@
         android:layout_height="wrap_content"
         android:text="구급대원 정보 조회" />
 
+    <Button
+        android:id="@+id/btn_add_paramedic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="구급대원 추가" />
+
 </LinearLayout>

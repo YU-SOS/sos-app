@@ -104,8 +104,13 @@ data class MemberResponse(
 data class ParamedicsResponse(
     val status: Int,
     val message: String,
-    val data: List<ParamedicsRes>
+    val data: ParamedicsListWrapper
 )
+
+data class ParamedicsListWrapper(
+    val paraResList: List<ParamedicsRes>
+)
+
 
 data class ParamedicModifyRequest(
     val name: String,
@@ -135,6 +140,12 @@ data class LoadReceptionResponse(
     val status: Int,
     val message: String,
     val data: ReceptionRes
+)
+
+data class ParamedicModifyResponse(
+    val status: Int,
+    val message: String,
+    val data: String? // 서버에서 반환하는 data 필드, 없으면 null로 처리
 )
 
 
@@ -234,11 +245,11 @@ interface AuthService {
     ): Call<AmbulanceRes>
 
     // 구급대원 정보 조회
-    @GET("/ambulance/{ambulanceId}/paramedic/paramedic")
+    @GET("/ambulance/{ambulanceId}/paramedic")
     fun getParamedics(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String
-    ): Call<List<ParamedicsRes>>
+    ): Call<ParamedicsResponse>
 
     // 구급대원 정보 수정
     @PUT("/ambulance/{ambulanceId}/member/{memberId}")
@@ -247,7 +258,7 @@ interface AuthService {
         @Path("ambulanceId") ambulanceId: String,
         @Path("memberId") memberId: String,
         @Body paramedicUpdateRequest: ParamedicModifyRequest
-    ): Call<Void>
+    ): Call<ParamedicModifyResponse>
 
     // 구급대원 삭제
     @DELETE("/ambulance/{ambulanceId}/member/{memberId}") // 수정: ":" 제거
