@@ -1,8 +1,10 @@
 package com.example.sos.ambulance
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
@@ -21,39 +23,23 @@ class MainActivity : AppCompatActivity() {
         logoutButton = findViewById(R.id.logout)
         val logoutManager = LogoutManager(this, tokenManager)
 
-        val searchHospitalButton = findViewById<Button>(R.id.search_hospital_button)
-        searchHospitalButton.setOnClickListener {
-            val intent = Intent(this, AmbulanceSearchHospitalActivity::class.java)
-            startActivity(intent)
-            //finish()
-        }
-
-        val addPatientButton = findViewById<Button>(R.id.add_patient_button)
+        val addPatientButton = findViewById<ImageButton>(R.id.add)
         addPatientButton.setOnClickListener {
-            val intent = Intent(this, AmbulanceAddPatientActivity::class.java)
+            val intent = Intent(this, AddPatientActivity::class.java)
             startActivity(intent)
             //finish()
         }
 
-        val addMemberButton = findViewById<Button>(R.id.add_member_button)
-        addMemberButton.setOnClickListener{
-            val intent = Intent(this, AmbulanceAddMemberActivity::class.java)
-            startActivity(intent)
-            //finish()
-        }
-
-        val loadAmbulanceButton = findViewById<Button>(R.id.load_ambulance_button)
+        val loadAmbulanceButton = findViewById<ImageButton>(R.id.load)
         loadAmbulanceButton.setOnClickListener{
-            val intent = Intent(this, AmbulanceLoadActivity::class.java)
+            val intent = Intent(this , LoadAmbulanceActivity::class.java)
             startActivity(intent)
-            //finish() 메인 화면은 그대로 유지되는 것이 맞지 않을까요?
         }
 
-        val loadParamedicButton = findViewById<Button>(R.id.load_paramedic_button)
-        loadParamedicButton.setOnClickListener{
-            val intent = Intent(this, AmbulanceLoadParamedicActivity::class.java)
+        val loadHospitalButton = findViewById<ImageButton>(R.id.search)
+        loadHospitalButton.setOnClickListener{
+            val intent = Intent(this, LoadHospitalActivity::class.java)
             startActivity(intent)
-            //finish()
         }
 
         logoutButton.setOnClickListener {

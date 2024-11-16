@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.HospitalRes
+import com.example.sos.Page
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.RetrofitClientInstance
@@ -85,10 +86,10 @@ class UserMapActivity : AppCompatActivity() {
         val categories = listOf("산부인과", "정형외과", "흉부외과", "화상외과", "내과")
         val page = 1
 
-        authService.searchHospital(token, categories, page).enqueue(object : Callback<SearchHospitalResponse> {
-            override fun onResponse(call: Call<SearchHospitalResponse>, response: Response<SearchHospitalResponse>) {
+        authService.getHospitalList(token, categories, page).enqueue(object : Callback<Page<HospitalRes>> {
+            override fun onResponse(call: Call<Page<HospitalRes>>, response: Response<Page<HospitalRes>>) {
                 if (response.isSuccessful) {
-                    response.body()?.data?.hospitals?.let { hospitals ->
+                    response.body()?.content?.let { hospitals ->
                         addLabelsToMap(hospitals)
                     }
                 } else {
@@ -96,8 +97,8 @@ class UserMapActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<SearchHospitalResponse>, t: Throwable) {
-                Log.e("UserMapActivity", "Request Failure: ${t.message}")
+            override fun onFailure(call: Call<Page<HospitalRes>>, t: Throwable) {
+                Log.e("UserMapActivity", "Request Failed: ${t.message}", t)
             }
         })
     }

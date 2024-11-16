@@ -12,10 +12,10 @@ class ParamedicsAdapter(context: Context, paramedicsList: List<ParamedicsRes>) :
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val paramedic = getItem(position)
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.paramedic_item, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_paramedic, parent, false)
 
-        val nameTextView = view.findViewById<TextView>(R.id.text_view_paramedic_name)
-        val phoneTextView = view.findViewById<TextView>(R.id.text_view_paramedic_phone)
+        val nameTextView = view.findViewById<TextView>(R.id.text_view_name)
+        val phoneTextView = view.findViewById<TextView>(R.id.text_view_phone)
 
         nameTextView.text = paramedic?.name
         phoneTextView.text = paramedic?.phoneNumber

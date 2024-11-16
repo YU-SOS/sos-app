@@ -133,7 +133,7 @@ class UserReceptionActivity : AppCompatActivity() {
                             hospitalNameTextView.text = hospital.name
                             hospitalLocationTextView.text = "주소: ${hospital.address}"
                             hospitalPhoneTextView.text = "전화번호: ${hospital.telephoneNumber}"
-                            emergencyRoomStatusTextView.text = "응급실 상태: ${hospital.emergencyRoomStatus ?: "정보 없음"}"
+                            emergencyRoomStatusTextView.text = "응급실 상태: ${hospital.emergencyRoomStatus}"
                             receptionIdTextView.text = "접수번호: ${reception.id}"
 
                             // 환자 정보 설정
