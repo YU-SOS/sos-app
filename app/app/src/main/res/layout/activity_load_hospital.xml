@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="false"
+        app:selectionRequired="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_gynecology"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="산부인과"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_orthopedics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="정형외과"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_chest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="흉부외과"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_burn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="화상외과"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector"/>
+
+        <!-- 내과 버튼 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_internal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내과"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_hospitals"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toggle_group_categories"
+        app:layout_constraintBottom_toTopOf="@id/btn_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="검색"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

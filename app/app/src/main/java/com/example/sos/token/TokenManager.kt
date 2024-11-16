@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.auth0.android.jwt.JWT
+import com.example.sos.ParamedicsRes
 
 class TokenManager(context: Context) {
 
@@ -93,7 +94,7 @@ class TokenManager(context: Context) {
         Log.d("TokenManager", "토큰 삭제 완료")
     }
 
-    // 구급대 입장 환자 접수 고유 번호 저장
+    // 접수 고유 번호 저장
     fun saveReceptionId(receptionId: String) {
         sharedPreferences.edit().apply {
             putString("reception_id", receptionId)
@@ -102,8 +103,20 @@ class TokenManager(context: Context) {
         Log.d("TokenManager", "접수 고유 번호 저장 완료")
     }
 
-    // 접수 고유 번호 가져오기
+    // 저장된 접수 고유 번호 가져오기
     fun getReceptionId(): String? {
         return sharedPreferences.getString("reception_id", null)
     }
+
+    fun saveSelectedParamedicId(paramedicId: String) {
+        sharedPreferences.edit().putString("selected_paramedic_id", paramedicId).apply()
+        Log.d("TokenManager", "선택된 구급대원의 ID 저장 완료")
+    }
+
+    // 저장된 구급대원의 ID 불러오기
+    fun getSelectedParamedicId(): String? {
+        return sharedPreferences.getString("selected_paramedic_id", null)
+    }
+
+
 }

@@ -17,10 +17,6 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters.add("arm64-v8a")
-            abiFilters.add("x86_64")
-        }
     }
 
     buildTypes {
@@ -68,8 +64,7 @@ dependencies {
     implementation("com.auth0.android:jwtdecode:2.0.0")
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation("com.kakao.maps.open:android:2.12.8")
-    implementation("com.getkeepsafe.relinker:relinker:1.4.3")
+    implementation(libs.androidx.recyclerview)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -77,6 +72,8 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.14.2")
     kapt("com.github.bumptech.glide:compiler:4.14.2")
+
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 }
 
 apply(plugin = "com.google.gms.google-services")
