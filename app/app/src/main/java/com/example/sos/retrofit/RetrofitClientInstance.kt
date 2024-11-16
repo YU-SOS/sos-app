@@ -7,32 +7,31 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClientInstance {
-    private const val BASE_URL = "https://api.yu-sos.co.kr"
+    private const val BASE_URL = "http://api.yu-sos.co.kr:8080"
     private var retrofit: Retrofit? = null
 
-    // Interceptor가 포함된 HttpClient 설정
-    private fun getHttpClient(tokenManager: TokenManager): OkHttpClient {
-        val authService = getBasicRetrofitInstance().create(AuthService::class.java)
+    // HttpClient 생성
+    private fun createHttpClient(tokenManager: TokenManager, authService: AuthService): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             .addInterceptor(Interceptor(tokenManager, authService))
             .build()
     }
 
-    // 기본 Retrofit 인스턴스 설정
-    private fun getBasicRetrofitInstance(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    // 모든 API 호출에서 Interceptor가 적용된 AuthService 반환
+    // API 서비스 생성
     fun getApiService(tokenManager: TokenManager): AuthService {
         if (retrofit == null) {
+            val basicRetrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val authService = basicRetrofit.create(AuthService::class.java)
+            val clientWithInterceptor = createHttpClient(tokenManager, authService)
+
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .client(getHttpClient(tokenManager))
+                .client(clientWithInterceptor)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

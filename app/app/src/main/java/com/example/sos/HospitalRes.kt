@@ -8,5 +8,5 @@ data class HospitalRes (
     val imageUrl: String,
     val location: Location,
     val categories: List<CategoryRes>,
-    val emergencyRoomStatus: String?
+    val emergencyRoomStatus: Boolean // 0 수용가능, 1 수용불가
 )

@@ -5,6 +5,7 @@ import com.example.sos.Data
 import com.example.sos.Hospital
 import com.example.sos.HospitalRes
 import com.example.sos.Location
+import com.example.sos.Page
 import com.example.sos.ParamedicsRes
 import com.example.sos.PatientReq
 import com.example.sos.ReceptionGuestRes
@@ -204,11 +205,11 @@ interface AuthService {
 
     // 응급실 목록 조회
     @GET("/hospital")
-    fun searchHospital(
+    fun getHospitalList(
         @Header("Authorization") token: String,
-        @Query("categories") categories: List<String>,
+        @Query("categories") categories: List<String>?,
         @Query("page") page: Int
-    ): Call<SearchHospitalResponse>
+    ): Call<Page<HospitalRes>>
 
     // 응급실 상세 조회
     @GET("/hospital/{hospitalId}")
@@ -227,10 +228,10 @@ interface AuthService {
 
     // 구급대 정보 조회
     @GET("/ambulance/{ambulanceId}")
-    fun getAmbulanceMember(
-        @Header("Authorization") authorization: String,
+    fun getAmbulanceDetails(
+        @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String
-    ): Call<AmbulanceLoadResponse>
+    ): Call<AmbulanceRes>
 
     // 구급대원 정보 조회
     @GET("/ambulance/{ambulanceId}/paramedic/paramedic")
@@ -277,13 +278,6 @@ interface AuthService {
         @Path("receptionId") receptionId: String
     ): Call<LoadReceptionResponse> // 변경된 이름 사용
 
-    // 코멘트 작성 (접수 후)
-    @POST("/{receptionId}/comment")
-    fun addComment(
-        @Header("Authorization") token: String,
-        @Path("receptionId") receptionId: String,
-        @Body body: String
-    ): Call<ReceptionCommentResponse>
 
     @GET("/{receptionId}/guest")
     fun getReceptionGuest(
