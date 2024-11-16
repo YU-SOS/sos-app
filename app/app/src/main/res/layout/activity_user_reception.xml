@@ -9,95 +9,138 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 로그아웃 버튼 포함 -->
-        <include
-            android:id="@+id/logout_button_layout"
-            layout="@layout/logout_button" />
+        <!-- SOS 이미지 -->
+        <ImageView
+            android:id="@+id/sos_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp" />
 
-        <!-- 툴바 설정 -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:title="Map/Reception"
-            app:layout_constraintTop_toTopOf="parent" /> <!-- 툴바 위치를 상단에 고정 -->
-
-        <!-- 접수 ID 입력란 -->
+        <!-- 접수번호 입력란과 조회 버튼 -->
         <EditText
             android:id="@+id/reception_id_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="접수번호를 입력하세요"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_margin="16dp"
+            android:layout_marginTop="48dp"
+            android:background="#E0E0E0"
+            android:hint="접수번호"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/hospital_info_layout"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp" />
+            app:layout_constraintTop_toBottomOf="@id/sos_image" />
 
-        <!-- 병원 조회 버튼 -->
         <Button
             android:id="@+id/get_hospital_info_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="접수 조회"
-            app:layout_constraintTop_toBottomOf="@id/reception_id_input"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#D32F2F"
+            android:text="조회"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@id/reception_id_input"
+            app:layout_constraintTop_toTopOf="@id/reception_id_input" />
+
+        <!-- 카카오톡 공유 버튼 -->
+        <ImageView
+            android:id="@+id/kakao_share_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="120dp"
+            android:src="@drawable/kakao_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
-
-        <!-- 병원 정보 텍스트뷰들 -->
-        <TextView
-            android:id="@+id/hospital_name_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hospital Name:"
-            app:layout_constraintTop_toBottomOf="@id/get_hospital_info_button"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="16dp" />
+            app:layout_constraintTop_toBottomOf="@id/reception_id_input" />
 
-        <TextView
-            android:id="@+id/hospital_location_textview"
-            android:layout_width="wrap_content"
+        <!-- 병원 정보 표시 레이아웃 -->
+        <LinearLayout
+            android:id="@+id/hospital_info_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hospital Location:"
-            app:layout_constraintTop_toBottomOf="@id/hospital_name_textview"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/kakao_share_button"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="16dp" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/hospital_phone_textview"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/hospital_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal" />
+
+            <ImageView
+                android:id="@+id/hospital_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_marginVertical="16dp" />
+
+            <TextView
+                android:id="@+id/hospital_location_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/hospital_phone_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/emergency_room_status_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/reception_id_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/patient_info_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/paramedic_info_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/hospital_comment_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- 로그아웃 버튼 레이아웃 -->
+        <include
+            android:id="@+id/logout_button_layout"
+            layout="@layout/logout_button" />
+
+        <!-- BottomNavigationView 추가 -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hospital Phone:"
-            app:layout_constraintTop_toBottomOf="@id/hospital_location_textview"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="16dp" />
-
-        <TextView
-            android:id="@+id/hospital_comment_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Comment:"
-            app:layout_constraintTop_toBottomOf="@id/hospital_phone_textview"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="16dp" />
-
-        <Button
-            android:id="@+id/share_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="104dp"
-            android:text="카카오톡 공유"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hospital_comment_textview" />
-
+            app:menu="@menu/navigation_menu"
+            app:itemIconTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 네비게이션 바 설정 -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/navigation_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

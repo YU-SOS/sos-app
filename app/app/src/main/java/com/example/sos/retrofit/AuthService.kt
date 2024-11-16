@@ -203,7 +203,7 @@ interface AuthService {
     ): Call<AmbulanceIdDupCheckResponse>
 
     // 응급실 목록 조회
-    @GET("/hospitals/")
+    @GET("/hospital")
     fun searchHospital(
         @Header("Authorization") token: String,
         @Query("categories") categories: List<String>,
