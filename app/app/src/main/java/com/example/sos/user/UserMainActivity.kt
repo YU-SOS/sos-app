@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
-import com.example.sos.SelectLoginActivity
 import com.example.sos.token.TokenManager
 
 class UserMainActivity : AppCompatActivity() {

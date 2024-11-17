@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.res
 
 data class ReceptionGuestRes(
     val hospital: HospitalGuestRes,

@@ -1,15 +1,14 @@
 package com.example.sos.retrofit
 
-import com.example.sos.AmbulanceRes
+import com.example.sos.res.AmbulanceRes
 import com.example.sos.Data
-import com.example.sos.Hospital
-import com.example.sos.HospitalRes
+import com.example.sos.res.HospitalRes
 import com.example.sos.Location
 import com.example.sos.Page
-import com.example.sos.ParamedicsRes
+import com.example.sos.res.ParamedicsRes
 import com.example.sos.PatientReq
-import com.example.sos.ReceptionGuestRes
-import com.example.sos.ReceptionRes
+import com.example.sos.res.ReceptionGuestRes
+import com.example.sos.res.ReceptionRes
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response

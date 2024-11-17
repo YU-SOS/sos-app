@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.sos.HospitalRes
+import com.example.sos.res.HospitalRes
 import com.example.sos.R
 
 class HospitalAdapter(

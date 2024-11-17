@@ -25,7 +25,7 @@ class LogoutManager(private val context: Context, private val tokenManager: Toke
                     if (response.isSuccessful) {
                         Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                         tokenManager.clearTokens()
-                        val intent = Intent(context, SelectLoginActivity::class.java)
+                        val intent = Intent(context, IntroActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         context.startActivity(intent)
                     } else {

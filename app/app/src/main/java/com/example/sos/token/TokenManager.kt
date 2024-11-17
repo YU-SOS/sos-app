@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.auth0.android.jwt.JWT
-import com.example.sos.ParamedicsRes
 
 class TokenManager(context: Context) {
 

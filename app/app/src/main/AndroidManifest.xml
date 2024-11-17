@@ -49,17 +49,23 @@
         <activity
             android:name=".SelectLoginActivity"
             android:exported="true">
+        </activity>
+        <activity
+            android:name=".IntroActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".LoginMainActivity"
+            android:exported="true"/>
+        <activity
             android:name=".ambulance.RegisterAmbulanceActivity"
             android:exported="true" />
         <activity
-            android:name=".ambulance.MainActivity"
+            android:name=".ambulance.AmbulanceMainActivity"
             android:exported="true" />
         <activity
             android:name=".ambulance.LoginAmbulanceActivity"

@@ -7,8 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sos.HospitalRes
-import com.example.sos.Page
+import com.example.sos.res.HospitalRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalLoadResponse

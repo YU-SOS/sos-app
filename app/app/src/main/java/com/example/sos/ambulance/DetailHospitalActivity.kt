@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.sos.HospitalRes
+import com.example.sos.res.HospitalRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalDetailResponse

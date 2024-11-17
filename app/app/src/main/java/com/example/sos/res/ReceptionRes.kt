@@ -1,4 +1,4 @@
-package com.example.sos
+package com.example.sos.res
 
 import java.time.LocalDateTime
 

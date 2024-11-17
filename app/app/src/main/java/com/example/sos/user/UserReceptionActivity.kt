@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.example.sos.GuestSearchReceptionActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
-import com.example.sos.SelectLoginActivity
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ReceptionInfoResponse
 import com.example.sos.retrofit.RetrofitClientInstance

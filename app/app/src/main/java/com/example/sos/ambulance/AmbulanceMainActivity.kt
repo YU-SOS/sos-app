@@ -1,7 +1,6 @@
 package com.example.sos.ambulance
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -10,14 +9,14 @@ import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.token.TokenManager
 
-class MainActivity : AppCompatActivity() {
+class AmbulanceMainActivity : AppCompatActivity() {
 
     private lateinit var logoutButton: Button
     private lateinit var tokenManager: TokenManager // TokenManager 선언
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_ambulance_main)
 
         tokenManager = TokenManager(this)  // TokenManager 초기화
         logoutButton = findViewById(R.id.logout)

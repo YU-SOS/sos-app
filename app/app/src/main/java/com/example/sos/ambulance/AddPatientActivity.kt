@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sos.HospitalRes
+import com.example.sos.res.HospitalRes
 import com.example.sos.PatientReq
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService

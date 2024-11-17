@@ -1,4 +1,6 @@
-package com.example.sos
+package com.example.sos.res
+
+import com.example.sos.Location
 
 data class HospitalGuestRes(
     val name: String,

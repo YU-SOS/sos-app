@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sos.HospitalRes
+import com.example.sos.res.HospitalRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalLoadResponse
@@ -82,8 +82,8 @@ class UserMapActivity : AppCompatActivity() {
     private fun fetchHospitalData() {
         val accessToken = tokenManager.getAccessToken() ?: ""
         val token = "Bearer $accessToken"
-        val categories = listOf("산부인과", "정형외과", "흉부외과", "화상외과", "내과")
-        val page = 1
+        val categories: List<String>? = null
+        val page = 0
 
         authService.getHospitalList(token, categories, page).enqueue(object : Callback<HospitalLoadResponse<HospitalRes>> {
             override fun onResponse(call: Call<HospitalLoadResponse<HospitalRes>>, response: Response<HospitalLoadResponse<HospitalRes>>) {

@@ -147,7 +147,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 if (response.isSuccessful && response.body()?.status == 201) {
                     Toast.makeText(this@RegisterAmbulanceActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@RegisterAmbulanceActivity, MainActivity::class.java))
+                    startActivity(Intent(this@RegisterAmbulanceActivity, AmbulanceMainActivity::class.java))
                 } else {
                     Toast.makeText(this@RegisterAmbulanceActivity, "회원가입 실패: ${response.body()?.message}", Toast.LENGTH_SHORT).show()
                 }

@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sos.ParamedicsRes
+import com.example.sos.res.ParamedicsRes
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicsResponse

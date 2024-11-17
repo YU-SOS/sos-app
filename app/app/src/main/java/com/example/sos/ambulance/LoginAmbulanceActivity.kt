@@ -54,7 +54,7 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                             // 액세스 토큰 저장
                             saveToken(authorizationHeader)
                             Toast.makeText(this@LoginAmbulanceActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginAmbulanceActivity, MainActivity::class.java)) // 메인 화면으로 이동
+                            startActivity(Intent(this@LoginAmbulanceActivity, AmbulanceMainActivity::class.java)) // 메인 화면으로 이동
                             finish()
                         } else {
                             Toast.makeText(this@LoginAmbulanceActivity, "토큰을 받지 못했습니다", Toast.LENGTH_SHORT).show()
