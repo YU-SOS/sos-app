@@ -1,13 +1,11 @@
 package com.example.sos.ambulance
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.sos.HospitalRes
 import com.example.sos.R
@@ -32,15 +30,11 @@ class DetailHospitalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_detail_hospital)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        authService = RetrofitClientInstance.getApiService(TokenManager(this))
+        tokenManager = TokenManager(this) // TokenManager 초기화
+        authService = RetrofitClientInstance.getApiService(tokenManager)
+
         hospitalImage = findViewById(R.id.hospital_image)
         hospitalName = findViewById(R.id.hospital_name)
         hospitalPhone = findViewById(R.id.hospital_phone)
@@ -49,49 +43,66 @@ class DetailHospitalActivity : AppCompatActivity() {
         hospitalStatus = findViewById(R.id.hospital_status)
 
         val hospitalId = intent.getStringExtra("hospitalId")
-        if (hospitalId != null) {
+        if (!hospitalId.isNullOrEmpty()) {
             fetchHospitalDetails(hospitalId)
         } else {
-            Toast.makeText(this, "병원 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "병원 ID를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
 
     private fun fetchHospitalDetails(hospitalId: String) {
         val jwtToken = tokenManager.getAccessToken()
-        if (jwtToken != null) {
-            authService.getHospitalDetails("Bearer $jwtToken", hospitalId).enqueue(object : Callback<HospitalDetailResponse> {
-                override fun onResponse(call: Call<HospitalDetailResponse>, response: Response<HospitalDetailResponse>) {
+        if (jwtToken.isNullOrEmpty()) {
+            Toast.makeText(this, "토큰을 찾을 수 없습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        authService.getHospitalDetails("Bearer $jwtToken", hospitalId)
+            .enqueue(object : Callback<HospitalDetailResponse> {
+                override fun onResponse(
+                    call: Call<HospitalDetailResponse>,
+                    response: Response<HospitalDetailResponse>
+                ) {
                     if (response.isSuccessful) {
                         response.body()?.data?.let { hospital ->
                             displayHospitalDetails(hospital)
+                        } ?: run {
+                            Toast.makeText(this@DetailHospitalActivity, "병원 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     } else {
+                        Log.e("DetailHospitalActivity", "Response error: ${response.message()}")
                         Toast.makeText(this@DetailHospitalActivity, "병원 정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<HospitalDetailResponse>, t: Throwable) {
-                    Toast.makeText(this@DetailHospitalActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("DetailHospitalActivity", "Request failed: ${t.message}")
+                    Toast.makeText(this@DetailHospitalActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
-        } else {
-            Toast.makeText(this, "토큰을 찾을 수 없습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show()
-        }
     }
-
 
     private fun displayHospitalDetails(hospital: HospitalRes) {
         hospitalName.text = hospital.name
         hospitalPhone.text = "전화번호: ${hospital.telephoneNumber}"
         hospitalAddress.text = "주소: ${hospital.address}"
-        hospitalCategories.text = "카테고리: ${hospital.categories.joinToString { it.name }}"
+        hospitalCategories.text = "카테고리: ${
+            if (hospital.categories.isNotEmpty()) hospital.categories.joinToString { it.name } else "없음"
+        }"
 
-        val statusText = if (hospital.emergencyRoomStatus) "수용 가능" else "수용 불가"
+        val statusText = when (hospital.emergencyRoomStatus) {
+            true -> "수용 가능"
+            false -> "수용 불가"
+            else -> "정보 없음"
+        }
         hospitalStatus.text = "응급실 상태: $statusText"
 
         Glide.with(this)
             .load(hospital.imageUrl)
+            .placeholder(R.drawable.image2) // 로딩 중 표시될 이미지
+            .error(R.drawable.image) // 오류 시 표시될 이미지
             .into(hospitalImage)
     }
 }
