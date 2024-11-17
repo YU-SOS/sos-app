@@ -179,10 +179,10 @@ data class HospitalDetailResponse(
     val data: HospitalRes // HospitalRes는 병원 정보를 담고 있는 데이터 클래스
 )
 
-data class ReceptionCommentResponse(
+data class HospitalLoadResponse<T>(
     val status: Int,
     val message: String,
-    val data: String?
+    val data: Page<T>
 )
 
 data class ReceptionGuestResponse(
@@ -220,7 +220,7 @@ interface AuthService {
         @Header("Authorization") token: String,
         @Query("categories") categories: List<String>?,
         @Query("page") page: Int
-    ): Call<Page<HospitalRes>>
+    ): Call<HospitalLoadResponse<HospitalRes>>
 
     // 응급실 상세 조회
     @GET("/hospital/{hospitalId}")

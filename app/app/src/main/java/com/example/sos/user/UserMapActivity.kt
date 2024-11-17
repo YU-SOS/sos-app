@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sos.HospitalRes
-import com.example.sos.Page
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
+import com.example.sos.retrofit.HospitalLoadResponse
 import com.example.sos.retrofit.RetrofitClientInstance
-import com.example.sos.retrofit.SearchHospitalResponse
 import com.example.sos.token.TokenManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.vectormap.KakaoMap
@@ -86,18 +85,21 @@ class UserMapActivity : AppCompatActivity() {
         val categories = listOf("산부인과", "정형외과", "흉부외과", "화상외과", "내과")
         val page = 1
 
-        authService.getHospitalList(token, categories, page).enqueue(object : Callback<Page<HospitalRes>> {
-            override fun onResponse(call: Call<Page<HospitalRes>>, response: Response<Page<HospitalRes>>) {
+        authService.getHospitalList(token, categories, page).enqueue(object : Callback<HospitalLoadResponse<HospitalRes>> {
+            override fun onResponse(call: Call<HospitalLoadResponse<HospitalRes>>, response: Response<HospitalLoadResponse<HospitalRes>>) {
                 if (response.isSuccessful) {
-                    response.body()?.content?.let { hospitals ->
+                    val hospitals = response.body()?.data?.content
+                    if (!hospitals.isNullOrEmpty()) {
                         addLabelsToMap(hospitals)
+                    } else {
+                        Log.e("UserMapActivity", "No hospitals found")
                     }
                 } else {
                     Log.e("UserMapActivity", "Response Error: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<Page<HospitalRes>>, t: Throwable) {
+            override fun onFailure(call: Call<HospitalLoadResponse<HospitalRes>>, t: Throwable) {
                 Log.e("UserMapActivity", "Request Failed: ${t.message}", t)
             }
         })

@@ -1,7 +1,11 @@
 package com.example.sos
 
 data class Page<T>(
-    val content: List<T>, // 데이터 리스트
+    val content: List<T>,
+    val page: PageInfo
+)
+
+data class PageInfo(
     val size: Int,
     val number: Int,
     val totalElements: Int,

@@ -1,97 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
 
-    <!-- LinearLayout for multi-line MaterialButtonToggleGroup -->
-    <LinearLayout
-        android:id="@+id/button_container"
+    <!-- First row of buttons wrapped in MaterialButtonToggleGroup -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:weightSum="2">
+        android:orientation="horizontal"
+        app:singleSelection="false"
+        android:layout_marginBottom="8dp">
 
-        <!-- First row of buttons wrapped in MaterialButtonToggleGroup -->
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggle_group_categories"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_gynecology"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:singleSelection="false"
-            android:layout_marginBottom="8dp">
+            android:text="산부인과"
+            android:layout_weight="1"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_gynecology"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="산부인과"
-                android:layout_weight="1"
-                app:backgroundTint="@color/button_color_selector"
-                android:textColor="@color/button_text_selector" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_orthopedics"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="정형외과"
-                android:layout_weight="1"
-                app:backgroundTint="@color/button_color_selector"
-                android:textColor="@color/button_text_selector" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_chest"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="흉부외과"
-                android:layout_weight="1"
-                app:backgroundTint="@color/button_color_selector"
-                android:textColor="@color/button_text_selector" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <!-- Second row of buttons wrapped in MaterialButtonToggleGroup -->
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggle_group_categories_2"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_orthopedics"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:singleSelection="false"
-            android:layout_marginBottom="8dp">
+            android:text="정형외과"
+            android:layout_weight="1"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_burn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="화상외과"
-                android:layout_weight="1"
-                app:backgroundTint="@color/button_color_selector"
-                android:textColor="@color/button_text_selector" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_chest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="흉부외과"
+            android:layout_weight="1"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_internal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="내과"
-                android:layout_weight="1"
-                app:backgroundTint="@color/button_color_selector"
-                android:textColor="@color/button_text_selector" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+    <!-- Second row of buttons wrapped in MaterialButtonToggleGroup -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_categories_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:singleSelection="false"
+        android:layout_marginBottom="8dp">
 
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_burn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="화상외과"
+            android:layout_weight="1"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector" />
 
-    <!-- RecyclerView for displaying hospitals -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_internal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="내과"
+            android:layout_weight="1"
+            app:backgroundTint="@color/button_color_selector"
+            android:textColor="@color/button_text_selector" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_hospitals"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_container" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        tools:listitem="@layout/item_hospital" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
