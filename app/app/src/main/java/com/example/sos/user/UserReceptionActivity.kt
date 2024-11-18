@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.sos.GuestSearchReceptionActivity
+import com.example.sos.LoginMainActivity
 import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
@@ -58,10 +59,6 @@ class UserReceptionActivity : AppCompatActivity() {
         userLogoutButton.setOnClickListener {
 
             logoutManager.logout()
-
-            val intent = Intent(this, SelectLoginActivity::class.java)
-            startActivity(intent)
-            finish()
         }
 
         // 뷰 초기화

@@ -20,8 +20,6 @@ import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.retrofit.UserLoginResponse
 import com.example.sos.retrofit.UserSignupRequest
 import com.example.sos.token.TokenManager
-import com.example.sos.user.UserLoginActivity
-import com.example.sos.user.UserMainActivity
 import com.example.sos.user.UserMapActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
