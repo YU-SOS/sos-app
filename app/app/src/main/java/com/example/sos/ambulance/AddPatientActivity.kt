@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sos.res.HospitalRes
 import com.example.sos.PatientReq
 import com.example.sos.R
+import com.example.sos.res.HospitalRes
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalLoadResponse
 import com.example.sos.retrofit.ReceptionRequest
 import com.example.sos.retrofit.ReceptionResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.kakao.sdk.user.model.Gender
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddPatientActivity : AppCompatActivity() {
 
@@ -37,6 +39,7 @@ class AddPatientActivity : AppCompatActivity() {
         val inputName = findViewById<EditText>(R.id.input_name)
         val inputAge = findViewById<EditText>(R.id.input_age)
         val inputPhoneNumber = findViewById<EditText>(R.id.input_phoneNumber)
+        val inputSymptom = findViewById<EditText>(R.id.input_symptom)
         val inputMedication = findViewById<EditText>(R.id.input_medication)
         val inputReference = findViewById<EditText>(R.id.input_reference)
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
@@ -49,13 +52,18 @@ class AddPatientActivity : AppCompatActivity() {
             val name = inputName.text.toString().trim()
             val age = inputAge.text.toString().toIntOrNull() ?: 0
             val phoneNumber = inputPhoneNumber.text.toString().trim()
+            val symptom = inputSymptom.text.toString().trim()
             val medication = inputMedication.text.toString().trim()
             val reference = inputReference.text.toString().trim()
-            val gender = radioGroupGender.checkedRadioButtonId == R.id.radio_female
+            val gender = when (radioGroupGender.checkedRadioButtonId) {
+                R.id.radio_male -> Gender.MALE
+                R.id.radio_female -> Gender.FEMALE
+                else -> null
+            }
             val paramedicId = tokenManager.getSelectedParamedicId() ?: ""
 
-            if (name.isEmpty() || phoneNumber.isEmpty()) {
-                Toast.makeText(this, "환자 이름과 전화번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            if (name.isEmpty() || phoneNumber.isEmpty() || gender == null) {
+                Toast.makeText(this, "이름, 전화번호 및 성별을 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -63,6 +71,7 @@ class AddPatientActivity : AppCompatActivity() {
                 name = name,
                 age = age,
                 phoneNumber = phoneNumber,
+                symptom = symptom,
                 medication = medication,
                 reference = reference,
                 gender = gender
@@ -129,7 +138,7 @@ class AddPatientActivity : AppCompatActivity() {
             val receptionRequest = ReceptionRequest(
                 patient = patientReq,
                 hospitalName = hospitalName,
-                startTime = LocalDateTime.now(),
+                startTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
                 paramedicId = paramedicId
             )
 

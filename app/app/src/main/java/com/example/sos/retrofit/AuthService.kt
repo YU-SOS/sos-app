@@ -125,7 +125,7 @@ data class ParamedicDeleteResponse(
 data class ReceptionRequest(
     val patient: PatientReq,
     val hospitalName: String,
-    val startTime: LocalDateTime,
+    val startTime: String,
     val paramedicId: String
 )
 
@@ -275,7 +275,7 @@ interface AuthService {
     ): Call<ReceptionInfoResponse>
 
     // 응급실 접수 생성
-    @POST("/reception/")
+    @POST("/reception")
     fun addReception(
         @Header("Authorization") token: String,
         @Body body: ReceptionRequest
