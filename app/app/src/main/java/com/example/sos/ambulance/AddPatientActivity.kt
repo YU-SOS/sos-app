@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.sos.PatientReq
 import com.example.sos.R
 import com.example.sos.res.HospitalRes
@@ -30,6 +31,26 @@ class AddPatientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_patient)
+
+        // 툴바 가져오기
+        val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
+
+        setSupportActionBar(toolbar)
+
+
+        // 툴바를 액션바로 설정
+        setSupportActionBar(toolbar)
+
+        // 툴바 제목 설정
+        supportActionBar?.title = "환자 접수 등록"
+
+        // 뒤로가기 버튼 활성화
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // 뒤로가기 버튼 클릭 이벤트
+        toolbar.setNavigationOnClickListener {
+            finish() // 현재 액티비티 종료
+        }
 
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)
@@ -145,7 +166,7 @@ class AddPatientActivity : AppCompatActivity() {
             authService.addReception("Bearer $jwtToken", receptionRequest)
                 .enqueue(object : Callback<ReceptionResponse> {
                     override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
-                        if (response.isSuccessful && response.body()?.status == 200) {
+                        if (response.isSuccessful && response.body()?.status == 201) {
                             response.body()?.data?.let { receptionId ->
                                 tokenManager.saveReceptionId(receptionId)
                                 Toast.makeText(this@AddPatientActivity, "접수 생성 완료", Toast.LENGTH_SHORT).show()
