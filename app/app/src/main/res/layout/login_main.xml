@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_layout"
     android:padding="16dp">
 
     <include
@@ -17,29 +19,51 @@
         android:id="@+id/userText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="80dp"
-        android:text="유저"
-        android:textColor="#0000FF"
-        android:textSize="18sp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="200dp"
+        android:text="일반사용자"
+        android:textColor="#746868"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 유저용 ImageButton -->
+    <!-- 유저 바 -->
+    <View
+        android:id="@+id/userBar"
+        android:layout_width="100dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/black"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/userText"
+        app:layout_constraintStart_toStartOf="@id/userText"
+        app:layout_constraintEnd_toEndOf="@id/userText" />
 
     <TextView
         android:id="@+id/ambulanceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="80dp"
         android:text="구급대"
-        android:textColor="#0000FF"
-        android:textSize="18sp"
+        android:textColor="#746868"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 구급대 바 -->
+    <View
+        android:id="@+id/ambulanceBar"
+        android:layout_width="100dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/black"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/ambulanceText"
+        app:layout_constraintStart_toStartOf="@id/ambulanceText"
+        app:layout_constraintEnd_toEndOf="@id/ambulanceText" />
 
     <ImageButton
         android:id="@+id/userImageButton"
@@ -80,12 +104,29 @@
         android:id="@+id/loginButton"
         android:layout_width="300dp"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
         android:text="로그인"
+        android:textColor="@color/white"
+        android:textSize="40dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.205"
+        android:backgroundTint="#F02727"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_password" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <TextView
+        android:id="@+id/registerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="아직 아이디가 없다면? 회원가입하러 가기"
+        android:textColor="#808080"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

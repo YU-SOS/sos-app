@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_map"
-        android:icon="@drawable/user_map"
-        android:title="지도" />
+        android:icon="@drawable/map"
+        android:title="응급실지도" />
     <item
         android:id="@+id/nav_reception"
-        android:icon="@drawable/user_reception"
-        android:title="접수" />
+        android:icon="@drawable/reception"
+        android:title="접수검색" />
 </menu>
