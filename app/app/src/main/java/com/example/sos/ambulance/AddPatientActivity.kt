@@ -2,15 +2,12 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.sos.PatientReq
 import com.example.sos.R
-import com.example.sos.res.HospitalRes
 import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.HospitalLoadResponse
 import com.example.sos.retrofit.ReceptionRequest
 import com.example.sos.retrofit.ReceptionResponse
 import com.example.sos.retrofit.RetrofitClientInstance
@@ -24,29 +21,26 @@ import java.time.format.DateTimeFormatter
 
 class AddPatientActivity : AppCompatActivity() {
 
+    private val LOAD_HOSPITAL_REQUEST_CODE = 1000
     private lateinit var authService: AuthService
     private lateinit var tokenManager: TokenManager
-    private lateinit var hospitalSpinner: Spinner
-    private var selectedHospital: HospitalRes? = null // 선택된 병원 정보를 저장
+    private var selectedHospitalName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_patient)
 
-        // 툴바 가져오기
+        // 툴바 설정
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "환자 접수 등록"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
-            finish() // 현재 액티비티 종료
-        }
+        toolbar.setNavigationOnClickListener { finish() }
 
+        authService = RetrofitClientInstance.getApiService(TokenManager(this))
         tokenManager = TokenManager(this)
-        authService = RetrofitClientInstance.getApiService(tokenManager)
 
         // UI 요소 초기화
-        hospitalSpinner = findViewById(R.id.spinner_hospitals)
         val inputName = findViewById<EditText>(R.id.input_name)
         val inputAge = findViewById<EditText>(R.id.input_age)
         val inputPhoneNumber = findViewById<EditText>(R.id.input_phoneNumber)
@@ -54,11 +48,17 @@ class AddPatientActivity : AppCompatActivity() {
         val inputMedication = findViewById<EditText>(R.id.input_medication)
         val inputReference = findViewById<EditText>(R.id.input_reference)
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
+        val selectHospitalButton = findViewById<Button>(R.id.button)
+        val hospitalTextView = findViewById<TextView>(R.id.textView4)
         val saveButton = findViewById<Button>(R.id.btn_save)
 
-        // 병원 목록 가져오기
-        fetchHospitalList()
+        // 병원 선택 버튼 클릭
+        selectHospitalButton.setOnClickListener {
+            val intent = Intent(this, LoadHospitalActivity::class.java)
+            startActivityForResult(intent, LOAD_HOSPITAL_REQUEST_CODE)
+        }
 
+        // 저장 버튼 클릭
         saveButton.setOnClickListener {
             val name = inputName.text.toString().trim()
             val age = inputAge.text.toString().toIntOrNull() ?: 0
@@ -71,10 +71,9 @@ class AddPatientActivity : AppCompatActivity() {
                 R.id.radio_female -> Gender.FEMALE
                 else -> null
             }
-            val paramedicId = tokenManager.getSelectedParamedicId() ?: ""
 
-            if (name.isEmpty() || phoneNumber.isEmpty() || gender == null) {
-                Toast.makeText(this, "이름, 전화번호 및 성별을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            if (name.isEmpty() || phoneNumber.isEmpty() || gender == null || selectedHospitalName.isNullOrEmpty()) {
+                Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -88,101 +87,50 @@ class AddPatientActivity : AppCompatActivity() {
                 gender = gender
             )
 
-            selectedHospital?.let { hospital ->
-                createReception(patientReq, hospital.name, paramedicId)
-            } ?: run {
-                Toast.makeText(this, "병원을 선택해 주세요.", Toast.LENGTH_SHORT).show()
-            }
+            createReception(patientReq, selectedHospitalName!!)
         }
     }
 
-    private fun fetchHospitalList() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOAD_HOSPITAL_REQUEST_CODE && resultCode == RESULT_OK) {
+            selectedHospitalName = data?.getStringExtra("selectedHospitalName")
+            findViewById<TextView>(R.id.textView4).text = selectedHospitalName ?: "병원을 선택해주세요."
+        }
+    }
+
+    private fun createReception(patientReq: PatientReq, hospitalName: String) {
         val jwtToken = tokenManager.getAccessToken()
-        if (jwtToken != null) {
-            authService.getHospitalList("Bearer $jwtToken", categories = null, page = 0)
-                .enqueue(object : Callback<HospitalLoadResponse<HospitalRes>> {
-                    override fun onResponse(
-                        call: Call<HospitalLoadResponse<HospitalRes>>,
-                        response: Response<HospitalLoadResponse<HospitalRes>>
-                    ) {
-                        if (response.isSuccessful) {
-                            val hospitalList = response.body()?.data?.content
-                            if (!hospitalList.isNullOrEmpty()) {
-                                setupSpinner(hospitalList)
-                            } else {
-                                Toast.makeText(this@AddPatientActivity, "병원이 없습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this@AddPatientActivity, "병원 조회 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<HospitalLoadResponse<HospitalRes>>, t: Throwable) {
-                        Toast.makeText(this@AddPatientActivity, "오류 발생: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
-        } else {
-            Toast.makeText(this, "토큰이 없습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setupSpinner(hospitalList: List<HospitalRes>) {
-        val hospitalNames = hospitalList.map { it.name }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, hospitalNames)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        hospitalSpinner.adapter = adapter
-
-        hospitalSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                selectedHospital = hospitalList[position]
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                selectedHospital = null
-            }
-        }
-    }
-
-    private fun createReception(patientReq: PatientReq, hospitalName: String, paramedicId: String) {
-        val jwtToken = tokenManager.getAccessToken()
-        if (jwtToken != null) {
-            val receptionRequest = ReceptionRequest(
-                patient = patientReq,
-                hospitalName = hospitalName,
-                startTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
-                paramedicId = paramedicId
-            )
-
-            authService.addReception("Bearer $jwtToken", receptionRequest)
-                .enqueue(object : Callback<ReceptionResponse> {
-                    override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
-                        if (response.isSuccessful && response.body()?.status == 201) {
-                            response.body()?.data?.let { receptionId ->
-                                tokenManager.saveReceptionId(receptionId)
-                                Toast.makeText(this@AddPatientActivity, "접수 생성 완료", Toast.LENGTH_SHORT).show()
-                                navigateToViewPatientActivity()
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@AddPatientActivity,
-                                "접수 생성 실패: ${response.body()?.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ReceptionResponse>, t: Throwable) {
-                        Toast.makeText(this@AddPatientActivity, "오류 발생: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
-        } else {
+        if (jwtToken.isNullOrEmpty()) {
             Toast.makeText(this, "토큰 오류. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
+            return
         }
-    }
 
-    private fun navigateToViewPatientActivity() {
-        val intent = Intent(this, ViewPatientActivity::class.java)
-        startActivity(intent)
-        finish() // AddPatientActivity 종료
+        val receptionRequest = ReceptionRequest(
+            patient = patientReq,
+            hospitalName = hospitalName,
+            startTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+            paramedicId = tokenManager.getSelectedParamedicId() ?: ""
+        )
+
+        authService.addReception("Bearer $jwtToken", receptionRequest)
+            .enqueue(object : Callback<ReceptionResponse> {
+                override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
+                    if (response.isSuccessful && response.body()?.status == 201) {
+                        Toast.makeText(this@AddPatientActivity, "접수 요청이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        finish() // AddPatientActivity 종료
+                    } else {
+                        Toast.makeText(
+                            this@AddPatientActivity,
+                            "접수 요청 실패: ${response.message()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ReceptionResponse>, t: Throwable) {
+                    Toast.makeText(this@AddPatientActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }

@@ -26,29 +26,26 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="24dp"
         android:paddingBottom="8dp"
-        android:text="병원 선택"
-        android:textSize="18sp"
+        android:text="병원선택"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_reference" />
-
-    <Spinner
-        android:id="@+id/spinner_hospitals"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="4dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <!-- 이름 -->
 
     <!-- 성별 -->
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:paddingBottom="8dp"
+        android:text="병원을 선택해주세요."
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@id/input_reference" />
+
     <EditText
         android:id="@+id/input_name"
         android:layout_width="0dp"
@@ -232,6 +229,7 @@
         app:layout_constraintStart_toEndOf="@+id/label_reference"
         app:layout_constraintTop_toBottomOf="@id/input_medication" />
 
+
     <!-- 접수 버튼 -->
     <Button
         android:id="@+id/btn_save"
@@ -245,5 +243,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="119dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red"
+        android:text="병원선택"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.683"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/input_reference" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

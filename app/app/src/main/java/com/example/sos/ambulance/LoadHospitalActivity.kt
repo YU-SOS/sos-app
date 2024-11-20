@@ -25,6 +25,8 @@ class LoadHospitalActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var hospitalAdapter: HospitalAdapter
 
+    private val selectedCategories = mutableSetOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_hospital)
@@ -34,57 +36,52 @@ class LoadHospitalActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycler_view_hospitals)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        hospitalAdapter = HospitalAdapter { hospitalId ->
-            val intent = Intent(this, DetailHospitalActivity::class.java)
-            intent.putExtra("hospitalId", hospitalId)
-            startActivity(intent)
+        hospitalAdapter = HospitalAdapter { _, hospitalName ->
+            val intent = Intent().apply {
+                putExtra("selectedHospitalName", hospitalName)
+            }
+            setResult(RESULT_OK, intent)
+            finish() // LoadHospitalActivity 종료
         }
         recyclerView.adapter = hospitalAdapter
 
         // 초기 병원 목록 로드
-        fetchHospitals(null)
+        fetchHospitals()
 
-        // 카테고리 버튼 그룹 설정
-        setupCategoryToggleButtons()
+        // 카테고리 버튼 설정
+        setupCategoryButtons()
     }
 
-    private fun setupCategoryToggleButtons() {
-        val buttonIds = listOf(
-            R.id.button_gynecology to "산부인과",
+    private fun setupCategoryButtons() {
+        val buttonCategoryMap = mapOf(
+            R.id.button_internal to "내과",
             R.id.button_orthopedics to "정형외과",
+            R.id.button_gynecology to "산부인과",
             R.id.button_chest to "흉부외과",
-            R.id.button_burn to "화상외과",
-            R.id.button_internal to "내과"
+            R.id.button_burn to "화상외과"
         )
 
-        buttonIds.forEach { (buttonId, _) ->
-            findViewById<MaterialButton>(buttonId).setOnClickListener {
-                fetchHospitals(getSelectedCategories(buttonIds))
-            }
-        }
-    }
-
-    private fun getSelectedCategories(buttonIds: List<Pair<Int, String>>): List<String> {
-        val selectedCategories = mutableListOf<String>()
-
-        buttonIds.forEach { (buttonId, categoryName) ->
+        buttonCategoryMap.forEach { (buttonId, category) ->
             val button = findViewById<MaterialButton>(buttonId)
-            if (button.isChecked) {
-                selectedCategories.add(categoryName)
+            button.setOnClickListener {
+                if (selectedCategories.contains(category)) {
+                    selectedCategories.remove(category) // 선택 해제
+                } else {
+                    selectedCategories.add(category) // 선택
+                }
+                fetchHospitals() // 병원 목록 다시 검색
             }
         }
-
-        return selectedCategories
     }
 
-    private fun fetchHospitals(categories: List<String>?) {
+    private fun fetchHospitals() {
         val jwtToken = tokenManager.getAccessToken()
         if (jwtToken.isNullOrEmpty()) {
             Toast.makeText(this, "No token found. Please log in again.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        authService.getHospitalList("Bearer $jwtToken", categories = categories, page = 0)
+        authService.getHospitalList("Bearer $jwtToken", categories = selectedCategories.toList(), page = 0)
             .enqueue(object : Callback<HospitalLoadResponse<HospitalRes>> {
                 override fun onResponse(
                     call: Call<HospitalLoadResponse<HospitalRes>>,

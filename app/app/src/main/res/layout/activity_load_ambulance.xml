@@ -2,14 +2,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white">
 
     <!-- Toolbar 포함 -->
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/white" />
 
     <!-- 구급차 이미지 -->
     <ImageView
@@ -19,7 +21,8 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:src="@drawable/image2"
-        android:contentDescription="Ambulance Image" />
+        android:contentDescription="Ambulance Image"
+        android:background="@android:color/white" />
 
     <!-- 구급차 이름 -->
     <TextView
@@ -30,7 +33,8 @@
         android:textSize="30dp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white" />
 
     <!-- 구급대원 추가 버튼 -->
     <Button
@@ -39,7 +43,7 @@
         android:layout_height="wrap_content"
         android:text="구급대원 추가"
         android:layout_gravity="center"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@android:color/white"
         android:textColor="@android:color/black"
         android:layout_marginBottom="16dp" />
 
@@ -49,13 +53,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white" />
 
     <!-- 구분선 -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#CCCCCC"
+        android:background="@android:color/white"
         android:layout_marginBottom="16dp" />
 
     <!-- 버튼 섹션 -->
@@ -63,7 +68,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="@android:color/white">
 
         <!-- 첫 번째 버튼 섹션 -->
         <LinearLayout
@@ -71,7 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@android:color/white">
 
             <ImageButton
                 android:id="@+id/btn_image_1"
@@ -89,7 +96,8 @@
                 android:text="접수 요청"
                 android:textSize="14dp"
                 android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:background="@android:color/white" />
         </LinearLayout>
 
         <!-- 두 번째 버튼 섹션 -->
@@ -98,7 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@android:color/white">
 
             <ImageButton
                 android:id="@+id/btn_image_2"
@@ -116,7 +125,8 @@
                 android:text="마이 페이지"
                 android:textSize="14dp"
                 android:layout_marginTop="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:background="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
