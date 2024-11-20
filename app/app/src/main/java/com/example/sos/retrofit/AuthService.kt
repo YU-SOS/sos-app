@@ -272,6 +272,13 @@ interface AuthService {
         @Path("receptionId") receptionId: String
     ): Call<ReceptionInfoResponse>
 
+    // 앰뷸런스 응급실 접수 조회
+    @GET("/reception/{receptionId}")
+    fun getReceptionDetails(
+        @Header("Authorization") token: String,
+        @Path("receptionId") receptionId: String
+    ): Call<LoadReceptionResponse> // 변경된 이름 사용
+
     // 응급실 접수 생성
     @POST("/reception")
     fun addReception(
