@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicDeleteResponse
@@ -27,7 +28,12 @@ class DetailParamedicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_paramedic)
 
-        Log.d("DetailParamedicActivity", "onCreate started")
+        // 툴바 설정
+        val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "구급대원 정보"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
 
         try {
             authService = RetrofitClientInstance.getApiService(TokenManager(this))

@@ -1,0 +1,112 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <include
+        android:id="@+id/tool_bar2"
+        layout="@layout/tool_bar_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 상태 텍스트 -->
+    <TextView
+        android:id="@+id/reception_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="상태 없음"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tool_bar2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- 병원 정보 -->
+    <TextView
+        android:id="@+id/hospital_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="병원 이름"
+        app:layout_constraintTop_toBottomOf="@id/reception_status"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/hospital_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="병원 주소"
+        app:layout_constraintTop_toBottomOf="@id/hospital_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/hospital_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="병원 연락처"
+        app:layout_constraintTop_toBottomOf="@id/hospital_address"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/hospital_phone"
+        android:layout_marginTop="16dp" />
+
+    <!-- 환자 정보 -->
+    <TextView
+        android:id="@+id/patient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환자 이름"
+        app:layout_constraintTop_toBottomOf="@id/hospital_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/patient_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환자 나이"
+        app:layout_constraintTop_toBottomOf="@id/patient_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/patient_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환자 전화번호"
+        app:layout_constraintTop_toBottomOf="@id/patient_age"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/patient_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환자 성별"
+        app:layout_constraintTop_toBottomOf="@id/patient_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- 새로고침 버튼 -->
+    <Button
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새로고침"
+        app:layout_constraintTop_toBottomOf="@id/patient_gender"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

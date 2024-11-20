@@ -68,7 +68,9 @@ data class AmbulanceRequest(
 )
 
 data class AmbulanceResponse(
-    val name: String
+    val status: Int,
+    val message: String,
+    val data: AmbulanceRes
 )
 
 data class AmbulanceIdDupCheckResponse(
@@ -103,11 +105,7 @@ data class MemberResponse(
 data class ParamedicsResponse(
     val status: Int,
     val message: String,
-    val data: ParamedicsListWrapper
-)
-
-data class ParamedicsListWrapper(
-    val paraResList: List<ParamedicsRes>
+    val data: List<ParamedicsRes>
 )
 
 
@@ -241,7 +239,7 @@ interface AuthService {
     fun getAmbulanceDetails(
         @Header("Authorization") token: String,
         @Path("ambulanceId") ambulanceId: String
-    ): Call<AmbulanceRes>
+    ): Call<AmbulanceResponse>
 
     // 구급대원 정보 조회
     @GET("/ambulance/{ambulanceId}/paramedic")

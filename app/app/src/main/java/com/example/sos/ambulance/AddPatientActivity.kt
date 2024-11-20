@@ -1,9 +1,11 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.sos.PatientReq
 import com.example.sos.R
 import com.example.sos.res.HospitalRes
@@ -30,6 +32,15 @@ class AddPatientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_patient)
+
+        // 툴바 가져오기
+        val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "환자 접수 등록"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            finish() // 현재 액티비티 종료
+        }
 
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)
@@ -145,11 +156,11 @@ class AddPatientActivity : AppCompatActivity() {
             authService.addReception("Bearer $jwtToken", receptionRequest)
                 .enqueue(object : Callback<ReceptionResponse> {
                     override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
-                        if (response.isSuccessful && response.body()?.status == 200) {
+                        if (response.isSuccessful && response.body()?.status == 201) {
                             response.body()?.data?.let { receptionId ->
                                 tokenManager.saveReceptionId(receptionId)
                                 Toast.makeText(this@AddPatientActivity, "접수 생성 완료", Toast.LENGTH_SHORT).show()
-                                finish()
+                                navigateToViewPatientActivity()
                             }
                         } else {
                             Toast.makeText(
@@ -167,5 +178,11 @@ class AddPatientActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "토큰 오류. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToViewPatientActivity() {
+        val intent = Intent(this, ViewPatientActivity::class.java)
+        startActivity(intent)
+        finish() // AddPatientActivity 종료
     }
 }
