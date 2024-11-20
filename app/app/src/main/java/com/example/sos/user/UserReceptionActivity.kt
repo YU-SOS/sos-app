@@ -127,7 +127,7 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         val accessToken = tokenManager.getAccessToken()
 
         accessToken?.let {
-            apiService.getReceptionInfo("Bearer $it", receptionId).enqueue(object :
+            apiService.getReceptionInfo("Bearer $accessToken", receptionId).enqueue(object :
                 Callback<ReceptionInfoResponse> {
                 override fun onResponse(
                     call: Call<ReceptionInfoResponse>,

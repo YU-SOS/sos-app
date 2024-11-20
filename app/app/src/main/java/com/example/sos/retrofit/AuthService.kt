@@ -268,7 +268,7 @@ interface AuthService {
     ): Call<ParamedicDeleteResponse>
 
     // 응급실 접수 조회
-    @GET("/{receptionId}")
+    @GET("/reception/{receptionId}")
     fun getReceptionInfo(
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String
@@ -281,15 +281,7 @@ interface AuthService {
         @Body body: ReceptionRequest
     ): Call<ReceptionResponse>
 
-    // 앰뷸런스 응급실 접수 조회
-    @GET("/reception/{receptionId}")
-    fun getReceptionDetails(
-        @Header("Authorization") token: String,
-        @Path("receptionId") receptionId: String
-    ): Call<LoadReceptionResponse> // 변경된 이름 사용
-
-
-    @GET("/{receptionId}/guest")
+    @GET("/reception/{receptionId}/guest")
     fun getReceptionGuest(
         @Path("receptionId") receptionId: String
     ): Call<ReceptionGuestResponse>

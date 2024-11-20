@@ -14,7 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.sos.retrofit.AuthService
-import com.example.sos.retrofit.ReceptionInfoResponse
+import com.example.sos.retrofit.ReceptionGuestResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
 import com.kakao.sdk.share.ShareClient
@@ -44,11 +44,7 @@ class GuestSearchReceptionActivity : AppCompatActivity() {
         val hospitalNameTextView: TextView = findViewById(R.id.hospital_name_textview)
         val hospitalLocationTextView: TextView = findViewById(R.id.hospital_location_textview)
         val hospitalPhoneTextView: TextView = findViewById(R.id.hospital_phone_textview)
-        val emergencyRoomStatusTextView: TextView = findViewById(R.id.emergency_room_status_textview)
-        val receptionIdTextView: TextView = findViewById(R.id.reception_id_textview)
-        val patientInfoTextView: TextView = findViewById(R.id.patient_info_textview)
         val paramedicInfoTextView: TextView = findViewById(R.id.paramedic_info_textview)
-        val hospitalCommentTextView: TextView = findViewById(R.id.hospital_comment_textview)
         val hospitalImage: ImageView = findViewById(R.id.hospital_image)
         val hospitalInfoLayout: LinearLayout = findViewById(R.id.hospital_info_layout)
         shareButton = findViewById(R.id.kakao_share_button)
@@ -62,11 +58,7 @@ class GuestSearchReceptionActivity : AppCompatActivity() {
                     hospitalNameTextView,
                     hospitalLocationTextView,
                     hospitalPhoneTextView,
-                    emergencyRoomStatusTextView,
-                    receptionIdTextView,
-                    patientInfoTextView,
                     paramedicInfoTextView,
-                    hospitalCommentTextView,
                     hospitalImage,
                     hospitalInfoLayout
                 )
@@ -85,69 +77,50 @@ class GuestSearchReceptionActivity : AppCompatActivity() {
         hospitalNameTextView: TextView,
         hospitalLocationTextView: TextView,
         hospitalPhoneTextView: TextView,
-        emergencyRoomStatusTextView: TextView,
-        receptionIdTextView: TextView,
-        patientInfoTextView: TextView,
         paramedicInfoTextView: TextView,
-        hospitalCommentTextView: TextView,
         hospitalImage: ImageView,
         hospitalInfoLayout: LinearLayout
     ) {
-        val accessToken = tokenManager.getAccessToken()
 
-        accessToken?.let {
-            apiService.getReceptionInfo("Bearer $it", receptionId).enqueue(object :
-                Callback<ReceptionInfoResponse> {
-                override fun onResponse(
-                    call: Call<ReceptionInfoResponse>,
-                    response: Response<ReceptionInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { receptionInfoResponse ->
-                            val reception = receptionInfoResponse.data
-                            val hospital = reception.hospital
-                            val patient = reception.patient
-                            val paramedic = reception.paramedicRes
-                            val comments = reception.comments
+        apiService.getReceptionGuest(receptionId).enqueue(object : Callback<ReceptionGuestResponse> {
+            override fun onResponse(
+                call: Call<ReceptionGuestResponse>,
+                response: Response<ReceptionGuestResponse>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { receptionGuestResponse ->
+                        val hospital = receptionGuestResponse.data.hospital
+                        val ambulance = receptionGuestResponse.data.ambulance
 
-                            // 병원 정보 설정
-                            hospitalNameTextView.text = hospital.name
-                            hospitalLocationTextView.text = "주소: ${hospital.address}"
-                            hospitalPhoneTextView.text = "전화번호: ${hospital.telephoneNumber}"
-                            emergencyRoomStatusTextView.text = "응급실 상태: ${hospital.emergencyRoomStatus}"
-                            receptionIdTextView.text = "접수번호: ${reception.id}"
+                        // 병원 정보 설정
+                        hospitalNameTextView.text = "병원 이름: ${hospital.name}"
+                        hospitalLocationTextView.text = "병원 주소: ${hospital.address}"
+                        hospitalPhoneTextView.text = "병원 위치: (${hospital.location.latitude}, ${hospital.location.longitude})"
 
-                            // 환자 정보 설정
-                            patientInfoTextView.text = "환자 정보: ${patient.name}, ${patient.age}세, ${patient.gender}"
+                        // 병원 이미지 로드 (Glide 사용)
+                        Glide.with(this@GuestSearchReceptionActivity)
+                            .load(hospital.imageUrl)
+                            .into(hospitalImage)
 
-                            // 구급대원 정보 설정
-                            paramedicInfoTextView.text = "구급대원 정보: ${paramedic.name}, 전화번호: ${paramedic.phoneNumber}"
+                        // 구급차 정보 출력 (필요 시 추가)
+                        paramedicInfoTextView.text = "구급차 이름: ${ambulance.name}, 주소: ${ambulance.address}"
 
-                            // 코멘트 설정
-                            val comment = if (comments.isNotEmpty()) comments[0].content else "No comments"
-                            hospitalCommentTextView.text = "코멘트: $comment"
+                        // 병원 정보 레이아웃 표시
+                        hospitalInfoLayout.visibility = View.VISIBLE
 
-                            // 병원 이미지 로드 (Glide 사용 예)
-                            Glide.with(this@GuestSearchReceptionActivity)
-                                .load(hospital.imageUrl)
-                                .into(hospitalImage)
-
-                            // 병원 정보 레이아웃 표시
-                            hospitalInfoLayout.visibility = View.VISIBLE
-                            Toast.makeText(this@GuestSearchReceptionActivity, "조회 성공", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Toast.makeText(this@GuestSearchReceptionActivity, "조회 실패 ${response.message()}", Toast.LENGTH_SHORT).show()
-                        Log.e("Reception", "Failed to fetch hospital info: ${response.message()}")
+                        Toast.makeText(this@GuestSearchReceptionActivity, "조회 성공", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Toast.makeText(this@GuestSearchReceptionActivity, "조회 실패 ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Log.e("Reception", "Failed to fetch reception guest info: ${response.message()}")
                 }
+            }
 
-                override fun onFailure(call: Call<ReceptionInfoResponse>, t: Throwable) {
-                    Toast.makeText(this@GuestSearchReceptionActivity, "조회 실패 ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("Reception", "Error: ${t.message}")
-                }
-            })
-        }
+            override fun onFailure(call: Call<ReceptionGuestResponse>, t: Throwable) {
+                Toast.makeText(this@GuestSearchReceptionActivity, "조회 실패 ${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Reception", "Error: ${t.message}")
+            }
+        })
     }
 
     // 카카오톡 공유 기능 추가 (앱 링크)
