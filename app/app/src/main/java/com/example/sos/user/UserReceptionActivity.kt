@@ -31,6 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import com.google.android.material.navigation.NavigationView
+import java.util.UUID
 
 class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -88,19 +89,24 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         getHospitalInfoButton.setOnClickListener {
             val receptionId = receptionIdInput.text.toString()
             if (receptionId.isNotEmpty()) {
-                getReceptionInfo(
-                    receptionId,
-                    hospitalNameTextView,
-                    hospitalLocationTextView,
-                    hospitalPhoneTextView,
-                    emergencyRoomStatusTextView,
-                    receptionIdTextView,
-                    patientInfoTextView,
-                    paramedicInfoTextView,
-                    hospitalCommentTextView,
-                    hospitalImage,
-                    hospitalInfoLayout
-                )
+                try {
+                    UUID.fromString(receptionId)
+                    getReceptionInfo(
+                        receptionId,
+                        hospitalNameTextView,
+                        hospitalLocationTextView,
+                        hospitalPhoneTextView,
+                        emergencyRoomStatusTextView,
+                        receptionIdTextView,
+                        patientInfoTextView,
+                        paramedicInfoTextView,
+                        hospitalCommentTextView,
+                        hospitalImage,
+                        hospitalInfoLayout
+                    )
+                } catch (e: IllegalArgumentException) {
+                    Toast.makeText(this, "올바른 접수번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -151,8 +157,12 @@ class UserReceptionActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                             // 환자 정보 설정
                             patientInfoTextView.text = "환자 정보: ${patient.name}, ${patient.age}세, ${patient.gender}"
 
-                            // 구급대원 정보 설정
-                            paramedicInfoTextView.text = "구급대원 정보: ${paramedic.name}, 전화번호: ${paramedic.phoneNumber}"
+                            // 구급대원 정보 설정 (null 체크)
+                            if (paramedic != null) {
+                                paramedicInfoTextView.text = "구급대원 정보: ${paramedic.name}, 전화번호: ${paramedic.phoneNumber}"
+                            } else {
+                                paramedicInfoTextView.text = "구급대원 정보 없음"
+                            }
 
                             // 코멘트 설정
                             val comment = if (comments.isNotEmpty()) comments[0].content else "No comments"

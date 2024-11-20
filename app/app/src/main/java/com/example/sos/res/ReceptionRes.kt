@@ -1,7 +1,5 @@
 package com.example.sos.res
 
-import java.time.LocalDateTime
-
 data class ReceptionRes(
     val id: String,
     val startTime: String,
