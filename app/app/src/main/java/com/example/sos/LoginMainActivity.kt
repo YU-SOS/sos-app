@@ -2,18 +2,22 @@ package com.example.sos
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.AmbulanceMainActivity
 import com.example.sos.ambulance.LoginAmbulanceActivity
+import com.example.sos.ambulance.RegisterAmbulanceActivity
 import com.example.sos.retrofit.LoginRequest
 import com.example.sos.retrofit.LoginResponse
 import com.example.sos.retrofit.RetrofitClientInstance
@@ -32,43 +36,65 @@ class LoginMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_main)
 
-        // UI 요소 초기화
+        // 텍스트와 바 초기화
         val userText = findViewById<TextView>(R.id.userText)
         val ambulanceText = findViewById<TextView>(R.id.ambulanceText)
+        val userBar = findViewById<View>(R.id.userBar)
+        val ambulanceBar = findViewById<View>(R.id.ambulanceBar)
 
         val userImageButton = findViewById<ImageButton>(R.id.userImageButton)
         val inputField1 = findViewById<EditText>(R.id.edit_text_username)
         val inputField2 = findViewById<EditText>(R.id.edit_text_password)
         val loginButton = findViewById<Button>(R.id.loginButton)
+        val registerText = findViewById<TextView>(R.id.registerText)
+        registerText.paintFlags = registerText.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
 
-        // 유저 클릭 시
+        // 유저 텍스트 클릭 시
         userText.setOnClickListener {
-            // 유저용 ImageButton 표시
+            // 텍스트 스타일 변경
+            userText.setTypeface(null, Typeface.BOLD)
+            userText.setTextColor(resources.getColor(R.color.black, null))
+            ambulanceText.setTypeface(null, Typeface.NORMAL)
+
+            // 바 표시/숨김
+            userBar.visibility = View.VISIBLE
+            ambulanceBar.visibility = View.GONE
+
+            // 유저용 요소 표시
             userImageButton.visibility = View.VISIBLE
 
             // 구급대용 요소 숨김
             inputField1.visibility = View.GONE
             inputField2.visibility = View.GONE
             loginButton.visibility = View.GONE
+            registerText.visibility = View.GONE
         }
 
-        // 구급대 클릭 시
+        // 구급대 텍스트 클릭 시
         ambulanceText.setOnClickListener {
+            // 텍스트 스타일 변경
+            ambulanceText.setTypeface(null, Typeface.BOLD)
+            ambulanceText.setTextColor(resources.getColor(R.color.black, null))
+            userText.setTypeface(null, Typeface.NORMAL)
+
+            // 바 표시/숨김
+            ambulanceBar.visibility = View.VISIBLE
+            userBar.visibility = View.GONE
+
             // 구급대용 요소 표시
             inputField1.visibility = View.VISIBLE
             inputField2.visibility = View.VISIBLE
             loginButton.visibility = View.VISIBLE
+            registerText.visibility = View.VISIBLE
 
             // 유저용 요소 숨김
             userImageButton.visibility = View.GONE
         }
 
         //AmbulanceLogin 부분
-
         // 사용자 입력 필드 가져오기
         val usernameEditText = findViewById<EditText>(R.id.edit_text_username)
         val passwordEditText = findViewById<EditText>(R.id.edit_text_password)
-        //val registerButton = findViewById<Button>(R.id.btn_register)
 
         // 로그인 버튼 클릭 시 동작
         loginButton.setOnClickListener {
@@ -112,18 +138,16 @@ class LoginMainActivity : AppCompatActivity() {
         }
 
         // 회원가입 버튼 클릭 시 동작
-        /*registerButton.setOnClickListener {
-            startActivity(Intent(this, RegisterAmbulanceActivity::class.java)) // 회원가입 화면으로 이동
-            finish()
-        }*/
+        registerText.setOnClickListener {
+            val intent = Intent(this, RegisterAmbulanceActivity::class.java)
+            startActivity(intent)
+        }
 
         //UserLogin부분
         val kakaoLoginButton: ImageButton = findViewById(R.id.userImageButton)
         kakaoLoginButton.setOnClickListener {
             kakaoLogin()
         }
-
-
     }
 
     //AmbulanceLogin부분
