@@ -1,5 +1,6 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -34,20 +35,9 @@ class AddPatientActivity : AppCompatActivity() {
 
         // 툴바 가져오기
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
-
         setSupportActionBar(toolbar)
-
-
-        // 툴바를 액션바로 설정
-        setSupportActionBar(toolbar)
-
-        // 툴바 제목 설정
         supportActionBar?.title = "환자 접수 등록"
-
-        // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        // 뒤로가기 버튼 클릭 이벤트
         toolbar.setNavigationOnClickListener {
             finish() // 현재 액티비티 종료
         }
@@ -170,7 +160,7 @@ class AddPatientActivity : AppCompatActivity() {
                             response.body()?.data?.let { receptionId ->
                                 tokenManager.saveReceptionId(receptionId)
                                 Toast.makeText(this@AddPatientActivity, "접수 생성 완료", Toast.LENGTH_SHORT).show()
-                                finish()
+                                navigateToViewPatientActivity()
                             }
                         } else {
                             Toast.makeText(
@@ -188,5 +178,11 @@ class AddPatientActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "토큰 오류. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToViewPatientActivity() {
+        val intent = Intent(this, ViewPatientActivity::class.java)
+        startActivity(intent)
+        finish() // AddPatientActivity 종료
     }
 }

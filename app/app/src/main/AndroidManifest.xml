@@ -23,6 +23,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ambulance.ViewPatientActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Sos" />
+        <activity
             android:name=".ambulance.AddParamedicActivity"
             android:exported="true" />
         <activity
@@ -48,19 +52,19 @@
             android:exported="true" />
         <activity
             android:name=".SelectLoginActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginMainActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ambulance.RegisterAmbulanceActivity"
             android:exported="true" />

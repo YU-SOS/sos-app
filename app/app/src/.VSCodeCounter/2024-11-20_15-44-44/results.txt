@@ -1,0 +1,82 @@
+Date : 2024-11-20 15:44:44
+Directory : c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src
+Total : 43 files,  1795 codes, 88 comments, 194 blanks, all 2077 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| XML      |         43 |      1,795 |         88 |        194 |      2,077 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                   | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                      |         43 |      1,795 |         88 |        194 |      2,077 |
+| main                                                                                                   |         43 |      1,795 |         88 |        194 |      2,077 |
+| main (Files)                                                                                           |          1 |        124 |          1 |         10 |        135 |
+| main\res                                                                                               |         42 |      1,671 |         87 |        184 |      1,942 |
+| main\res\color                                                                                         |          2 |         10 |          4 |          2 |         16 |
+| main\res\drawable                                                                                      |          2 |        200 |          0 |          1 |        201 |
+| main\res\layout                                                                                        |         24 |      1,344 |         51 |        177 |      1,572 |
+| main\res\menu                                                                                          |          1 |         10 |          0 |          1 |         11 |
+| main\res\mipmap-anydpi                                                                                 |          2 |         12 |          0 |          0 |         12 |
+| main\res\values                                                                                        |          4 |         67 |          4 |          3 |         74 |
+| main\res\values-land                                                                                   |          1 |          3 |          0 |          0 |          3 |
+| main\res\values-night                                                                                  |          1 |          4 |          3 |          0 |          7 |
+| main\res\values-v23                                                                                    |          1 |          7 |          1 |          0 |          8 |
+| main\res\values-w1240dp                                                                                |          1 |          3 |          0 |          0 |          3 |
+| main\res\values-w600dp                                                                                 |          1 |          3 |          0 |          0 |          3 |
+| main\res\xml                                                                                           |          2 |          8 |         24 |          0 |         32 |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                               | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\AndroidManifest.xml                            | XML      |        124 |          1 |         10 |        135 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\color\button_color_selector.xml            | XML      |          5 |          2 |          1 |          8 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\color\button_text_selector.xml             | XML      |          5 |          2 |          1 |          8 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\drawable\ic_launcher_background.xml        | XML      |        170 |          0 |          1 |        171 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\drawable\ic_launcher_foreground.xml        | XML      |         30 |          0 |          0 |         30 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_add_paramedic.xml          | XML      |         46 |          3 |          7 |         56 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_add_patient.xml            | XML      |        215 |         10 |         23 |        248 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_ambulance_main.xml         | XML      |         68 |          0 |          7 |         75 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_detail_hospital.xml        | XML      |         72 |          0 |          7 |         79 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_detail_paramedic.xml       | XML      |         52 |          6 |          9 |         67 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_guest_search_reception.xml | XML      |         42 |          4 |          5 |         51 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_hospital_detail.xml        | XML      |         34 |          0 |          7 |         41 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_load_ambulance.xml         | XML      |         65 |          3 |         11 |         79 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_load_hospital.xml          | XML      |         73 |          2 |         10 |         85 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_load_paramedic.xml         | XML      |         23 |          0 |          4 |         27 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_login_ambulance.xml        | XML      |         68 |          5 |          8 |         81 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_login_user.xml             | XML      |         25 |          0 |          4 |         29 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_main.xml                   | XML      |         70 |          0 |          7 |         77 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_modify_paramedic.xml       | XML      |         26 |          0 |          4 |         30 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_navigation.xml             | XML      |         19 |          2 |          3 |         24 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_register_ambulance.xml     | XML      |        113 |          2 |         13 |        128 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_user_map.xml               | XML      |         30 |          4 |          5 |         39 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\activity_user_reception.xml         | XML      |        128 |          6 |         20 |        154 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\item_hospital.xml                   | XML      |         31 |          0 |          5 |         36 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\item_paramedic.xml                  | XML      |         19 |          0 |          3 |         22 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\login_main.xml                      | XML      |         79 |          3 |         10 |         92 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\logout_button.xml                   | XML      |         17 |          0 |          2 |         19 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\tool_bar.xml                        | XML      |         18 |          1 |          2 |         21 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\layout\tool_bar_2.xml                      | XML      |         11 |          0 |          1 |         12 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\menu\navigation_menu.xml                   | XML      |         10 |          0 |          1 |         11 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\mipmap-anydpi\ic_launcher.xml              | XML      |          6 |          0 |          0 |          6 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\mipmap-anydpi\ic_launcher_round.xml        | XML      |          6 |          0 |          0 |          6 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values-land\dimens.xml                     | XML      |          3 |          0 |          0 |          3 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values-night\themes.xml                    | XML      |          4 |          3 |          0 |          7 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values-v23\themes.xml                      | XML      |          7 |          1 |          0 |          8 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values-w1240dp\dimens.xml                  | XML      |          3 |          0 |          0 |          3 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values-w600dp\dimens.xml                   | XML      |          3 |          0 |          0 |          3 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values\colors.xml                          | XML      |          5 |          0 |          0 |          5 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values\dimens.xml                          | XML      |          3 |          0 |          0 |          3 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values\strings.xml                         | XML      |         54 |          1 |          2 |         57 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\values\themes.xml                          | XML      |          5 |          3 |          1 |          9 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\xml\backup_rules.xml                       | XML      |          3 |         10 |          0 |         13 |
+| c:\Users\chan6\Desktop\sos\sos-app\sos\app\app\src\main\res\xml\data_extraction_rules.xml              | XML      |          5 |         14 |          0 |         19 |
+| Total                                                                                                  |          |      1,795 |         88 |        194 |      2,077 |
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
