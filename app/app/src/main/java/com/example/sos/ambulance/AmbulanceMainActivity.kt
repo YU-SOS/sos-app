@@ -4,45 +4,177 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sos.LogoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.sos.R
+import com.example.sos.res.AmbulanceRes
+import com.example.sos.retrofit.AmbulanceResponse
+import com.example.sos.retrofit.AuthService
+import com.example.sos.retrofit.ParamedicsResponse
+import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AmbulanceMainActivity : AppCompatActivity() {
 
-    private lateinit var logoutButton: Button
-    private lateinit var tokenManager: TokenManager // TokenManager 선언
+    private lateinit var authService: AuthService
+    private lateinit var tokenManager: TokenManager
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ParamedicsAdapter
+
+    private lateinit var ambulanceImage: ImageView
+    private lateinit var ambulanceName: TextView
+    private lateinit var imageButton1: ImageButton
+    private lateinit var imageButton2: ImageButton
+    private lateinit var addParamedicButton: Button // 구급대원 추가 버튼
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ambulance_main)
+        setContentView(R.layout.activity_load_ambulance)
 
-        tokenManager = TokenManager(this)  // TokenManager 초기화
-        logoutButton = findViewById(R.id.logout)
-        val logoutManager = LogoutManager(this, tokenManager)
+        initializeUI()
 
-        val addPatientButton = findViewById<ImageButton>(R.id.add)
-        addPatientButton.setOnClickListener {
+        val ambulanceId = tokenManager.getTokenId()
+        if (!ambulanceId.isNullOrEmpty()) {
+            fetchAmbulanceInfo(ambulanceId)
+            fetchParamedics(ambulanceId)
+        } else {
+            showToast("구급대 ID를 찾을 수 없습니다. 다시 로그인하세요.")
+        }
+
+        // 좌측 버튼 (접수 요청 버튼) 클릭 이벤트
+        imageButton1.setOnClickListener {
             val intent = Intent(this, AddPatientActivity::class.java)
-            startActivity(intent)
-            //finish()
+            startActivity(intent) // 새 화면을 열지만 현재 화면은 닫지 않음
         }
 
-        val loadAmbulanceButton = findViewById<ImageButton>(R.id.load)
-        loadAmbulanceButton.setOnClickListener{
-            val intent = Intent(this , LoadAmbulanceActivity::class.java)
-            startActivity(intent)
+        // 우측 버튼 (마이 페이지 버튼) 클릭 이벤트
+        imageButton2.setOnClickListener {
+            showToast("마이 페이지 버튼 클릭됨!")
+            // 마이 페이지로 이동하는 로직 추가 가능
         }
 
-        val loadHospitalButton = findViewById<ImageButton>(R.id.search)
-        loadHospitalButton.setOnClickListener{
-            val intent = Intent(this, LoadHospitalActivity::class.java)
+        // 구급대원 추가 버튼 클릭 이벤트
+        addParamedicButton.setOnClickListener {
+            val intent = Intent(this, AddParamedicActivity::class.java)
             startActivity(intent)
         }
+    }
 
-        logoutButton.setOnClickListener {
-            logoutManager.logout()
+    private fun initializeUI() {
+        tokenManager = TokenManager(this)
+        authService = RetrofitClientInstance.getApiService(tokenManager)
+
+        recyclerView = findViewById(R.id.recycler_paramedics)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        adapter = ParamedicsAdapter { selectedParamedic ->
+            val ambulanceId = tokenManager.getTokenId()
+            if (ambulanceId != null) {
+                val intent = Intent(this, DetailParamedicActivity::class.java).apply {
+                    putExtra("paramedicId", selectedParamedic.id)
+                    putExtra("paramedicName", selectedParamedic.name)
+                    putExtra("paramedicPhone", selectedParamedic.phoneNumber)
+                    putExtra("ambulanceId", ambulanceId)
+                }
+                startActivity(intent)
+            } else {
+                showToast("구급대 ID를 찾을 수 없습니다.")
+            }
         }
+        recyclerView.adapter = adapter
+
+        ambulanceImage = findViewById(R.id.ambulance_image)
+        ambulanceName = findViewById(R.id.ambulance_name)
+        imageButton1 = findViewById(R.id.btn_image_1)
+        imageButton2 = findViewById(R.id.btn_image_2)
+        addParamedicButton = findViewById(R.id.add_paramedic_button)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 액티비티가 다시 활성화될 때 데이터를 갱신
+        val ambulanceId = tokenManager.getTokenId()
+        if (!ambulanceId.isNullOrEmpty()) {
+            fetchParamedics(ambulanceId)
+        }
+    }
+
+    private fun fetchAmbulanceInfo(ambulanceId: String) {
+        val jwtToken = tokenManager.getAccessToken()
+        if (jwtToken.isNullOrEmpty()) {
+            showToast("토큰 오류: 다시 로그인하세요.")
+            return
+        }
+
+        authService.getAmbulanceDetails("Bearer $jwtToken", ambulanceId)
+            .enqueue(object : Callback<AmbulanceResponse> {
+                override fun onResponse(call: Call<AmbulanceResponse>, response: Response<AmbulanceResponse>) {
+                    if (response.isSuccessful) {
+                        val ambulanceData = response.body()?.data
+                        if (ambulanceData != null) {
+                            displayAmbulanceInfo(ambulanceData)
+                        } else {
+                            showToast("구급차 데이터를 찾을 수 없습니다.")
+                        }
+                    } else {
+                        showToast("구급차 정보를 불러오지 못했습니다.")
+                    }
+                }
+
+                override fun onFailure(call: Call<AmbulanceResponse>, t: Throwable) {
+                    showToast("구급차 정보를 불러오는 중 오류 발생: ${t.message}")
+                }
+            })
+    }
+
+    private fun displayAmbulanceInfo(ambulance: AmbulanceRes) {
+        ambulanceName.text = ambulance.name
+
+        // 이미지 로드 (Glide 사용)
+        Glide.with(this)
+            .load(ambulance.imageUrl)
+            .placeholder(R.drawable.image2) // 로딩 중 기본 이미지
+            .error(R.drawable.image)       // 에러 시 기본 이미지
+            .into(ambulanceImage)
+    }
+
+    private fun fetchParamedics(ambulanceId: String) {
+        val jwtToken = tokenManager.getAccessToken()
+        if (jwtToken.isNullOrEmpty()) {
+            showToast("토큰 오류: 다시 로그인하세요.")
+            return
+        }
+
+        authService.getParamedics("Bearer $jwtToken", ambulanceId)
+            .enqueue(object : Callback<ParamedicsResponse> {
+                override fun onResponse(call: Call<ParamedicsResponse>, response: Response<ParamedicsResponse>) {
+                    if (response.isSuccessful) {
+                        val paramedicsList = response.body()?.data
+                        if (!paramedicsList.isNullOrEmpty()) {
+                            adapter.updateParamedics(paramedicsList)
+                        } else {
+                            showToast("구급대원이 없습니다.")
+                        }
+                    } else {
+                        showToast("구급대원 정보를 불러오지 못했습니다.")
+                    }
+                }
+
+                override fun onFailure(call: Call<ParamedicsResponse>, t: Throwable) {
+                    showToast("구급대원 정보를 불러오는 중 오류 발생: ${t.message}")
+                }
+            })
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

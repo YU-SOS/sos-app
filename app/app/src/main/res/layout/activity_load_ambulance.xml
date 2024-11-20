@@ -32,6 +32,17 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
 
+    <!-- 구급대원 추가 버튼 -->
+    <Button
+        android:id="@+id/add_paramedic_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="구급대원 추가"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/white"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp" />
+
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_paramedics"
@@ -69,7 +80,7 @@
                 android:src="@drawable/patient"
                 android:contentDescription="Image Button 1"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/text_image_1"
@@ -96,7 +107,7 @@
                 android:src="@drawable/image2"
                 android:contentDescription="Image Button 2"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/text_image_2"
