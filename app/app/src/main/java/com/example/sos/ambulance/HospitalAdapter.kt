@@ -36,6 +36,12 @@ class HospitalAdapter(
         }
     }
 
+    fun addData(newData: List<HospitalRes>) {
+        hospitals.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+
     override fun getItemCount() = hospitals.size
 
     inner class HospitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
