@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:padding="8dp">
+    android:fitsSystemWindows="true"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="8dp">
 
     <!-- 로고 -->
     <ImageView
         android:id="@+id/logoImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/sos"
-        />
-
+        android:layout_gravity="center"
+        android:src="@drawable/sos" />
 </androidx.appcompat.widget.Toolbar>

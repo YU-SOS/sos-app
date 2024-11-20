@@ -12,8 +12,8 @@ class ParamedicsAdapter(
 ) : RecyclerView.Adapter<ParamedicsAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val paramedicName: TextView = view.findViewById(R.id.text_view_paramedic_name)
-        val paramedicPhone: TextView = view.findViewById(R.id.text_view_paramedic_name)
+        val paramedicName: TextView = view.findViewById(R.id.paramedic_name)
+        val paramedicPhone: TextView = view.findViewById(R.id.paramedic_phone)
 
         fun bind(paramedic: ParamedicsRes) {
             paramedicName.text = paramedic.name

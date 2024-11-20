@@ -5,33 +5,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sos.res.ParamedicsRes
 import com.example.sos.R
+import com.example.sos.res.ParamedicsRes
 
-class ParamedicsAdapter(
-    private val paramedicsList: List<ParamedicsRes>,
-    private val onClick: (ParamedicsRes) -> Unit
-) : RecyclerView.Adapter<ParamedicsAdapter.ParamedicsViewHolder>() {
+class ParamedicsAdapter(private val onItemClick: (ParamedicsRes) -> Unit) :
+    RecyclerView.Adapter<ParamedicsAdapter.ParamedicsViewHolder>() {
 
-    inner class ParamedicsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val nameTextView: TextView = view.findViewById(R.id.text_view_paramedic_name)
-        private val phoneTextView: TextView = view.findViewById(R.id.text_view_paramedic_phone)
+    private val paramedicsList = mutableListOf<ParamedicsRes>()
 
-        fun bind(paramedic: ParamedicsRes) {
-            nameTextView.text = paramedic.name
-            phoneTextView.text = paramedic.phoneNumber
-            itemView.setOnClickListener { onClick(paramedic) }
-        }
+    fun updateParamedics(newList: List<ParamedicsRes>) {
+        paramedicsList.clear()
+        paramedicsList.addAll(newList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParamedicsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_paramedic, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_paramedic, parent, false)
         return ParamedicsViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ParamedicsViewHolder, position: Int) {
-        holder.bind(paramedicsList[position])
+        val paramedic = paramedicsList[position]
+        holder.bind(paramedic, onItemClick)
     }
 
     override fun getItemCount(): Int = paramedicsList.size
+
+    class ParamedicsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val nameTextView: TextView = itemView.findViewById(R.id.paramedic_name)
+        private val phoneTextView: TextView = itemView.findViewById(R.id.paramedic_phone)
+
+        fun bind(paramedic: ParamedicsRes, onItemClick: (ParamedicsRes) -> Unit) {
+            nameTextView.text = paramedic.name
+            phoneTextView.text = paramedic.phoneNumber
+            itemView.setOnClickListener { onItemClick(paramedic) }
+        }
+    }
 }
