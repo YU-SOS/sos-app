@@ -35,7 +35,11 @@ class LoadParamedicActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val ambulanceId = tokenManager.getTokenId()
-        fetchParamedics(ambulanceId)
+        if (!ambulanceId.isNullOrEmpty()) {
+            fetchParamedics(ambulanceId)
+        } else {
+            showToast("구급대 ID를 찾을 수 없습니다. 다시 로그인하세요.")
+        }
     }
 
     private fun fetchParamedics(ambulanceId: String) {
@@ -50,7 +54,7 @@ class LoadParamedicActivity : AppCompatActivity() {
             .enqueue(object : Callback<ParamedicsResponse> {
                 override fun onResponse(call: Call<ParamedicsResponse>, response: Response<ParamedicsResponse>) {
                     if (response.isSuccessful) {
-                        val paramedicsList = response.body()?.data?.paraResList
+                        val paramedicsList = response.body()?.data // 변경된 구조에 맞게 수정
                         Log.d("LoadParamedicActivity", "API Response: $paramedicsList")
                         if (!paramedicsList.isNullOrEmpty()) {
                             setupRecyclerView(paramedicsList, ambulanceId)

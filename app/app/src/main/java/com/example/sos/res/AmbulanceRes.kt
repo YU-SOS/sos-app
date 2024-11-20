@@ -7,5 +7,6 @@ data class AmbulanceRes (
     val name: String,
     val address: String,
     val telephoneNumber: String,
-    val location: Location
+    val location: Location,
+    val imageUrl: String
 )
