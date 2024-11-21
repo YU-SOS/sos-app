@@ -36,13 +36,19 @@ class DetailParamedicActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         try {
-            authService = RetrofitClientInstance.getApiService(TokenManager(this))
             tokenManager = TokenManager(this)
+            authService = RetrofitClientInstance.getApiService(tokenManager)
 
-            paramedicId = intent.getStringExtra("paramedicId") ?: throw IllegalArgumentException("paramedicId is missing")
-            ambulanceId = intent.getStringExtra("ambulanceId") ?: throw IllegalArgumentException("ambulanceId is missing")
+            // Intent로 전달된 데이터 초기화
+            paramedicId = intent.getStringExtra("paramedicId")
+                ?: throw IllegalArgumentException("paramedicId is missing")
+            ambulanceId = intent.getStringExtra("ambulanceId")
+                ?: throw IllegalArgumentException("ambulanceId is missing")
 
-            Log.d("DetailParamedicActivity", "Paramedic ID: $paramedicId, Ambulance ID: $ambulanceId")
+            Log.d(
+                "DetailParamedicActivity",
+                "Paramedic ID: $paramedicId, Ambulance ID: $ambulanceId"
+            )
 
             val paramedicName = intent.getStringExtra("paramedicName") ?: "이름 없음"
             val paramedicPhone = intent.getStringExtra("paramedicPhone") ?: "전화번호 없음"
@@ -50,18 +56,25 @@ class DetailParamedicActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.paramedic_name).text = paramedicName
             findViewById<TextView>(R.id.paramedic_phone).text = paramedicPhone
 
+            // 삭제 버튼 설정
             findViewById<Button>(R.id.btn_paramedic_delete).setOnClickListener {
                 deleteParamedic()
             }
 
+            // 수정 버튼 설정
             findViewById<Button>(R.id.btn_paramedic_modify).setOnClickListener {
                 val intent = Intent(this, ModifyParamedicActivity::class.java).apply {
                     putExtra("paramedicId", paramedicId)
                     putExtra("paramedicName", paramedicName)
                     putExtra("paramedicPhone", paramedicPhone)
-                    putExtra("ambulanceId", ambulanceId) // 전달
+                    putExtra("ambulanceId", ambulanceId)
                 }
                 startActivity(intent)
+            }
+
+            // 선탑 구급대원 설정 버튼 설정
+            findViewById<Button>(R.id.btn_head_paramedic).setOnClickListener {
+                setHeadParamedic()
             }
 
             Log.d("DetailParamedicActivity", "Activity created successfully")
@@ -69,6 +82,18 @@ class DetailParamedicActivity : AppCompatActivity() {
             Log.e("DetailParamedicActivity", "Initialization failed: ${e.message}")
             showToast("필수 데이터가 누락되었습니다. 앱을 다시 실행해주세요.")
             finish()
+        }
+    }
+
+    // 선탑 구급대원 설정
+    private fun setHeadParamedic() {
+        try {
+            tokenManager.saveSelectedParamedicId(paramedicId)
+            showToast("선탑 구급대원이 설정되었습니다.")
+            Log.d("DetailParamedicActivity", "Head Paramedic ID saved: $paramedicId")
+        } catch (e: Exception) {
+            showToast("선탑 구급대원 설정에 실패했습니다.")
+            Log.e("DetailParamedicActivity", "Failed to save Head Paramedic ID: ${e.message}")
         }
     }
 
@@ -82,7 +107,10 @@ class DetailParamedicActivity : AppCompatActivity() {
 
         authService.deleteParamedic("Bearer $jwtToken", ambulanceId, paramedicId)
             .enqueue(object : Callback<ParamedicDeleteResponse> {
-                override fun onResponse(call: Call<ParamedicDeleteResponse>, response: Response<ParamedicDeleteResponse>) {
+                override fun onResponse(
+                    call: Call<ParamedicDeleteResponse>,
+                    response: Response<ParamedicDeleteResponse>
+                ) {
                     if (response.isSuccessful && response.body()?.status == 200) {
                         showToast("삭제 성공")
                         finish()

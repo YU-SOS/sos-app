@@ -12,46 +12,61 @@ import com.example.sos.res.HospitalRes
 import com.example.sos.R
 
 class HospitalAdapter(
-    private var hospitals: List<HospitalRes> = emptyList(),
-    private val onItemClick: (String) -> Unit
+    private val onItemClick: (hospitalId: String, hospitalName: String) -> Unit
 ) : RecyclerView.Adapter<HospitalAdapter.HospitalViewHolder>() {
 
-    fun updateData(newHospitals: List<HospitalRes>) {
-        hospitals = newHospitals
-        Log.d("HospitalAdapter", "Updated hospital list: $hospitals")
+    private val hospitals = mutableListOf<HospitalRes>()
+
+    fun updateData(newData: List<HospitalRes>) {
+        hospitals.clear()
+        hospitals.addAll(newData)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HospitalViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_hospital, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hospital, parent, false)
         return HospitalViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HospitalViewHolder, position: Int) {
         val hospital = hospitals[position]
-        Log.d("HospitalAdapter", "Binding hospital: ${hospital.name}, ${hospital.telephoneNumber}")
-        holder.bind(hospital, onItemClick)
-    }
-
-    override fun getItemCount(): Int = hospitals.size
-
-    class HospitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val hospitalImage: ImageView = itemView.findViewById(R.id.hospital_image)
-        private val hospitalName: TextView = itemView.findViewById(R.id.hospital_name)
-        private val hospitalPhone: TextView = itemView.findViewById(R.id.hospital_phone)
-
-        fun bind(hospital: HospitalRes, onItemClick: (String) -> Unit) {
-            hospitalName.text = hospital.name
-            hospitalPhone.text = hospital.telephoneNumber
-
-            Glide.with(itemView.context)
-                .load(hospital.imageUrl)
-                .placeholder(R.drawable.image2)
-                .error(R.drawable.image)
-                .into(hospitalImage)
-
-            itemView.setOnClickListener { onItemClick(hospital.id) }
+        holder.bind(hospital)
+        holder.itemView.setOnClickListener {
+            onItemClick(hospital.id, hospital.name)
         }
     }
+
+    fun addData(newData: List<HospitalRes>) {
+        hospitals.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+
+    override fun getItemCount() = hospitals.size
+
+    inner class HospitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val hospitalImageView: ImageView = itemView.findViewById(R.id.hospital_image)
+        private val hospitalNameTextView: TextView = itemView.findViewById(R.id.hospital_name)
+        private val hospitalPhoneTextView: TextView = itemView.findViewById(R.id.hospital_phone)
+
+        fun bind(hospital: HospitalRes) {
+            // 병원 이름 바인딩
+            hospitalNameTextView.text = hospital.name
+
+            // 병원 전화번호 바인딩
+            hospitalPhoneTextView.text = hospital.telephoneNumber
+
+            // 병원 이미지 바인딩 (예: Glide 사용)
+            if (!hospital.imageUrl.isNullOrEmpty()) {
+                Glide.with(itemView.context)
+                    .load(hospital.imageUrl) // Firebase 또는 URL 경로를 로드
+                    .placeholder(R.drawable.image2) // 기본 이미지
+                    .error(R.drawable.image) // 로드 실패 시 이미지
+                    .into(hospitalImageView)
+            } else {
+                hospitalImageView.setImageResource(R.drawable.image) // 이미지 없을 때 기본값
+            }
+        }
+    }
+
 }

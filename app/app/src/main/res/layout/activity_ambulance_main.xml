@@ -1,75 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ambulance.AmbulanceMainActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <Button
-        android:id="@+id/logout"
+    <!-- Toolbar 포함 -->
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- 구급차 이미지 -->
+    <ImageView
+        android:id="@+id/ambulance_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/image2"
+        android:contentDescription="Ambulance Image" />
+
+    <!-- 구급차 이름 -->
+    <TextView
+        android:id="@+id/ambulance_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="구급차 이름"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
 
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_paramedics"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp" />
 
-    <ImageButton
-        android:id="@+id/add"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="172dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.097"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add" />
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="16dp" />
 
-    <ImageButton
-        android:id="@+id/load"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="372dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/info" />
+    <!-- 버튼 섹션 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-    <ImageButton
-        android:id="@+id/patient"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="372dp"
-        android:layout_marginEnd="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.932"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/patient" />
+        <!-- 첫 번째 버튼 섹션 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
-    <ImageButton
-        android:id="@+id/search"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="172dp"
-        android:layout_marginEnd="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.934"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/search" />
+            <ImageButton
+                android:id="@+id/btn_image_1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/patient"
+                android:contentDescription="Image Button 1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_image_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="접수 요청"
+                android:textSize="14dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- 두 번째 버튼 섹션 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btn_image_2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/image2"
+                android:contentDescription="Image Button 2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:id="@+id/text_image_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="마이 페이지"
+                android:textSize="14dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
