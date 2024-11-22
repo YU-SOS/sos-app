@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.sos.LogoutManager
 import com.example.sos.PatientReq
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
@@ -25,6 +26,7 @@ class AddPatientActivity : AppCompatActivity() {
     private lateinit var authService: AuthService
     private lateinit var tokenManager: TokenManager
     private var selectedHospitalName: String? = null
+    private lateinit var logoutManager: LogoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,7 @@ class AddPatientActivity : AppCompatActivity() {
 
         authService = RetrofitClientInstance.getApiService(TokenManager(this))
         tokenManager = TokenManager(this)
+        logoutManager = LogoutManager(this, tokenManager)
 
         // UI 요소 초기화
         val inputName = findViewById<EditText>(R.id.input_name)
@@ -48,15 +51,15 @@ class AddPatientActivity : AppCompatActivity() {
         val inputMedication = findViewById<EditText>(R.id.input_medication)
         val inputReference = findViewById<EditText>(R.id.input_reference)
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
-        val selectHospitalButton = findViewById<Button>(R.id.button)
-        val hospitalTextView = findViewById<TextView>(R.id.textView4)
+        //val selectHospitalButton = findViewById<Button>(R.id.button)
+        //val hospitalTextView = findViewById<TextView>(R.id.textView4)
         val saveButton = findViewById<Button>(R.id.btn_save)
 
         // 병원 선택 버튼 클릭
-        selectHospitalButton.setOnClickListener {
+        /*selectHospitalButton.setOnClickListener {
             val intent = Intent(this, LoadHospitalActivity::class.java)
             startActivityForResult(intent, LOAD_HOSPITAL_REQUEST_CODE)
-        }
+        }*/
 
         // 저장 버튼 클릭
         saveButton.setOnClickListener {
@@ -88,6 +91,11 @@ class AddPatientActivity : AppCompatActivity() {
             )
 
             createReception(patientReq, selectedHospitalName!!)
+        }
+
+        val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
+        userLogoutButton.setOnClickListener {
+            logoutManager.logout()
         }
     }
 

@@ -54,13 +54,18 @@ class UserMapActivity : AppCompatActivity() {
 
         // BottomNavigationView 설정
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.nav_map
+
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_map -> true // 현재 화면이므로 아무 동작도 하지 않음
+                R.id.nav_map -> {
+                    // 이미 현재 화면이므로 아무 작업도 하지 않음
+                    true
+                }
                 R.id.nav_reception -> {
                     val intent = Intent(this, UserReceptionActivity::class.java)
                     startActivity(intent)
-                    finish()
+                    finish() // 현재 액티비티 종료
                     true
                 }
                 else -> false
@@ -183,10 +188,14 @@ class UserMapActivity : AppCompatActivity() {
         val hospitalImage = bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_hospital_image)
         val hospitalAddress = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_address)
         val hospitalPhone = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_phone)
+        val hospitalCategories = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_categories)
 
         hospitalName.text = hospital.name
         hospitalAddress.text = "주소: ${hospital.address}"
         hospitalPhone.text = "전화번호: ${hospital.telephoneNumber}"
+        // 카테고리 이름만 가져와서 문자열로 변환
+        val categoryNames = hospital.categories.joinToString(", ") { it.name }
+        hospitalCategories.text = "카테고리: ${categoryNames}"
 
         Glide.with(this).load(hospital.imageUrl).into(hospitalImage)
 

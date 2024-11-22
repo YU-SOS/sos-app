@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white" />
 
+
     <!-- 구급차 이미지 -->
     <ImageView
         android:id="@+id/ambulance_image"
@@ -23,6 +24,7 @@
         android:src="@drawable/image2"
         android:contentDescription="Ambulance Image"
         android:background="@android:color/white" />
+
 
     <!-- 구급차 이름 -->
     <TextView
@@ -128,5 +130,7 @@
                 android:gravity="center"
                 android:background="@android:color/white" />
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
+

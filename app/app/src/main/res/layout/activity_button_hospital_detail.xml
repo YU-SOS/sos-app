@@ -17,7 +17,7 @@
     <ImageView
         android:id="@+id/bottom_sheet_hospital_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="500dp"
         android:scaleType="centerCrop"
         android:layout_marginBottom="8dp" />
 
@@ -26,6 +26,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="주소"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/bottom_sheet_hospital_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카테고리"
         android:layout_marginBottom="8dp" />
 
     <TextView

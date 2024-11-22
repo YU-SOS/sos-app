@@ -9,6 +9,8 @@ import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.AmbulanceMainActivity
 import com.example.sos.token.TokenManager
 import com.example.sos.user.UserMapActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +25,7 @@ class IntroActivity : AppCompatActivity() {
             finish()
         }
 
-        //Role에 맞게 화면 전환
-        // 토큰이 있다면 역할 확인 후 해당 액티비티로 이동
+        // Role에 맞게 화면 전환
         val tokenManager = TokenManager(this)
         val accessToken = tokenManager.getAccessToken()
         if (accessToken != null) {
@@ -53,17 +54,16 @@ class IntroActivity : AppCompatActivity() {
     private fun getRoleFromToken(token: String): String? {
         return try {
             val jwt = JWT(token)
-            // "role"이라는 이름의 클레임에서 문자열 값 추출
             val role = jwt.getClaim("role").asString()
-
             if (role != null && role.isNotEmpty()) {
-                role // role 클레임이 있으면 반환
+                role
             } else {
-                null // role이 없으면 null 반환
+                null
             }
         } catch (e: Exception) {
             Log.e("SelectLoginActivity", "Error extracting role: ${e.message}")
             null
         }
     }
+
 }

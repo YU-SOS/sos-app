@@ -17,4 +17,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/sos" />
+
+    <!-- 로그아웃 버튼 -->
+    <ImageButton
+        android:id="@+id/logout_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+    android:background="@null"
+    android:scaleType="fitCenter"
+    android:src="@drawable/logout"
+    android:contentDescription="Logout Button" />
 </androidx.appcompat.widget.Toolbar>

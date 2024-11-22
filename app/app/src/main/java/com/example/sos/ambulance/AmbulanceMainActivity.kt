@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.sos.LogoutManager
 import com.example.sos.R
 import com.example.sos.res.AmbulanceRes
 import com.example.sos.retrofit.AmbulanceResponse
@@ -34,12 +35,15 @@ class AmbulanceMainActivity : AppCompatActivity() {
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
     private lateinit var addParamedicButton: Button // 구급대원 추가 버튼
+    private lateinit var logoutManager: LogoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_ambulance)
 
         initializeUI()
+
+        logoutManager = LogoutManager(this, tokenManager)
 
         val ambulanceId = tokenManager.getTokenId()
         if (!ambulanceId.isNullOrEmpty()) {
@@ -65,6 +69,11 @@ class AmbulanceMainActivity : AppCompatActivity() {
         addParamedicButton.setOnClickListener {
             val intent = Intent(this, AddParamedicActivity::class.java)
             startActivity(intent)
+        }
+
+        val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
+        userLogoutButton.setOnClickListener {
+            logoutManager.logout()
         }
     }
 

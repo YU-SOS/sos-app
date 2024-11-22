@@ -3,74 +3,89 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <!-- 화면 높이의 50% 지점에 위치하는 Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/halfGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.4"
+        android:orientation="horizontal" />
+
+    <!-- 로고 이미지 -->
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="149dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toTopOf="@id/halfGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/sos" />
+
+    <!-- 첫 번째 설명 텍스트 -->
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="SOS는 구급대 - 병원 간 커뮤니케이션 플랫폼입니다."
         android:textColor="#888888"
         android:textSize="20dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@id/imageView2" />
 
+    <!-- 두 번째 설명 텍스트 -->
     <TextView
         android:id="@+id/descriptionTextView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="40dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="또한, 보호자에게 환자 접수 내역 조회 기능을 제공합니다."
         android:textColor="#888888"
         android:textSize="20dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
-    <ImageButton
-        android:id="@+id/main_login_button"
+    <!-- 버튼과 텍스트를 겹치기 위한 FrameLayout -->
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView2"
-        app:srcCompat="@drawable/login" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView2"
+        android:layout_marginTop="40dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="로그인"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView2" />
+        <!-- 로그인 버튼 -->
+        <ImageButton
+            android:id="@+id/main_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/login"
+            android:background="@null" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="149dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="84dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sos" />
+        <!-- 버튼 위의 텍스트 -->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="로그인"
+            android:textColor="@color/white"
+            android:textSize="40dp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

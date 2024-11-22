@@ -22,7 +22,10 @@
             android:layout_height="wrap_content"
             app:menu="@menu/navigation_menu"
             app:itemIconSize="24dp"
-            app:itemIconTint="@null"
+            app:itemIconTint="@color/bottom_color_selector"
+            app:itemTextColor="@color/bottom_color_selector"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
