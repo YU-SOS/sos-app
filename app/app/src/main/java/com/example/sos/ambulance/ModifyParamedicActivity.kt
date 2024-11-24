@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.sos.R
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicModifyRequest
@@ -27,6 +28,13 @@ class ModifyParamedicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify_paramedic)
+
+        // 툴바 설정
+        val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "구급대원 수정" // 툴바 제목 설정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 활성화
+        toolbar.setNavigationOnClickListener { finish() } // 뒤로가기 버튼 동작
 
         authService = RetrofitClientInstance.getApiService(TokenManager(this))
         tokenManager = TokenManager(this)
