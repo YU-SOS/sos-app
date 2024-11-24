@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
+    android:backgroundTint="@color/white"
     android:gravity="center_horizontal">
 
     <TextView
@@ -17,10 +19,22 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:backgroundTint="@color/white"
         android:id="@+id/recycler_view_paramedics"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="513dp"
         android:layout_margin="16dp"
         tools:listitem="@layout/item_paramedic" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/ambulance_navigation_menu" />
 
 </LinearLayout>

@@ -13,6 +13,7 @@ import com.example.sos.retrofit.ReceptionRequest
 import com.example.sos.retrofit.ReceptionResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.sdk.user.model.Gender
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,6 +94,20 @@ class AddPatientActivity : AppCompatActivity() {
             createReception(patientReq, selectedHospitalName!!)
         }
 
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_request -> {
+                    true
+                }
+                R.id.nav_info -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
         val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             logoutManager.logout()

@@ -12,6 +12,7 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicsResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +56,23 @@ class LoadParamedicActivity : AppCompatActivity() {
             startActivity(intent)
         }
         recyclerView.adapter = adapter
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_request -> {
+                    val intent = Intent(this, AddPatientActivity::class.java)
+                    startActivity(intent) // 새 화면을 열지만 현재 화면은 닫지 않음
+                    true
+                }
+                R.id.nav_info -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun fetchParamedics(ambulanceId: String) {

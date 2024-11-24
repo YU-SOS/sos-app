@@ -1,5 +1,6 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,7 @@ import com.example.sos.retrofit.MemberRequest
 import com.example.sos.retrofit.MemberResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +61,24 @@ class AddParamedicActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_add).setOnClickListener {
             addParamedic()
         }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_request -> {
+                    val intent = Intent(this, AddPatientActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_info -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun addParamedic() {
@@ -102,4 +122,5 @@ class AddParamedicActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 }

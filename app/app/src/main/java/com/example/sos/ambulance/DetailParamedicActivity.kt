@@ -13,6 +13,7 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicDeleteResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,6 +71,7 @@ class DetailParamedicActivity : AppCompatActivity() {
                     putExtra("ambulanceId", ambulanceId)
                 }
                 startActivity(intent)
+                finish()
             }
 
             // 선탑 구급대원 설정 버튼 설정
@@ -82,6 +84,24 @@ class DetailParamedicActivity : AppCompatActivity() {
             Log.e("DetailParamedicActivity", "Initialization failed: ${e.message}")
             showToast("필수 데이터가 누락되었습니다. 앱을 다시 실행해주세요.")
             finish()
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_request -> {
+                    val intent = Intent(this, AddPatientActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                R.id.nav_info -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
         }
     }
 

@@ -232,16 +232,16 @@
 
 
     <!-- 접수 버튼 -->
+
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red"
         android:text="접수 요청"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:backgroundTint="@color/red"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -261,5 +261,17 @@
     <include
         android:id="@+id/logout_button_layout"
         layout="@layout/logout_button" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/ambulance_navigation_menu" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

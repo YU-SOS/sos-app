@@ -19,6 +19,7 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.ParamedicsResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,16 +56,20 @@ class AmbulanceMainActivity : AppCompatActivity() {
             showToast("구급대 ID를 찾을 수 없습니다. 다시 로그인하세요.")
         }
 
-        // 좌측 버튼 (접수 요청 버튼) 클릭 이벤트
-        imageButton1.setOnClickListener {
-            val intent = Intent(this, AddPatientActivity::class.java)
-            startActivity(intent) // 새 화면을 열지만 현재 화면은 닫지 않음
-        }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // 우측 버튼 (마이 페이지 버튼) 클릭 이벤트
-        imageButton2.setOnClickListener {
-            showToast("마이 페이지 버튼 클릭됨!")
-            // 마이 페이지로 이동하는 로직 추가 가능
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_request -> {
+                    val intent = Intent(this, AddPatientActivity::class.java)
+                    startActivity(intent) // 새 화면을 열지만 현재 화면은 닫지 않음
+                    true
+                }
+                R.id.nav_info -> {
+                    true
+                }
+                else -> false
+            }
         }
 
         // 구급대원 추가 버튼 클릭 이벤트
@@ -106,8 +111,6 @@ class AmbulanceMainActivity : AppCompatActivity() {
         ambulanceName = findViewById(R.id.ambulance_name)
         ambulanceAddress = findViewById(R.id.ambulance_address)
         ambulancePhone = findViewById(R.id.ambulance_phone)
-        imageButton1 = findViewById(R.id.btn_image_1)
-        imageButton2 = findViewById(R.id.btn_image_2)
         addParamedicButton = findViewById(R.id.add_paramedic_button)
     }
 
