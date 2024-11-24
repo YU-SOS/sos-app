@@ -148,6 +148,7 @@ class ViewPatientActivity : AppCompatActivity() {
                 selectHospitalButton.visibility = View.GONE
                 retryButton.visibility = View.GONE
                 selectHospitalTextView.visibility = View.GONE
+                finish() // 알아서 조절 ㄱㄱ
             }
             "REJECTED" -> {
                 statusTextView.text = "요청 거절"
