@@ -3,7 +3,6 @@ package com.example.sos.ambulance
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalLoadResponse
 import com.example.sos.retrofit.RetrofitClientInstance
 import com.example.sos.token.TokenManager
-import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,8 +40,9 @@ class LoadHospitalActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycler_view_hospitals)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        hospitalAdapter = HospitalAdapter { _, hospitalName ->
+        hospitalAdapter = HospitalAdapter { hospitalId, hospitalName ->
             val intent = Intent().apply {
+                putExtra("selectedHospitalId", hospitalId) // 병원 ID 추가
                 putExtra("selectedHospitalName", hospitalName)
             }
             setResult(RESULT_OK, intent)
@@ -53,10 +52,6 @@ class LoadHospitalActivity : AppCompatActivity() {
 
         nextPageButton = findViewById(R.id.button_next_page)
         previousPageButton = findViewById(R.id.button_previous_page)
-
-        // 항상 버튼 활성화
-        nextPageButton.isEnabled = true
-        previousPageButton.isEnabled = true
 
         nextPageButton.setOnClickListener {
             if (currentPage >= totalPages - 1) {
@@ -93,7 +88,7 @@ class LoadHospitalActivity : AppCompatActivity() {
         )
 
         buttonCategoryMap.forEach { (buttonId, category) ->
-            val button = findViewById<MaterialButton>(buttonId)
+            val button = findViewById<Button>(buttonId)
             button.setOnClickListener {
                 if (selectedCategories.contains(category)) {
                     selectedCategories.remove(category) // 선택 해제

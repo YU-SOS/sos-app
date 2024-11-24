@@ -1,8 +1,8 @@
 package com.example.sos.ambulance
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -14,6 +14,7 @@ import com.example.sos.res.ReceptionRes
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.LoadReceptionResponse
 import com.example.sos.retrofit.RetrofitClientInstance
+import com.example.sos.retrofit.RetryReceptionResponse
 import com.example.sos.token.TokenManager
 import com.kakao.sdk.user.model.Gender
 import retrofit2.Call
@@ -28,14 +29,13 @@ class ViewPatientActivity : AppCompatActivity() {
 
     private lateinit var statusTextView: TextView
     private lateinit var hospitalNameTextView: TextView
-    private lateinit var hospitalAddressTextView: TextView
-    private lateinit var hospitalPhoneTextView: TextView
-    private lateinit var patientNameTextView: TextView
-    private lateinit var patientAgeTextView: TextView
-    private lateinit var patientPhoneTextView: TextView
-    private lateinit var patientGenderTextView: TextView
-    private lateinit var refreshButton: Button
+    private lateinit var selectHospitalButton: Button
     private lateinit var retryButton: Button
+    private lateinit var refreshButton: Button
+    private lateinit var selectHospitalTextView: TextView
+    private lateinit var patientGenderTextView: TextView
+
+    private var selectedHospitalId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,8 @@ class ViewPatientActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)
 
-        receptionId = tokenManager.getReceptionId() ?: run {
+        // Intent에서 receptionId 가져오기
+        receptionId = intent.getStringExtra("receptionId") ?: run {
             showToast("Reception ID를 찾을 수 없습니다.")
             finish()
             return
@@ -63,20 +64,20 @@ class ViewPatientActivity : AppCompatActivity() {
         // UI 요소 초기화
         statusTextView = findViewById(R.id.reception_status)
         hospitalNameTextView = findViewById(R.id.hospital_name)
-        hospitalAddressTextView = findViewById(R.id.hospital_address)
-        hospitalPhoneTextView = findViewById(R.id.hospital_phone)
-        patientNameTextView = findViewById(R.id.patient_name)
-        patientAgeTextView = findViewById(R.id.patient_age)
-        patientPhoneTextView = findViewById(R.id.patient_phone)
-        patientGenderTextView = findViewById(R.id.patient_gender)
-        refreshButton = findViewById(R.id.refresh_button)
+        selectHospitalButton = findViewById(R.id.select_hospital_button)
         retryButton = findViewById(R.id.retry_button)
+        refreshButton = findViewById(R.id.refresh_button)
+        selectHospitalTextView = findViewById(R.id.text_select_hospital)
+        patientGenderTextView = findViewById(R.id.patient_gender)
 
-        // 초기 재요청 버튼 숨기기
+        // 초기 버튼 및 텍스트 숨기기
+        selectHospitalButton.visibility = View.GONE
         retryButton.visibility = View.GONE
+        selectHospitalTextView.visibility = View.GONE
 
         refreshButton.setOnClickListener { fetchReceptionInfo() }
-        retryButton.setOnClickListener { retryRequest() }
+        selectHospitalButton.setOnClickListener { selectHospital() }
+        retryButton.setOnClickListener { retryReception() }
     }
 
     private fun fetchReceptionInfo() {
@@ -94,70 +95,79 @@ class ViewPatientActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val receptionData = response.body()?.data
-                        Log.d("ViewPatientActivity", "NO null Reception data: $receptionData")
                         if (receptionData != null) {
-                            Log.d("ViewPatientActivity", "Reception data: $receptionData")
                             updateUI(receptionData)
                         } else {
                             showToast("데이터를 불러올 수 없습니다.")
-                            Log.e("ViewPatientActivity", "Reception data is null.")
                         }
                     } else {
                         showToast("요청 실패: ${response.message()}")
-                        Log.e("ViewPatientActivity", "Response error: ${response.message()}")
                     }
                 }
 
                 override fun onFailure(call: Call<LoadReceptionResponse>, t: Throwable) {
                     showToast("네트워크 오류: ${t.message}")
-                    Log.e("ViewPatientActivity", "Network error: ${t.message}")
-                    Log.e("ViewPatientActivity", "Network error: ", t)
                 }
             })
     }
 
     private fun updateUI(reception: ReceptionRes) {
-        try {
-            // 병원 정보
-            hospitalNameTextView.text = reception.hospital.name
-            hospitalAddressTextView.text = reception.hospital.address
-            hospitalPhoneTextView.text = reception.hospital.telephoneNumber
+        // 병원 정보 업데이트
+        hospitalNameTextView.text = reception.hospital.name
+        findViewById<TextView>(R.id.hospital_address).text = reception.hospital.address
+        findViewById<TextView>(R.id.hospital_phone).text = reception.hospital.telephoneNumber
 
-            // 환자 정보
-            patientNameTextView.text = reception.patient.name
+        // 환자 정보 업데이트
+        findViewById<TextView>(R.id.patient_name).text = reception.patient.name
+        findViewById<TextView>(R.id.patient_age).text = reception.patient.age.toString()
+        findViewById<TextView>(R.id.patient_phone).text = reception.patient.phoneNumber
+        patientGenderTextView.text = parseGender(reception.patient.gender)
 
-            // 나이 처리
-            patientAgeTextView.text = try {
-                reception.patient.age.toString()
-            } catch (e: NumberFormatException) {
-                Log.e("ViewPatientActivity", "NumberFormatException 발생: ${e.message}")
-                "알 수 없음" // 기본값 설정
+        // 접수 상태에 따른 UI 업데이트
+        when (reception.receptionStatus) {
+            "PENDING" -> {
+                statusTextView.text = "요청 대기 중"
+                statusTextView.setTextColor(Color.BLUE)
+                refreshButton.visibility = View.VISIBLE
+                selectHospitalButton.visibility = View.GONE
+                retryButton.visibility = View.GONE
+                selectHospitalTextView.visibility = View.GONE
             }
-
-            patientPhoneTextView.text = reception.patient.phoneNumber
-
-            // 성별
-            patientGenderTextView.text = parseGender(reception.patient.gender)
-
-            // 접수 상태
-            when (reception.receptionStatus) {
-                "PENDING" -> updateStatus("요청 대기", Color.BLUE, false)
-                "MOVE" -> updateStatus("이동 중", Color.GREEN, false)
-                "ARRIVAL" -> updateStatus("도착 완료", Color.GREEN, false)
-                "REJECTED" -> updateStatus("요청 거절", Color.RED, true)
-                else -> updateStatus("알 수 없음", Color.GRAY, false)
+            "MOVE" -> {
+                statusTextView.text = "이동 중"
+                statusTextView.setTextColor(Color.GREEN)
+                refreshButton.visibility = View.VISIBLE
+                selectHospitalButton.visibility = View.GONE
+                retryButton.visibility = View.GONE
+                selectHospitalTextView.visibility = View.GONE
             }
-        } catch (e: Exception) {
-            Log.e("ViewPatientActivity", "UI 업데이트 중 오류 발생: ${e.message}")
-            showToast("UI 업데이트 중 오류 발생.")
+            "ARRIVAL" -> {
+                statusTextView.text = "도착 완료"
+                statusTextView.setTextColor(Color.GREEN)
+                refreshButton.visibility = View.VISIBLE
+                selectHospitalButton.visibility = View.GONE
+                retryButton.visibility = View.GONE
+                selectHospitalTextView.visibility = View.GONE
+            }
+            "REJECTED" -> {
+                statusTextView.text = "요청 거절"
+                statusTextView.setTextColor(Color.RED)
+                refreshButton.visibility = View.GONE
+                selectHospitalTextView.visibility = View.VISIBLE
+                selectHospitalButton.visibility = View.VISIBLE
+                retryButton.visibility = View.VISIBLE
+            }
+            else -> {
+                statusTextView.text = "상태 알 수 없음"
+                statusTextView.setTextColor(Color.GRAY)
+                refreshButton.visibility = View.GONE
+                selectHospitalButton.visibility = View.GONE
+                retryButton.visibility = View.GONE
+                selectHospitalTextView.visibility = View.GONE
+            }
         }
     }
 
-    private fun updateStatus(status: String, color: Int, showRetry: Boolean) {
-        statusTextView.text = status
-        statusTextView.setTextColor(color)
-        retryButton.visibility = if (showRetry) View.VISIBLE else View.GONE
-    }
 
     private fun parseGender(gender: Gender?): String {
         return when (gender) {
@@ -167,9 +177,61 @@ class ViewPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun retryRequest() {
-        showToast("재요청을 처리합니다.")
-        // 재요청 로직을 추가하세요.
+    private fun selectHospital() {
+        val intent = Intent(this, LoadHospitalActivity::class.java)
+        startActivityForResult(intent, 1000)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1000 && resultCode == RESULT_OK) {
+            selectedHospitalId = data?.getStringExtra("hospitalId")
+            val selectedHospitalName = data?.getStringExtra("hospitalName")
+            hospitalNameTextView.text = selectedHospitalName ?: "병원 선택 안 됨"
+        }
+    }
+
+    private fun retryReception() {
+        if (selectedHospitalId.isNullOrEmpty()) {
+            showToast("병원을 먼저 선택해주세요.")
+            return
+        }
+
+        val jwtToken = tokenManager.getAccessToken()
+        if (jwtToken.isNullOrEmpty()) {
+            showToast("토큰 오류: 로그인이 필요합니다.")
+            return
+        }
+
+        val requestBody = mapOf("hospitalId" to selectedHospitalId!!)
+
+        authService.retryReception(
+            "Bearer $jwtToken",
+            receptionId,
+            requestBody
+        ).enqueue(object : Callback<RetryReceptionResponse> {
+            override fun onResponse(
+                call: Call<RetryReceptionResponse>,
+                response: Response<RetryReceptionResponse>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    val newReceptionId = response.body()!!.data
+
+                    // ViewPatientActivity를 새로운 receptionId로 재실행
+                    val intent = Intent(this@ViewPatientActivity, ViewPatientActivity::class.java).apply {
+                        putExtra("receptionId", newReceptionId)
+                    }
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showToast("재접수 요청 실패: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RetryReceptionResponse>, t: Throwable) {
+                showToast("네트워크 오류: ${t.message}")
+            }
+        })
     }
 
     private fun showToast(message: String) {

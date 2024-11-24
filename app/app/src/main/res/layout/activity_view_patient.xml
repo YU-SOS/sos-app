@@ -1,6 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -105,13 +106,13 @@
         android:id="@+id/patient_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
         android:text="환자 이름"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/hospital_phone_label"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintTop_toBottomOf="@id/hospital_phone_label" />
 
     <TextView
         android:id="@+id/patient_name"
@@ -190,29 +191,61 @@
         android:layout_marginStart="8dp" />
 
     <!-- 새로고침 버튼 -->
+
+    <!-- 재요청 버튼 -->
     <Button
         android:id="@+id/refresh_button"
+        android:layout_width="186dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="112dp"
+        android:backgroundTint="@color/red"
+        android:text="새로고침"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/patient_gender_label" />
+
+    <!-- 병원을 선택해 주세요 텍스트 -->
+    <TextView
+        android:id="@+id/text_select_hospital"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="새로고침"
+        android:layout_marginTop="16dp"
+        android:text="병원을 선택해 주세요."
         android:textSize="18dp"
-        app:layout_constraintTop_toBottomOf="@id/patient_gender_label"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/refresh_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 재요청 병원 선택 버튼 -->
+    <Button
+        android:id="@+id/select_hospital_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/red"
+        android:text="병원 선택"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/text_select_hospital"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 재요청 버튼 -->
     <Button
         android:id="@+id/retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="재요청"
-        android:textSize="18dp"
-        android:backgroundTint="@color/red"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/refresh_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:backgroundTint="@color/red"
+        android:text="재요청"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/select_hospital_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

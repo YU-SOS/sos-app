@@ -32,6 +32,8 @@ class AmbulanceMainActivity : AppCompatActivity() {
 
     private lateinit var ambulanceImage: ImageView
     private lateinit var ambulanceName: TextView
+    private lateinit var ambulanceAddress: TextView
+    private lateinit var ambulancePhone: TextView
     private lateinit var imageButton1: ImageButton
     private lateinit var imageButton2: ImageButton
     private lateinit var addParamedicButton: Button // 구급대원 추가 버튼
@@ -102,6 +104,8 @@ class AmbulanceMainActivity : AppCompatActivity() {
 
         ambulanceImage = findViewById(R.id.ambulance_image)
         ambulanceName = findViewById(R.id.ambulance_name)
+        ambulanceAddress = findViewById(R.id.ambulance_address)
+        ambulancePhone = findViewById(R.id.ambulance_phone)
         imageButton1 = findViewById(R.id.btn_image_1)
         imageButton2 = findViewById(R.id.btn_image_2)
         addParamedicButton = findViewById(R.id.add_paramedic_button)
@@ -146,6 +150,8 @@ class AmbulanceMainActivity : AppCompatActivity() {
 
     private fun displayAmbulanceInfo(ambulance: AmbulanceRes) {
         ambulanceName.text = ambulance.name
+        ambulanceAddress.text = ambulance.address ?: "주소 정보 없음"
+        ambulancePhone.text = ambulance.telephoneNumber ?: "전화번호 정보 없음"
 
         // 이미지 로드 (Glide 사용)
         Glide.with(this)

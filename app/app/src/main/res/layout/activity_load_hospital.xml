@@ -88,32 +88,32 @@
         app:layout_constraintBottom_toTopOf="@id/pagination_buttons"
         tools:listitem="@layout/item_hospital" />
 
-    <!-- Pagination Buttons -->
     <LinearLayout
         android:id="@+id/pagination_buttons"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/button_previous_page"
-            android:layout_width="0dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="이전 페이지"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@color/red"
             android:textColor="@color/white"
             android:enabled="false" />
 
         <Button
             android:id="@+id/button_next_page"
-            android:layout_width="0dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="다음 페이지"
+            android:layout_marginStart="8dp"
             android:backgroundTint="@color/red"
             android:textColor="@color/white"
             android:enabled="true" />

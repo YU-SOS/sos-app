@@ -188,6 +188,14 @@ data class ReceptionGuestResponse(
     val data: ReceptionGuestRes
 )
 
+// 접수 후 재요청
+data class RetryReceptionResponse(
+    val status: Int,
+    val message: String,
+    val data: String // 새로운 receptionId
+)
+
+
 interface AuthService {
     @POST("/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
@@ -290,4 +298,12 @@ interface AuthService {
     fun getReceptionGuest(
         @Path("receptionId") receptionId: String
     ): Call<ReceptionGuestResponse>
+
+    // 거절 후 재요청
+    @POST("/reception/{receptionId}/re")
+    fun retryReception(
+        @Header("Authorization") token: String,
+        @Path("receptionId") receptionId: String,
+        @Body body: Map<String, String>
+    ): Call<RetryReceptionResponse>
 }

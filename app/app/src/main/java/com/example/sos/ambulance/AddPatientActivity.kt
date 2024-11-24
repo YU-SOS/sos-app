@@ -51,15 +51,15 @@ class AddPatientActivity : AppCompatActivity() {
         val inputMedication = findViewById<EditText>(R.id.input_medication)
         val inputReference = findViewById<EditText>(R.id.input_reference)
         val radioGroupGender = findViewById<RadioGroup>(R.id.radio_group_gender)
-        //val selectHospitalButton = findViewById<Button>(R.id.button)
-        //val hospitalTextView = findViewById<TextView>(R.id.textView4)
+        val selectHospitalButton = findViewById<Button>(R.id.button)
+        val hospitalTextView = findViewById<TextView>(R.id.textView4)
         val saveButton = findViewById<Button>(R.id.btn_save)
 
         // 병원 선택 버튼 클릭
-        /*selectHospitalButton.setOnClickListener {
+        selectHospitalButton.setOnClickListener {
             val intent = Intent(this, LoadHospitalActivity::class.java)
             startActivityForResult(intent, LOAD_HOSPITAL_REQUEST_CODE)
-        }*/
+        }
 
         // 저장 버튼 클릭
         saveButton.setOnClickListener {
@@ -126,6 +126,13 @@ class AddPatientActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ReceptionResponse>, response: Response<ReceptionResponse>) {
                     if (response.isSuccessful && response.body()?.status == 201) {
                         Toast.makeText(this@AddPatientActivity, "접수 요청이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        // ViewPatientActivity로 이동
+                        val receptionId = response.body()?.data?.toString()
+                        val intent = Intent(this@AddPatientActivity, ViewPatientActivity::class.java).apply {
+                            putExtra("receptionId", receptionId)
+                        }
+                        startActivity(intent)
                         finish() // AddPatientActivity 종료
                     } else {
                         Toast.makeText(
