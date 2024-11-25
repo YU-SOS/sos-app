@@ -1,5 +1,6 @@
 package com.example.sos.user
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -179,26 +180,50 @@ class UserMapActivity : AppCompatActivity() {
     }
 
     private fun showHospitalDetails(hospital: HospitalRes) {
-        val bottomSheetView = LayoutInflater.from(this)
-            .inflate(R.layout.activity_button_hospital_detail, null)
-        val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(bottomSheetView)
+        val dialog = Dialog(this)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_button_hospital_detail, null)
 
-        val hospitalName = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_name)
-        val hospitalImage = bottomSheetView.findViewById<ImageView>(R.id.bottom_sheet_hospital_image)
-        val hospitalAddress = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_address)
-        val hospitalPhone = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_phone)
-        val hospitalCategories = bottomSheetView.findViewById<TextView>(R.id.bottom_sheet_hospital_categories)
+        // Dialog에 레이아웃 설정
+        dialog.setContentView(dialogView)
 
+        // Dialog 크기 조정 (화면의 중앙에 표시)
+        dialog.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.9).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        // Dialog 배경 설정 (둥근 흰색 배경)
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+
+        // Dialog 화면 중앙 정렬
+        dialog.window?.setGravity(android.view.Gravity.CENTER)
+
+        // 레이아웃에서 UI 요소 초기화
+        val hospitalName = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_name)
+        val hospitalImage = dialogView.findViewById<ImageView>(R.id.bottom_sheet_hospital_image)
+        val hospitalAddress = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_address)
+        val hospitalPhone = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_phone)
+        val hospitalCategories = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_categories)
+
+        // 병원 정보 설정
         hospitalName.text = hospital.name
         hospitalAddress.text = "주소: ${hospital.address}"
         hospitalPhone.text = "전화번호: ${hospital.telephoneNumber}"
-        // 카테고리 이름만 가져와서 문자열로 변환
+
+        // 병원 카테고리 설정
         val categoryNames = hospital.categories.joinToString(", ") { it.name }
         hospitalCategories.text = "카테고리: ${categoryNames}"
 
+        // 병원 이미지 로드
         Glide.with(this).load(hospital.imageUrl).into(hospitalImage)
 
-        bottomSheetDialog.show()
+        // 텍스트 크기 조정
+        hospitalName.textSize = 42f // 병원 이름 텍스트 크기
+        hospitalAddress.textSize = 18f // 병원 주소 텍스트 크기
+        hospitalPhone.textSize = 18f // 병원 전화번호 텍스트 크기
+        hospitalCategories.textSize = 18f // 병원 카테고리 텍스트 크기
+
+        // 다이얼로그 표시
+        dialog.show()
     }
+
 }
