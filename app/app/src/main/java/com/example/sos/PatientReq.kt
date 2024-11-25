@@ -9,5 +9,6 @@ data class PatientReq (
     val symptom: String,
     val medication: String,
     val reference: String,
-    val gender: Gender
+    val gender: Gender,
+    val severity: String
 )

@@ -36,6 +36,7 @@ class ViewPatientActivity : AppCompatActivity() {
     private lateinit var patientGenderTextView: TextView
 
     private var selectedHospitalId: String? = null
+    private var selectedHospitalName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,6 @@ class ViewPatientActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)
 
-        // Intent에서 receptionId 가져오기
         receptionId = intent.getStringExtra("receptionId") ?: run {
             showToast("Reception ID를 찾을 수 없습니다.")
             finish()
@@ -61,7 +61,6 @@ class ViewPatientActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
 
-        // UI 요소 초기화
         statusTextView = findViewById(R.id.reception_status)
         hospitalNameTextView = findViewById(R.id.hospital_name)
         selectHospitalButton = findViewById(R.id.select_hospital_button)
@@ -70,7 +69,6 @@ class ViewPatientActivity : AppCompatActivity() {
         selectHospitalTextView = findViewById(R.id.text_select_hospital)
         patientGenderTextView = findViewById(R.id.patient_gender)
 
-        // 초기 버튼 및 텍스트 숨기기
         selectHospitalButton.visibility = View.GONE
         retryButton.visibility = View.GONE
         selectHospitalTextView.visibility = View.GONE
@@ -112,18 +110,15 @@ class ViewPatientActivity : AppCompatActivity() {
     }
 
     private fun updateUI(reception: ReceptionRes) {
-        // 병원 정보 업데이트
         hospitalNameTextView.text = reception.hospital.name
         findViewById<TextView>(R.id.hospital_address).text = reception.hospital.address
         findViewById<TextView>(R.id.hospital_phone).text = reception.hospital.telephoneNumber
 
-        // 환자 정보 업데이트
         findViewById<TextView>(R.id.patient_name).text = reception.patient.name
         findViewById<TextView>(R.id.patient_age).text = reception.patient.age.toString()
         findViewById<TextView>(R.id.patient_phone).text = reception.patient.phoneNumber
         patientGenderTextView.text = parseGender(reception.patient.gender)
 
-        // 접수 상태에 따른 UI 업데이트
         when (reception.receptionStatus) {
             "PENDING" -> {
                 statusTextView.text = "요청 대기 중"
@@ -148,7 +143,7 @@ class ViewPatientActivity : AppCompatActivity() {
                 selectHospitalButton.visibility = View.GONE
                 retryButton.visibility = View.GONE
                 selectHospitalTextView.visibility = View.GONE
-                finish() // 알아서 조절 ㄱㄱ
+                finish()
             }
             "REJECTED" -> {
                 statusTextView.text = "요청 거절"
@@ -169,7 +164,6 @@ class ViewPatientActivity : AppCompatActivity() {
         }
     }
 
-
     private fun parseGender(gender: Gender?): String {
         return when (gender) {
             Gender.MALE -> "남자"
@@ -186,9 +180,9 @@ class ViewPatientActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1000 && resultCode == RESULT_OK) {
-            selectedHospitalId = data?.getStringExtra("hospitalId")
-            val selectedHospitalName = data?.getStringExtra("hospitalName")
-            hospitalNameTextView.text = selectedHospitalName ?: "병원 선택 안 됨"
+            selectedHospitalId = data?.getStringExtra("selectedHospitalId")
+            selectedHospitalName = data?.getStringExtra("selectedHospitalName")
+            selectHospitalTextView.text = selectedHospitalName ?: "병원 선택 안 됨"
         }
     }
 
@@ -218,7 +212,6 @@ class ViewPatientActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val newReceptionId = response.body()!!.data
 
-                    // ViewPatientActivity를 새로운 receptionId로 재실행
                     val intent = Intent(this@ViewPatientActivity, ViewPatientActivity::class.java).apply {
                         putExtra("receptionId", newReceptionId)
                     }

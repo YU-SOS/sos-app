@@ -28,6 +28,8 @@ class AddPatientActivity : AppCompatActivity() {
     private lateinit var tokenManager: TokenManager
     private var selectedHospitalName: String? = null
     private lateinit var logoutManager: LogoutManager
+    private lateinit var severityTextView: TextView
+    private var severity: String = "IMMEDIATE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,33 @@ class AddPatientActivity : AppCompatActivity() {
         tokenManager = TokenManager(this)
         logoutManager = LogoutManager(this, tokenManager)
 
+
+        // seek바 설정
+        val seekBar = findViewById<SeekBar>(R.id.seekBar)
+        var severity = "IMMEDIATE" // 초기값 설정
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                severity = when (progress) {
+                    0 -> "IMMEDIATE"
+                    1 -> "EMERGENCY"
+                    2 -> "URGENT"
+                    3 -> "SEMI_URGENT"
+                    4 -> "NON_URGENT"
+                    else -> "IMMEDIATE"
+                }
+                severityTextView.text = severity
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+
+
+
         // UI 요소 초기화
         val inputName = findViewById<EditText>(R.id.input_name)
         val inputAge = findViewById<EditText>(R.id.input_age)
@@ -55,6 +84,7 @@ class AddPatientActivity : AppCompatActivity() {
         val selectHospitalButton = findViewById<Button>(R.id.button)
         val hospitalTextView = findViewById<TextView>(R.id.textView4)
         val saveButton = findViewById<Button>(R.id.btn_save)
+        severityTextView = findViewById(R.id.textView5) // IMMEDIATE가 표시될 TextView
 
         // 병원 선택 버튼 클릭
         selectHospitalButton.setOnClickListener {
@@ -88,7 +118,8 @@ class AddPatientActivity : AppCompatActivity() {
                 symptom = symptom,
                 medication = medication,
                 reference = reference,
-                gender = gender
+                gender = gender,
+                severity = severity
             )
 
             createReception(patientReq, selectedHospitalName!!)

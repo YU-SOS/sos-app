@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sos.res.HospitalRes
 import com.example.sos.R
+import com.example.sos.res.HospitalRes
 import com.example.sos.retrofit.AuthService
 import com.example.sos.retrofit.HospitalLoadResponse
 import com.example.sos.retrofit.RetrofitClientInstance
@@ -42,7 +42,7 @@ class LoadHospitalActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         hospitalAdapter = HospitalAdapter { hospitalId, hospitalName ->
             val intent = Intent().apply {
-                putExtra("selectedHospitalId", hospitalId) // 병원 ID 추가
+                putExtra("selectedHospitalId", hospitalId)
                 putExtra("selectedHospitalName", hospitalName)
             }
             setResult(RESULT_OK, intent)
