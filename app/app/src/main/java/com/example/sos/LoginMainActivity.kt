@@ -49,6 +49,8 @@ class LoginMainActivity : AppCompatActivity() {
         val registerText = findViewById<TextView>(R.id.registerText)
         registerText.paintFlags = registerText.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
 
+        val logoutButton = findViewById<ImageButton>(R.id.logout_button)
+        logoutButton.visibility = View.GONE
         // 유저 텍스트 클릭 시
         userText.setOnClickListener {
             // 텍스트 스타일 변경

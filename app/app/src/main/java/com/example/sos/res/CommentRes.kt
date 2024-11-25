@@ -1,9 +1,7 @@
 package com.example.sos.res
 
-import java.time.LocalDateTime
-
 data class CommentRes(
-    val id: Int,
+    val id: String,
     val content: String,
-    val createdAt: LocalDateTime
+    val createdAt: String
 )

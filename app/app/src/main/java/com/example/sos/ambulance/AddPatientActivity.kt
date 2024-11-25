@@ -108,10 +108,6 @@ class AddPatientActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
-        userLogoutButton.setOnClickListener {
-            logoutManager.logout()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

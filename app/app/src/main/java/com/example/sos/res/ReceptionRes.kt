@@ -2,6 +2,7 @@ package com.example.sos.res
 
 data class ReceptionRes(
     val id: String,
+    val number: String,
     val startTime: String,
     val endTime: String,
     val ambulance: AmbulanceRes,

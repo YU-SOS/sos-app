@@ -274,7 +274,7 @@ interface AuthService {
     ): Call<ParamedicDeleteResponse>
 
     // 응급실 접수 조회
-    @GET("/reception/{receptionId}")
+    @GET("/reception/{receptionId}/user")
     fun getReceptionInfo(
         @Header("Authorization") authorization: String,
         @Path("receptionId") receptionId: String
