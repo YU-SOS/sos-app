@@ -24,7 +24,7 @@ class LogoutManager(private val context: Context, private val tokenManager: Toke
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                        tokenManager.clearTokens()
+                        tokenManager.clearTokens() // 모든 데이터 삭제
                         val intent = Intent(context, IntroActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         context.startActivity(intent)

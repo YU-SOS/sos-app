@@ -35,8 +35,6 @@ class AmbulanceMainActivity : AppCompatActivity() {
     private lateinit var ambulanceName: TextView
     private lateinit var ambulanceAddress: TextView
     private lateinit var ambulancePhone: TextView
-    private lateinit var imageButton1: ImageButton
-    private lateinit var imageButton2: ImageButton
     private lateinit var addParamedicButton: Button // 구급대원 추가 버튼
     private lateinit var logoutManager: LogoutManager
 

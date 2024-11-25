@@ -28,6 +28,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
 
     private lateinit var tokenManager: TokenManager
     private var selectedImageUri: Uri? = null
+    private var isIdChecked = false // 아이디 중복 확인 여부
 
     private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
@@ -58,10 +59,11 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
 
         checkDupButton.setOnClickListener {
             val id = idEditText.text.toString()
-            if (id.isNotEmpty()) {
-                checkIdDuplication(id)
+            // 아이디 유효성 검사 추가
+            if (!isValidId(id)) {
+                Toast.makeText(this, "아이디는 영어와 숫자만 포함해야 합니다.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "아이디를 입력하세요.", Toast.LENGTH_SHORT).show()
+                checkIdDuplication(id)
             }
         }
 
@@ -73,13 +75,40 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
             val telephoneNumber = phoneEditText.text.toString()
             val address = addressEditText.text.toString()
 
-            if (id.isEmpty() || password.isEmpty() || name.isEmpty() || telephoneNumber.isEmpty() || address.isEmpty()) {
-                Toast.makeText(this, "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            // 중복 확인 여부 체크
+            if (!isIdChecked) {
+                Toast.makeText(this, "아이디 중복 확인을 완료해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 입력 값 유효성 검사
+            if (!isValidId(id)) {
+                Toast.makeText(this, "아이디는 영어와 숫자만 포함해야 합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isValidPassword(password)) {
+                Toast.makeText(this, "비밀번호는 공백이나 엔터를 포함할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password != confirmPassword) {
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isValidName(name)) {
+                Toast.makeText(this, "구급대 이름은 한글, 영어, 공백만 포함해야 합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isValidPhone(telephoneNumber)) {
+                Toast.makeText(this, "전화번호는 올바른 형식(숫자와 '-' 포함)이어야 합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isValidAddress(address)) {
+                Toast.makeText(this, "주소는 공백만으로 구성될 수 없습니다.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -103,6 +132,26 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
         }
     }
 
+    private fun isValidId(id: String): Boolean {
+        return id.matches("^[a-zA-Z0-9]+$".toRegex())
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        return password.isNotEmpty() && !password.contains(" ") && !password.contains("\n")
+    }
+
+    private fun isValidName(name: String): Boolean {
+        return name.matches("^[가-힣a-zA-Z ]+$".toRegex())
+    }
+
+    private fun isValidPhone(phone: String): Boolean {
+        return phone.matches("^\\d{2,3}-\\d{3,4}-\\d{4}$".toRegex())
+    }
+
+    private fun isValidAddress(address: String): Boolean {
+        return address.isNotBlank()
+    }
+
     private fun checkIdDuplication(id: String) {
         val authService = RetrofitClientInstance.getApiService(tokenManager)
         authService.checkIdDuplication(id, "AMB").enqueue(object : Callback<AmbulanceIdDupCheckResponse> {
@@ -110,13 +159,16 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val message = response.body()?.message
                     Toast.makeText(this@RegisterAmbulanceActivity, message, Toast.LENGTH_SHORT).show()
+                    isIdChecked = true // 중복 확인 성공 시 플래그 설정
                 } else {
                     Toast.makeText(this@RegisterAmbulanceActivity, "중복된 ID 입니다.", Toast.LENGTH_SHORT).show()
+                    isIdChecked = false // 중복 확인 실패
                 }
             }
 
             override fun onFailure(call: Call<AmbulanceIdDupCheckResponse>, t: Throwable) {
                 Toast.makeText(this@RegisterAmbulanceActivity, "에러 발생: ${t.message}", Toast.LENGTH_SHORT).show()
+                isIdChecked = false
             }
         })
     }
