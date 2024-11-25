@@ -93,8 +93,8 @@ class DetailHospitalActivity : AppCompatActivity() {
         }"
 
         val statusText = when (hospital.emergencyRoomStatus) {
-            true -> "수용 가능"
-            false -> "수용 불가"
+            "AVAILABLE" -> "수용 가능"
+            "FULL" -> "수용 불가"
             else -> "정보 없음"
         }
         hospitalStatus.text = "응급실 상태: $statusText"
