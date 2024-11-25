@@ -47,24 +47,30 @@ class HospitalAdapter(
             hospitalPhone.text = hospital.telephoneNumber
 
             // 병원 상태에 따라 원의 색상 변경 및 클릭 이벤트 처리
-            if (hospital.emergencyRoomStatus) {
-                // 수용 불가 상태
-                statusIndicator.setBackgroundResource(R.drawable.red_circle)
-                itemView.isEnabled = false // 클릭 차단
-                itemView.alpha = 0.5f // 비활성화된 효과로 반투명 처리
-            } else {
-                // 수용 가능 상태
-                statusIndicator.setBackgroundResource(R.drawable.green_circle)
-                itemView.isEnabled = true
-                itemView.alpha = 1.0f
-            }
-
-            // 클릭 이벤트 설정
-            itemView.setOnClickListener {
-                if (!hospital.emergencyRoomStatus) { // 수용 가능 상태일 때만 클릭 가능
-                    onItemClick(hospital.id, hospital.name)
-                } else {
-                    Toast.makeText(itemView.context, "병원이 현재 수용 불가 상태입니다.", Toast.LENGTH_SHORT).show()
+            when (hospital.emergencyRoomStatus) {
+                "AVAILABLE" -> {
+                    // 수용 가능 상태
+                    statusIndicator.setBackgroundResource(R.drawable.green_circle)
+                    itemView.isEnabled = true
+                    itemView.alpha = 1.0f
+                    itemView.setOnClickListener {
+                        onItemClick(hospital.id, hospital.name)
+                    }
+                }
+                "FULL" -> {
+                    // 수용 불가 상태
+                    statusIndicator.setBackgroundResource(R.drawable.red_circle)
+                    itemView.isEnabled = false
+                    itemView.alpha = 0.5f // 비활성화된 효과로 반투명 처리
+                    itemView.setOnClickListener {
+                        Toast.makeText(itemView.context, "병원이 현재 수용 불가 상태입니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else -> {
+                    // 예외적인 상태 처리 (기본값으로 설정)
+                    statusIndicator.setBackgroundResource(R.drawable.red_circle)
+                    itemView.isEnabled = false
+                    itemView.alpha = 0.5f
                 }
             }
         }
