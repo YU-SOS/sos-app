@@ -125,11 +125,18 @@ class AddPatientActivity : AppCompatActivity() {
             return
         }
 
+        val paramedicId = tokenManager.getSelectedParamedicId()
+        if (paramedicId.isNullOrEmpty()) {
+            // 선탑 구급대원이 선택되지 않은 경우 메시지 표시
+            Toast.makeText(this, "선탑 구급대원을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val receptionRequest = ReceptionRequest(
             patient = patientReq,
             hospitalName = hospitalName,
             startTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
-            paramedicId = tokenManager.getSelectedParamedicId() ?: ""
+            paramedicId = paramedicId
         )
 
         authService.addReception("Bearer $jwtToken", receptionRequest)
