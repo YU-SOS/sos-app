@@ -32,4 +32,12 @@
             android:text="전화번호"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <!-- 병원 상태를 표시하는 원 -->
+    <View
+        android:id="@+id/status_indicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/green_circle" />
 </LinearLayout>

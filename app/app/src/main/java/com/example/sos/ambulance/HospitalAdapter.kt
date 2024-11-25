@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sos.res.HospitalRes
@@ -15,58 +16,57 @@ class HospitalAdapter(
     private val onItemClick: (hospitalId: String, hospitalName: String) -> Unit
 ) : RecyclerView.Adapter<HospitalAdapter.HospitalViewHolder>() {
 
-    private val hospitals = mutableListOf<HospitalRes>()
+    private val hospitalList = mutableListOf<HospitalRes>()
 
     fun updateData(newData: List<HospitalRes>) {
-        hospitals.clear()
-        hospitals.addAll(newData)
+        hospitalList.clear()
+        hospitalList.addAll(newData)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HospitalViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hospital, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_hospital, parent, false)
         return HospitalViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HospitalViewHolder, position: Int) {
-        val hospital = hospitals[position]
+        val hospital = hospitalList[position]
         holder.bind(hospital)
-        holder.itemView.setOnClickListener {
-            onItemClick(hospital.id, hospital.name)
-        }
     }
 
-    fun addData(newData: List<HospitalRes>) {
-        hospitals.addAll(newData)
-        notifyDataSetChanged()
-    }
-
-
-    override fun getItemCount() = hospitals.size
+    override fun getItemCount(): Int = hospitalList.size
 
     inner class HospitalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val hospitalImageView: ImageView = itemView.findViewById(R.id.hospital_image)
-        private val hospitalNameTextView: TextView = itemView.findViewById(R.id.hospital_name)
-        private val hospitalPhoneTextView: TextView = itemView.findViewById(R.id.hospital_phone)
+        private val hospitalName: TextView = itemView.findViewById(R.id.hospital_name)
+        private val hospitalPhone: TextView = itemView.findViewById(R.id.hospital_phone)
+        private val statusIndicator: View = itemView.findViewById(R.id.status_indicator)
 
         fun bind(hospital: HospitalRes) {
-            // 병원 이름 바인딩
-            hospitalNameTextView.text = hospital.name
+            hospitalName.text = hospital.name
+            hospitalPhone.text = hospital.telephoneNumber
 
-            // 병원 전화번호 바인딩
-            hospitalPhoneTextView.text = hospital.telephoneNumber
-
-            // 병원 이미지 바인딩 (예: Glide 사용)
-            if (!hospital.imageUrl.isNullOrEmpty()) {
-                Glide.with(itemView.context)
-                    .load(hospital.imageUrl) // Firebase 또는 URL 경로를 로드
-                    .placeholder(R.drawable.image2) // 기본 이미지
-                    .error(R.drawable.image) // 로드 실패 시 이미지
-                    .into(hospitalImageView)
+            // 병원 상태에 따라 원의 색상 변경 및 클릭 이벤트 처리
+            if (hospital.emergencyRoomStatus) {
+                // 수용 불가 상태
+                statusIndicator.setBackgroundResource(R.drawable.red_circle)
+                itemView.isEnabled = false // 클릭 차단
+                itemView.alpha = 0.5f // 비활성화된 효과로 반투명 처리
             } else {
-                hospitalImageView.setImageResource(R.drawable.image) // 이미지 없을 때 기본값
+                // 수용 가능 상태
+                statusIndicator.setBackgroundResource(R.drawable.green_circle)
+                itemView.isEnabled = true
+                itemView.alpha = 1.0f
+            }
+
+            // 클릭 이벤트 설정
+            itemView.setOnClickListener {
+                if (!hospital.emergencyRoomStatus) { // 수용 가능 상태일 때만 클릭 가능
+                    onItemClick(hospital.id, hospital.name)
+                } else {
+                    Toast.makeText(itemView.context, "병원이 현재 수용 불가 상태입니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
-
 }
