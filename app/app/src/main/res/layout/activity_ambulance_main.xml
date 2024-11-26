@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -47,65 +48,15 @@
         android:background="#CCCCCC"
         android:layout_marginBottom="16dp" />
 
-    <!-- 버튼 섹션 -->
-    <LinearLayout
+    <!-- BottomNavigationView -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <!-- 첫 번째 버튼 섹션 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <ImageButton
-                android:id="@+id/btn_image_1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/patient"
-                android:contentDescription="Image Button 1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"/>
-
-            <TextView
-                android:id="@+id/text_image_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="접수 요청"
-                android:textSize="14dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center" />
-        </LinearLayout>
-
-        <!-- 두 번째 버튼 섹션 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <ImageButton
-                android:id="@+id/btn_image_2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/image2"
-                android:contentDescription="Image Button 2"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"/>
-
-            <TextView
-                android:id="@+id/text_image_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="마이 페이지"
-                android:textSize="14dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:itemIconSize="24dp"
+        app:itemTextColor="@color/bottom_color_selector"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/ambulance_navigation_menu" />
 </LinearLayout>

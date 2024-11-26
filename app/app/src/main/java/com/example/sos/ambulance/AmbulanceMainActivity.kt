@@ -2,7 +2,6 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,12 +29,10 @@ class AmbulanceMainActivity : AppCompatActivity() {
     private lateinit var tokenManager: TokenManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ParamedicsAdapter
-
     private lateinit var ambulanceImage: ImageView
     private lateinit var ambulanceName: TextView
     private lateinit var ambulanceAddress: TextView
     private lateinit var ambulancePhone: TextView
-    private lateinit var addParamedicButton: Button // 구급대원 추가 버튼
     private lateinit var logoutManager: LogoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +52,7 @@ class AmbulanceMainActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.nav_info
 
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -70,12 +68,7 @@ class AmbulanceMainActivity : AppCompatActivity() {
             }
         }
 
-        // 구급대원 추가 버튼 클릭 이벤트
-        addParamedicButton.setOnClickListener {
-            val intent = Intent(this, AddParamedicActivity::class.java)
-            startActivity(intent)
-        }
-
+        // 로그아웃 버튼 설정
         val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             logoutManager.logout()
@@ -109,7 +102,6 @@ class AmbulanceMainActivity : AppCompatActivity() {
         ambulanceName = findViewById(R.id.ambulance_name)
         ambulanceAddress = findViewById(R.id.ambulance_address)
         ambulancePhone = findViewById(R.id.ambulance_phone)
-        addParamedicButton = findViewById(R.id.add_paramedic_button)
     }
 
     override fun onResume() {

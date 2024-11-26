@@ -86,8 +86,6 @@ class LoadAmbulanceActivity : AppCompatActivity() {
 
         ambulanceImage = findViewById(R.id.ambulance_image)
         ambulanceName = findViewById(R.id.ambulance_name)
-        imageButton1 = findViewById(R.id.btn_image_1)
-        imageButton2 = findViewById(R.id.btn_image_2)
     }
 
     private fun fetchAmbulanceInfo(ambulanceId: String) {

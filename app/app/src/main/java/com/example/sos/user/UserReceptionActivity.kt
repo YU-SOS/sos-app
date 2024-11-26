@@ -87,26 +87,19 @@ class UserReceptionActivity : AppCompatActivity() {
 
         // 조회 버튼 클릭 리스너
         getHospitalInfoButton.setOnClickListener {
-            val receptionId = receptionIdInput.text.toString()
-            if (receptionId.isNotEmpty()) {
+            val receptionId = receptionIdInput.text.toString().trim() // 입력값의 공백 제거
+            if (receptionId.isEmpty()) { // 입력값이 비어있거나 공백만 있는 경우
+                Toast.makeText(this, "공백을 제외하고 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else {
                 try {
-
-                    // 텍스트 숨기기
-                    textView2.visibility = View.GONE
-                    textView3.visibility = View.GONE
-                    textView4.visibility = View.GONE
-
-
-                    // 카카오톡 공유 버튼 표시
-                    kakaoShareButton.visibility = View.VISIBLE
-
-                    showHospitalDetails() // 새로운 화면처럼 전환
-                    getReceptionInfo(receptionId)
+                    getReceptionInfo(receptionId) // 입력값 전달
                 } catch (e: IllegalArgumentException) {
                     Toast.makeText(this, "올바른 접수번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+
 
         // 뒤로 가기 버튼 클릭 리스너
         backButton.setOnClickListener {
@@ -247,11 +240,24 @@ class UserReceptionActivity : AppCompatActivity() {
 
                             setupMap(latitude, longitude, hospitalName)
 
+                            // 조회 성공 시 화면 전환
+                            showHospitalDetails()
+
+                            // 텍스트 숨기기 및 카카오톡 공유 버튼 표시
+                            val textView2: TextView = findViewById(R.id.textView2)
+                            val textView3: TextView = findViewById(R.id.textView3)
+                            val textView4: TextView = findViewById(R.id.textView4)
+                            val kakaoShareButton: ImageButton = findViewById(R.id.kakao_share_button)
+
+                            textView2.visibility = View.GONE
+                            textView3.visibility = View.GONE
+                            textView4.visibility = View.GONE
+                            kakaoShareButton.visibility = View.VISIBLE
+
                             Toast.makeText(this@UserReceptionActivity, "조회 성공", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(this@UserReceptionActivity, "조회 실패: ${response.message()}", Toast.LENGTH_LONG).show()
-                        Log.d("UserReceptionActivity: ", "${response.message()}")
+                        Toast.makeText(this@UserReceptionActivity, "없는 조회번호입니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
