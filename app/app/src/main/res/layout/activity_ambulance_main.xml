@@ -57,6 +57,7 @@
         android:background="@color/white"
         app:itemIconSize="24dp"
         app:itemTextColor="@color/bottom_color_selector"
+        app:itemIconTint="@color/black"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/ambulance_navigation_menu" />
 </LinearLayout>

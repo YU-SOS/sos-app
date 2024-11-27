@@ -58,7 +58,7 @@ class AmbulanceMainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_request -> {
                     val intent = Intent(this, AddPatientActivity::class.java)
-                    startActivity(intent) // 새 화면을 열지만 현재 화면은 닫지 않음
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_info -> {

@@ -152,7 +152,6 @@ class LoginMainActivity : AppCompatActivity() {
         }
     }
 
-    //AmbulanceLogin부분
     // JWT 토큰을 SharedPreferences에 저장하는 함수
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)

@@ -126,6 +126,7 @@ class AddPatientActivity : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.nav_request
 
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -133,7 +134,8 @@ class AddPatientActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_info -> {
-                    finish()
+                    val intent = Intent(this, AmbulanceMainActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
