@@ -34,14 +34,8 @@ class LoginAmbulanceActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭 시 동작
         loginButton.setOnClickListener {
-            val id = usernameEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
-
-            // ID와 비밀번호 공백 확인
-            if (id.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "아이디와 비밀번호를 올바르게 입력해주세요.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val id = usernameEditText.text.toString()
+            val password = passwordEditText.text.toString()
 
             // Retrofit을 통해 AuthService 생성
             val authService = RetrofitClientInstance.getApiService(tokenManager)
@@ -77,7 +71,6 @@ class LoginAmbulanceActivity : AppCompatActivity() {
                 }
             })
         }
-
 
         // 회원가입 버튼 클릭 시 동작
         registerButton.setOnClickListener {

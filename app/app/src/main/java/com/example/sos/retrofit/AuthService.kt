@@ -299,7 +299,7 @@ interface AuthService {
     ): Call<ReceptionGuestResponse>
 
     // 거절 후 재요청
-    @POST("/reception/{receptionId}/re")
+    @PUT("/reception/{receptionId}/re")
     fun retryReception(
         @Header("Authorization") token: String,
         @Path("receptionId") receptionId: String,

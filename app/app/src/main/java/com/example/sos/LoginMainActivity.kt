@@ -128,8 +128,15 @@ class LoginMainActivity : AppCompatActivity() {
                         }
                     } else {
                         // 상태 코드가 200이 아닌 경우 실패 메시지 표시
-                        val errorMessage = loginResponse?.message ?: "로그인 실패"
-                        Toast.makeText(this@LoginMainActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                        val errorBody = response.errorBody()?.string() // 에러 응답 본문을 문자열로 읽기
+                        var errorMessage = extractErrorMessage(errorBody) // 에러 메시지 추출
+                        if (errorMessage == "BLACKLIST")
+                            errorMessage = "회원가입 거절된 사용자입니다."
+                        else if (errorMessage == "GUEST")
+                            errorMessage = "회원가입 승인을 기다려주세요."
+                        else
+                            errorMessage = "아이디와 비밀번호를 확인해주세요."
+                        Toast.makeText(this@LoginMainActivity, "$errorMessage", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -189,6 +196,16 @@ class LoginMainActivity : AppCompatActivity() {
             UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+
+    private fun extractErrorMessage(errorBody: String?): String {
+        return try {
+            // JSON 형식으로 응답 파싱
+            val jsonObject = org.json.JSONObject(errorBody ?: "")
+            jsonObject.optString("message", "알 수 없는 오류") // message 필드 읽기
+        } catch (e: Exception) {
+            "응답을 파싱하는 중 오류 발생: ${e.message}" // JSON 파싱 실패 시 기본 메시지 반환
         }
     }
 
