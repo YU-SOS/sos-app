@@ -98,6 +98,7 @@
         android:layout_height="wrap_content"
         android:hint="비밀번호"
         android:visibility="gone"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/edit_text_username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

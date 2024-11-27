@@ -83,6 +83,15 @@ class ModifyParamedicActivity : AppCompatActivity() {
     }
 
     private fun modifyParamedic() {
+        val name = nameEditText.text.toString().trim()
+        val phoneNumber = phoneEditText.text.toString().trim()
+
+        // 공백 체크
+        if (name.isBlank() || phoneNumber.isBlank()) {
+            showToast("이름과 전화번호를 올바르게 입력해주세요.")
+            return
+        }
+
         val jwtToken = tokenManager.getAccessToken()
         if (jwtToken.isNullOrEmpty()) {
             showToast("토큰 오류: 로그인이 필요합니다.")
@@ -90,8 +99,8 @@ class ModifyParamedicActivity : AppCompatActivity() {
         }
 
         val updatedParamedic = ParamedicModifyRequest(
-            name = nameEditText.text.toString(),
-            phoneNumber = phoneEditText.text.toString()
+            name = name,
+            phoneNumber = phoneNumber
         )
         authService.modifyParamedic("Bearer $jwtToken", ambulanceId, paramedicId, updatedParamedic)
             .enqueue(object : Callback<ParamedicModifyResponse> {
@@ -117,6 +126,7 @@ class ModifyParamedicActivity : AppCompatActivity() {
                 }
             })
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

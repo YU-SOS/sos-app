@@ -106,8 +106,15 @@ class AddPatientActivity : AppCompatActivity() {
                 else -> null
             }
 
-            if (name.isEmpty() || phoneNumber.isEmpty() || gender == null || selectedHospitalName.isNullOrEmpty()) {
-                Toast.makeText(this, "모든 필드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            // 공백만으로 구성된 필드 확인
+            if (name.isBlank() || phoneNumber.isBlank() || gender == null || selectedHospitalName.isNullOrEmpty()) {
+                Toast.makeText(this, "모든 필드를 올바르게 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 추가로 symptom, medication, reference도 체크 (필요시)
+            if (symptom.isBlank() || medication.isBlank() || reference.isBlank()) {
+                Toast.makeText(this, "증상, 약물 정보 및 참조 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -124,6 +131,7 @@ class AddPatientActivity : AppCompatActivity() {
 
             createReception(patientReq, selectedHospitalName!!)
         }
+
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.nav_request

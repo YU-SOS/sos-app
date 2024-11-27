@@ -82,6 +82,15 @@ class AddParamedicActivity : AppCompatActivity() {
     }
 
     private fun addParamedic() {
+        val name = nameEditText.text.toString().trim()
+        val phoneNumber = phoneEditText.text.toString().trim()
+
+        // 공백 체크
+        if (name.isBlank() || phoneNumber.isBlank()) {
+            showToast("이름과 전화번호를 올바르게 입력해주세요.")
+            return
+        }
+
         val jwtToken = tokenManager.getAccessToken()
         val ambulanceId = try {
             tokenManager.getTokenId() // TokenManager를 통해 구급대 ID 가져오기
@@ -92,8 +101,8 @@ class AddParamedicActivity : AppCompatActivity() {
 
         if (jwtToken != null) {
             val paramedic = MemberRequest(
-                name = nameEditText.text.toString(),
-                phoneNumber = phoneEditText.text.toString()
+                name = name,
+                phoneNumber = phoneNumber
             )
 
             authService.addAmbulanceMember(
@@ -118,6 +127,7 @@ class AddParamedicActivity : AppCompatActivity() {
             showToast("토큰을 찾을 수 없습니다. 다시 로그인 해주세요.")
         }
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

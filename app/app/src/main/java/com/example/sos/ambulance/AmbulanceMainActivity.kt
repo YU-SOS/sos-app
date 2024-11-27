@@ -2,6 +2,7 @@ package com.example.sos.ambulance
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -68,12 +69,22 @@ class AmbulanceMainActivity : AppCompatActivity() {
             }
         }
 
+        // "구급대원 추가" 버튼 동작
+        val addParamedicButton = findViewById<Button>(R.id.add_paramedic_button)
+        addParamedicButton.setOnClickListener {
+            val intent = Intent(this, AddParamedicActivity::class.java).apply {
+                putExtra("ambulanceId", ambulanceId) // 구급대 ID 전달
+            }
+            startActivity(intent)
+        }
+
         // 로그아웃 버튼 설정
         val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             logoutManager.logout()
         }
     }
+
 
     private fun initializeUI() {
         tokenManager = TokenManager(this)
