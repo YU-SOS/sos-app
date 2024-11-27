@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.AmbulanceMainActivity
-import com.example.sos.ambulance.LoginAmbulanceActivity
 import com.example.sos.ambulance.RegisterAmbulanceActivity
 import com.example.sos.retrofit.LoginRequest
 import com.example.sos.retrofit.LoginResponse

@@ -38,7 +38,7 @@ class AmbulanceMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_load_ambulance)
+        setContentView(R.layout.activity_ambulance_main)
 
         initializeUI()
 
