@@ -194,7 +194,16 @@ class LoginMainActivity : AppCompatActivity() {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
+                if (error != null) {
+                    Log.e("KakaoLogin", "로그인 실패", error)
+                } else if (token != null) {
+                    Log.i("KakaoLogin", "로그인 성공 ${token.accessToken}")
+                    // 토큰을 저장하고 화면 전환
+                    startActivity(Intent(this, UserMapActivity::class.java))
+                    finish() // 현재 액티비티 종료
+                }
+            }
         }
     }
 
@@ -210,7 +219,6 @@ class LoginMainActivity : AppCompatActivity() {
 
     private fun sendUserDataToServer(name: String, providerId: String, provider: String, email: String) {
         val userSignupRequest = UserSignupRequest(name, providerId, provider, email)
-
 
         val tokenManager = TokenManager(this)
         val authService = RetrofitClientInstance.getApiService(tokenManager)
