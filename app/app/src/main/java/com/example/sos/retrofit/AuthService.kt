@@ -50,10 +50,9 @@ data class UserSignupRequest(
 )
 
 data class UserLoginResponse(
-    @SerializedName("status_code") val statusCode: Int,
-    @SerializedName("message") val message: String,
-    @SerializedName("accessToken") val accessToken: String,
-    @SerializedName("refreshToken") val refreshToken: String
+    val statusCode: Int,
+    val message: String,
+    val data: String?
 )
 
 data class RefreshResponse(

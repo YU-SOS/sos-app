@@ -111,13 +111,12 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
                     android:host="oauth"
-                    android:scheme="@string/scheme_kakao_app_key" />
+                    android:scheme="kakao68695b0d022c083d3448cec3ccbacb8a" />
             </intent-filter>
         </activity>
 
