@@ -78,7 +78,7 @@
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
                     android:background="#E0E0E0"
-                    android:hint="접수번호"
+                    android:hint="접수번호를 입력하세요"
                     android:padding="12dp"
                     android:layout_gravity="center_horizontal" />
 

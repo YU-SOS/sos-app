@@ -3,7 +3,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sos.res.ParamedicsRes
 import com.example.sos.R
 
 class ParamedicsAdapter(
