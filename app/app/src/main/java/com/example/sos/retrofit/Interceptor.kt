@@ -1,6 +1,5 @@
 package com.example.sos.retrofit
 
-import android.util.Log
 import com.example.sos.token.TokenManager
 
 class Interceptor(private val tokenManager: TokenManager, private val authService: AuthService) : okhttp3.Interceptor {

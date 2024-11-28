@@ -61,11 +61,6 @@ data class RefreshResponse(
     val refreshToken: String
 )
 
-data class AmbulanceRequest(
-    val name: String,
-    val phoneNumber: String
-)
-
 data class AmbulanceResponse(
     val status: Int,
     val message: String,
@@ -75,19 +70,6 @@ data class AmbulanceResponse(
 data class AmbulanceIdDupCheckResponse(
     val status: Int,
     val message: String
-)
-
-data class SearchHospitalResponse(
-    val status: Int,
-    val message: String,
-    val data: Data
-)
-
-data class AmbulanceLoadResponse(
-    val status: Int,
-    val message: String,
-    val data: AmbulanceRes,
-    val imageUrl: String
 )
 
 data class MemberRequest(
@@ -292,11 +274,6 @@ interface AuthService {
         @Header("Authorization") token: String,
         @Body body: ReceptionRequest
     ): Call<ReceptionResponse>
-
-    @GET("/reception/{receptionId}/guest")
-    fun getReceptionGuest(
-        @Path("receptionId") receptionId: String
-    ): Call<ReceptionGuestResponse>
 
     // 거절 후 재요청
     @PUT("/reception/{receptionId}/re")

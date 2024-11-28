@@ -286,16 +286,16 @@ class UserReceptionActivity : AppCompatActivity() {
                 title = "웹에서 환자 정보 확인하기",
                 description = "이 환자 정보를 확인해보세요!",
                 link = Link(
-                    webUrl = url,         // 웹 링크만 설정
-                    mobileWebUrl = url    // 모바일 브라우저용 링크 설정
+                    webUrl = url,
+                    mobileWebUrl = url
                 )
             ),
             buttons = listOf(
                 com.kakao.sdk.template.model.Button(
                     "환자 정보 확인하기",
                     Link(
-                        webUrl = url,         // 버튼 클릭 시 웹 링크로 이동
-                        mobileWebUrl = url    // 모바일 브라우저용 링크 설정
+                        webUrl = url,
+                        mobileWebUrl = url
                     )
                 )
             )

@@ -9,12 +9,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.AmbulanceMainActivity
 import com.example.sos.ambulance.RegisterAmbulanceActivity
 import com.example.sos.retrofit.LoginRequest
