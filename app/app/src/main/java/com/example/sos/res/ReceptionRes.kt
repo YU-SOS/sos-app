@@ -10,5 +10,5 @@ data class ReceptionRes(
     val patient: PatientRes,
     val comments: List<CommentRes>,
     val receptionStatus: String?,
-    val paramedicRes: ParamedicsRes
+    val paramedic: ParamedicsRes
 )

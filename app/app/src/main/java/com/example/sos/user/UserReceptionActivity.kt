@@ -210,7 +210,7 @@ class UserReceptionActivity : AppCompatActivity() {
                         response.body()?.let { receptionInfoResponse ->
                             val hospital = receptionInfoResponse.data.hospital
                             val patient = receptionInfoResponse.data.patient
-                            val paramedic = receptionInfoResponse.data.paramedicRes
+                            val paramedic = receptionInfoResponse.data.paramedic
                             val comments = receptionInfoResponse.data.comments
 
                             // 병원 정보 설정
@@ -228,9 +228,9 @@ class UserReceptionActivity : AppCompatActivity() {
                             paramedicInfo.text = "구급대원 정보: ${paramedic?.name}, ${paramedic?.phoneNumber}"
 
                             hospitalComment.text = if (!comments.isNullOrEmpty()) {
-                                comments.joinToString(separator = "\n") { it.content }
+                                "코멘트:\n" + comments.joinToString(separator = "\n") { it.content }
                             } else {
-                                "코멘트 없음"
+                                "코멘트: 없음"
                             }
 
                             // 병원 위치 정보를 사용해 지도 설정
