@@ -270,23 +270,32 @@ class UserReceptionActivity : AppCompatActivity() {
     }
 
 
-    // 카카오톡 공유 기능 추가 (앱 링크)
     private fun shareViaKakao() {
+        val receptionIdInput: EditText = findViewById(R.id.reception_id_input)
+        val receptionId = receptionIdInput.text.toString().trim()
+
+        if (receptionId.isEmpty()) {
+            Toast.makeText(this, "접수번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val url = "http://www.yu-sos.co.kr/reception/$receptionId/guest"
+
         val defaultFeed = FeedTemplate(
             content = Content(
-                title = "앱에서 병원 정보 확인하기",
-                description = "이 병원 정보를 확인해보세요!",
+                title = "웹에서 환자 정보 확인하기",
+                description = "이 환자 정보를 확인해보세요!",
                 link = Link(
-                    androidExecutionParams = mapOf("receptionId" to "12345"), // 앱 설치된 경우 실행할 파라미터
-                    mobileWebUrl = "https://play.google.com/store/apps/details?id=com.example.sos" // 앱 미설치 시 스토어로 이동
+                    webUrl = url,         // 웹 링크만 설정
+                    mobileWebUrl = url    // 모바일 브라우저용 링크 설정
                 )
             ),
             buttons = listOf(
                 com.kakao.sdk.template.model.Button(
-                    "앱으로 보기",
+                    "환자 정보 확인하기",
                     Link(
-                        androidExecutionParams = mapOf("receptionId" to "12345"), // 앱 설치된 경우 실행할 인텐트 파라미터
-                        mobileWebUrl = "https://play.google.com/store/apps/details?id=com.example.sos" // 앱 미설치 시 스토어로 이동
+                        webUrl = url,         // 버튼 클릭 시 웹 링크로 이동
+                        mobileWebUrl = url    // 모바일 브라우저용 링크 설정
                     )
                 )
             )
@@ -296,9 +305,11 @@ class UserReceptionActivity : AppCompatActivity() {
         ShareClient.instance.shareDefault(this, defaultFeed) { sharingResult, error ->
             if (error != null) {
                 Log.e("KakaoShare", "카카오톡 공유 실패: ${error.message}")
+                Toast.makeText(this, "카카오톡 공유 실패: ${error.message}", Toast.LENGTH_LONG).show()
             } else if (sharingResult != null) {
-                Log.d("KakaoShare", "카카오톡 공유 성공: ${sharingResult.intent}")
-                startActivity(sharingResult.intent)
+                Log.d("KakaoShare", "카카오톡 공유 성공")
+                startActivity(sharingResult.intent)  // 공유 화면 열기
+                Toast.makeText(this, "카카오톡 공유 화면이 열렸습니다. 공유를 완료하세요.", Toast.LENGTH_SHORT).show()
             }
         }
     }

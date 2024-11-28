@@ -52,7 +52,8 @@ data class UserSignupRequest(
 data class UserLoginResponse(
     val statusCode: Int,
     val message: String,
-    val data: String?
+    val accessToken: String,
+    val refreshToken: String
 )
 
 data class RefreshResponse(

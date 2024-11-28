@@ -79,32 +79,6 @@
         <activity
             android:name=".user.UserReceptionActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- 딥링크 처리할 데이터 -->
-                <data
-                    android:host="play.google.com"
-                    android:pathPrefix="/store/apps/details"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".GuestSearchReceptionActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="kakaolink"
-                    android:scheme="kakao68695b0d022c083d3448cec3ccbacb8a" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
