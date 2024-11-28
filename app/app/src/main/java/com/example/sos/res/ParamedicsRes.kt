@@ -1,6 +1,6 @@
 package com.example.sos.res
 
-data class ParamedicRes(
+data class ParamedicsRes(
     val id: String,
     val name: String,
     val phoneNumber: String

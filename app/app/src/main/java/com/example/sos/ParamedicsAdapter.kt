@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sos.R
+import com.example.sos.res.ParamedicsRes
 
 class ParamedicsAdapter(
     private val paramedicsList: List<ParamedicsRes>,

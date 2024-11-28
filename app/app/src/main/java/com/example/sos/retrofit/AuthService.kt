@@ -6,6 +6,7 @@ import com.example.sos.res.HospitalRes
 import com.example.sos.Location
 import com.example.sos.Page
 import com.example.sos.PatientReq
+import com.example.sos.res.ParamedicsRes
 import com.example.sos.res.ReceptionGuestRes
 import com.example.sos.res.ReceptionRes
 import com.google.gson.annotations.SerializedName
