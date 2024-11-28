@@ -11,12 +11,14 @@ import com.example.sos.token.TokenManager
 import com.example.sos.user.UserMapActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import com.kakao.sdk.common.util.Utility
 
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        var keyHash = Utility.getKeyHash(this)
+        Log.d("mykey !!", keyHash)
         // 로그인 버튼 클릭 이벤트
         findViewById<ImageButton>(R.id.main_login_button).setOnClickListener {
             // 다음 화면으로 이동
@@ -24,7 +26,6 @@ class IntroActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
         // Role에 맞게 화면 전환
         val tokenManager = TokenManager(this)
         val accessToken = tokenManager.getAccessToken()

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sos">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 인터넷 사용 -->
+    <!-- 권한 설정 -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,6 +23,8 @@
         android:theme="@style/Theme.Sos"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <!-- Activity 정의 -->
         <activity
             android:name=".ambulance.ViewPatientActivity"
             android:exported="true"
@@ -39,9 +42,6 @@
             android:name=".ambulance.LoadHospitalActivity"
             android:exported="true" />
         <activity
-            android:name=".ambulance.LoadAmbulanceActivity"
-            android:exported="true" />
-        <activity
             android:name=".ambulance.DetailParamedicActivity"
             android:exported="true" />
         <activity
@@ -51,15 +51,16 @@
             android:name=".ambulance.AddPatientActivity"
             android:exported="true" />
 
+        <!-- 앱의 런처 액티비티 -->
         <activity
             android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginMainActivity"
             android:exported="true" />
@@ -70,16 +71,13 @@
             android:name=".ambulance.AmbulanceMainActivity"
             android:exported="true" />
         <activity
-            android:name=".ambulance.LoginAmbulanceActivity"
-            android:exported="true" />
-
-        <activity
             android:name=".user.UserMapActivity"
             android:exported="false" />
         <activity
             android:name=".user.UserReceptionActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
+
+        <!-- Kakao SDK 관련 Activity -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -87,19 +85,20 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="oauth"
                     android:scheme="kakao68695b0d022c083d3448cec3ccbacb8a" />
             </intent-filter>
         </activity>
 
+        <!-- Kakao SDK 메타데이터 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="68695b0d022c083d3448cec3ccbacb8a" />
         <meta-data
             android:name="com.kakao.vectormap.KAKAO_MAP_KEY"
             android:value="68695b0d022c083d3448cec3ccbacb8a" />
+
     </application>
 
 </manifest>
