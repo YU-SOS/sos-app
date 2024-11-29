@@ -13,7 +13,7 @@ import com.example.sos.user.UserMapActivity
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_intro)
 
         // 로그인 버튼 클릭 이벤트
         findViewById<ImageButton>(R.id.main_login_button).setOnClickListener {

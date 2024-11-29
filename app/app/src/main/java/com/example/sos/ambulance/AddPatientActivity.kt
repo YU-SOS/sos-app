@@ -33,7 +33,7 @@ class AddPatientActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_patient)
+        setContentView(R.layout.activity_patient_add)
 
         // 툴바 설정
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)

@@ -24,7 +24,7 @@ class ParamedicsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_paramedic, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.paramedic_item, parent, false)
         return ViewHolder(view)
     }
 

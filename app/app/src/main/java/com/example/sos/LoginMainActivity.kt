@@ -30,7 +30,7 @@ import retrofit2.Response
 class LoginMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_main)
+        setContentView(R.layout.activity_login_main)
 
         // 텍스트와 바 초기화
         val userText = findViewById<TextView>(R.id.userText)

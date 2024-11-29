@@ -21,7 +21,7 @@ class ParamedicsAdapter(private val onItemClick: (ParamedicsRes) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParamedicsViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_paramedic, parent, false)
+            .inflate(R.layout.paramedic_item, parent, false)
         return ParamedicsViewHolder(view)
     }
 

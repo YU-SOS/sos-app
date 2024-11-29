@@ -30,7 +30,7 @@ class DetailHospitalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_hospital)
+        setContentView(R.layout.activity_hospital_detail)
 
         tokenManager = TokenManager(this) // TokenManager 초기화
         authService = RetrofitClientInstance.getApiService(tokenManager)

@@ -25,7 +25,7 @@ class LoadParamedicActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_load_paramedic)
+        setContentView(R.layout.activity_paramedic_load)
 
         initializeUI()
         val ambulanceId = tokenManager.getTokenId()

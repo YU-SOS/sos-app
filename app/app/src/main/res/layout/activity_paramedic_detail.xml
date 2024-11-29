@@ -8,9 +8,9 @@
 
     <!-- Include Toolbar -->
     <include
-        layout="@layout/tool_bar_2"
+        layout="@layout/tool_bar_back"
         android:id="@+id/include_toolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,24 +19,22 @@
     <!-- Content Layout -->
     <LinearLayout
         android:id="@+id/content_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_marginTop="100dp"
         android:padding="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="50dp"
         app:layout_constraintTop_toBottomOf="@id/include_toolbar"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- 이름 필드 -->
+        <!-- 이름 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:id="@+id/text_label_name"
@@ -46,55 +44,76 @@
                 android:text="이름"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edit_text_name"
+            <TextView
+                android:id="@+id/paramedic_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="이름 입력"
-                android:textSize="18sp" />
+                android:layout_margin="20dp"
+                android:text="이름 정보 없음"
+                android:textSize="20dp" />
         </LinearLayout>
 
-        <!-- 전화번호 필드 -->
+        <!-- 전화번호 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/text_label_phone"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="15dp"
                 android:text="전화번호"
-                android:textSize="18sp" />
+                android:textSize="20dp" />
 
-            <EditText
-                android:id="@+id/edit_text_phone"
+            <TextView
+                android:id="@+id/paramedic_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_margin="20dp"
                 android:layout_weight="1"
-                android:hint="전화번호 입력"
-                android:textSize="18sp" />
+                android:text="전화번호 정보 없음"
+                android:textSize="20dp" />
         </LinearLayout>
 
-        <!-- 추가 버튼 -->
+        <!-- 수정 버튼 -->
         <Button
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_paramedic_modify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="25dp"
             android:backgroundTint="@color/red"
-            android:text="작성 완료"
+            android:text="구급대원 수정"
+            android:textColor="@android:color/white"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white" />
+            android:textStyle="bold" />
 
+        <!-- 삭제 버튼 -->
+        <Button
+            android:id="@+id/btn_paramedic_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="구급대원 삭제"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_head_paramedic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="선탑 구급대원 설정"
+            android:layout_marginTop="25dp"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -105,5 +124,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/ambulance_navigation_menu" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

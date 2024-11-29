@@ -178,7 +178,7 @@ class UserMapActivity : AppCompatActivity() {
 
     private fun showHospitalDetails(hospital: HospitalRes) {
         val dialog = Dialog(this)
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_button_hospital_detail, null)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_hospital_detail_button, null)
 
         // Dialog에 레이아웃 설정
         dialog.setContentView(dialogView)

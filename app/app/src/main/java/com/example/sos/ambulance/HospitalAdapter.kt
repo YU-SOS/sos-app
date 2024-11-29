@@ -1,14 +1,11 @@
 package com.example.sos.ambulance
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.sos.res.HospitalRes
 import com.example.sos.R
 
@@ -26,7 +23,7 @@ class HospitalAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HospitalViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_hospital, parent, false)
+            .inflate(R.layout.hospital_item, parent, false)
         return HospitalViewHolder(view)
     }
 

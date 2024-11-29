@@ -39,7 +39,7 @@ class RegisterAmbulanceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_ambulance)
+        setContentView(R.layout.activity_ambulance_register)
 
         tokenManager = TokenManager(this)
 

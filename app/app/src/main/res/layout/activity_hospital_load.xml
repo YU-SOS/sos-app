@@ -86,7 +86,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/pagination_buttons"
-        tools:listitem="@layout/item_hospital" />
+        tools:listitem="@layout/hospital_item" />
 
     <LinearLayout
         android:id="@+id/pagination_buttons"

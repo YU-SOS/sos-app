@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="513dp"
         android:layout_margin="16dp"
-        tools:listitem="@layout/item_paramedic" />
+        tools:listitem="@layout/paramedic_item" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

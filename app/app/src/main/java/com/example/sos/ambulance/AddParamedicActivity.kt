@@ -27,7 +27,7 @@ class AddParamedicActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_paramedic)
+        setContentView(R.layout.activity_paramedic_add)
 
         // 툴바 가져오기
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)

@@ -40,7 +40,7 @@ class ViewPatientActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_patient)
+        setContentView(R.layout.activity_patient_view)
 
         tokenManager = TokenManager(this)
         authService = RetrofitClientInstance.getApiService(tokenManager)

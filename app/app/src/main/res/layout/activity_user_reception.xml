@@ -198,7 +198,7 @@
             android:layout_height="wrap_content"
             app:itemIconTint="@color/bottom_color_selector"
             app:itemTextColor="@color/bottom_color_selector"
-            app:menu="@menu/navigation_menu"
+            app:menu="@menu/user_navigation_menu"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
