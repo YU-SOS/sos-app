@@ -46,7 +46,7 @@ class LoadHospitalActivity : AppCompatActivity() {
                 putExtra("selectedHospitalName", hospitalName)
             }
             setResult(RESULT_OK, intent)
-            finish() // LoadHospitalActivity 종료
+            finish()
         }
         recyclerView.adapter = hospitalAdapter
 
@@ -73,7 +73,6 @@ class LoadHospitalActivity : AppCompatActivity() {
 
         // 초기 병원 목록 로드
         fetchHospitals()
-
         // 카테고리 버튼 설정
         setupCategoryButtons()
     }
@@ -91,12 +90,12 @@ class LoadHospitalActivity : AppCompatActivity() {
             val button = findViewById<Button>(buttonId)
             button.setOnClickListener {
                 if (selectedCategories.contains(category)) {
-                    selectedCategories.remove(category) // 선택 해제
+                    selectedCategories.remove(category)
                 } else {
-                    selectedCategories.add(category) // 선택
+                    selectedCategories.add(category)
                 }
-                currentPage = 0 // 페이지 초기화
-                fetchHospitals() // 병원 목록 다시 검색
+                currentPage = 0
+                fetchHospitals()
             }
         }
     }
@@ -104,7 +103,7 @@ class LoadHospitalActivity : AppCompatActivity() {
     private fun fetchHospitals() {
         val jwtToken = tokenManager.getAccessToken()
         if (jwtToken.isNullOrEmpty()) {
-            Toast.makeText(this, "No token found. Please log in again.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "토큰 오류입니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -116,29 +115,24 @@ class LoadHospitalActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val hospitalList = response.body()?.data?.content
-                        totalPages = response.body()?.data?.page?.totalPages ?: 1 // 총 페이지 수 업데이트
+                        totalPages = response.body()?.data?.page?.totalPages ?: 1
 
                         if (!hospitalList.isNullOrEmpty()) {
-                            Log.d("LoadHospitalActivity", "Fetched hospitals: $hospitalList")
-
                             // 기존 데이터를 새 데이터로 교체
                             hospitalAdapter.updateData(hospitalList)
                         } else {
-                            Log.d("LoadHospitalActivity", "No hospitals found")
                             Toast.makeText(this@LoadHospitalActivity, "No data available.", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Log.e("LoadHospitalActivity", "Failed to retrieve hospitals. Error: ${response.message()}")
                         Toast.makeText(
                             this@LoadHospitalActivity,
-                            "Failed to retrieve hospitals. Error: ${response.message()}",
+                            "구급대원 불러오기에 실패했습니다.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
 
                 override fun onFailure(call: Call<HospitalLoadResponse<HospitalRes>>, t: Throwable) {
-                    Log.e("LoadHospitalActivity", "Error: ${t.message}")
                     Toast.makeText(this@LoadHospitalActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })

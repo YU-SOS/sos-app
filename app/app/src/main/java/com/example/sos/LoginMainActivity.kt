@@ -123,9 +123,8 @@ class LoginMainActivity : AppCompatActivity() {
                             Toast.makeText(this@LoginMainActivity, "토큰을 받지 못했습니다", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        // 상태 코드가 200이 아닌 경우 실패 메시지 표시
-                        val errorBody = response.errorBody()?.string() // 에러 응답 본문을 문자열로 읽기
-                        var errorMessage = extractErrorMessage(errorBody) // 에러 메시지 추출
+                        val errorBody = response.errorBody()?.string()
+                        var errorMessage = extractErrorMessage(errorBody)
                         if (errorMessage == "BLACKLIST")
                             errorMessage = "회원가입 거절된 사용자입니다."
                         else if (errorMessage == "GUEST")
@@ -155,13 +154,11 @@ class LoginMainActivity : AppCompatActivity() {
         }
     }
 
-    // JWT 토큰을 SharedPreferences에 저장하는 함수
     private fun saveToken(token: String?) {
         val sharedPreferences = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("jwt_token", token).apply()
     }
 
-    //UserLogin부분
     private fun kakaoLogin() {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {

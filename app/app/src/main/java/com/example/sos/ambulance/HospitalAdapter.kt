@@ -58,13 +58,13 @@ class HospitalAdapter(
                     // 수용 불가 상태
                     statusIndicator.setBackgroundResource(R.drawable.red_circle)
                     itemView.isEnabled = false
-                    itemView.alpha = 0.5f // 비활성화된 효과로 반투명 처리
+                    itemView.alpha = 0.5f // 반투명 효과
                     itemView.setOnClickListener {
                         Toast.makeText(itemView.context, "병원이 현재 수용 불가 상태입니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
                 else -> {
-                    // 예외적인 상태 처리 (기본값으로 설정)
+                    // 예외
                     statusIndicator.setBackgroundResource(R.drawable.red_circle)
                     itemView.isEnabled = false
                     itemView.alpha = 0.5f

@@ -69,16 +69,16 @@ class AmbulanceMainActivity : AppCompatActivity() {
             }
         }
 
-        // "구급대원 추가" 버튼 동작
+        // 구급대원 추가
         val addParamedicButton = findViewById<Button>(R.id.add_paramedic_button)
         addParamedicButton.setOnClickListener {
             val intent = Intent(this, AddParamedicActivity::class.java).apply {
-                putExtra("ambulanceId", ambulanceId) // 구급대 ID 전달
+                putExtra("ambulanceId", ambulanceId)
             }
             startActivity(intent)
         }
 
-        // 로그아웃 버튼 설정
+        // 로그아웃 버튼
         val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             logoutManager.logout()
@@ -154,8 +154,8 @@ class AmbulanceMainActivity : AppCompatActivity() {
 
     private fun displayAmbulanceInfo(ambulance: AmbulanceRes) {
         ambulanceName.text = ambulance.name
-        ambulanceAddress.text = ambulance.address ?: "주소 정보 없음"
-        ambulancePhone.text = ambulance.telephoneNumber ?: "전화번호 정보 없음"
+        ambulanceAddress.text = ambulance.address
+        ambulancePhone.text = ambulance.telephoneNumber
 
         // 이미지 로드 (Glide 사용)
         Glide.with(this)

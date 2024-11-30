@@ -104,7 +104,7 @@ class ViewPatientActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<LoadReceptionResponse>, t: Throwable) {
-                    showToast("네트워크 오류: ${t.message}")
+                    showToast("네트워크 오류! 인터넷 연결을 확인 해 주세요.")
                 }
             })
     }

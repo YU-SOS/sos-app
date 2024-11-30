@@ -31,12 +31,11 @@ class ModifyParamedicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paramedic_modify)
 
-        // 툴바 설정
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "구급대원 수정" // 툴바 제목 설정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼 활성화
-        toolbar.setNavigationOnClickListener { finish() } // 뒤로가기 버튼 동작
+        supportActionBar?.title = "구급대원 수정"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
 
         authService = RetrofitClientInstance.getApiService(TokenManager(this))
         tokenManager = TokenManager(this)
@@ -86,9 +85,12 @@ class ModifyParamedicActivity : AppCompatActivity() {
         val name = nameEditText.text.toString().trim()
         val phoneNumber = phoneEditText.text.toString().trim()
 
-        // 공백 체크
-        if (name.isBlank() || phoneNumber.isBlank()) {
-            showToast("이름과 전화번호를 올바르게 입력해주세요.")
+        if (name.isBlank()) {
+            showToast("이름을 올바르게 입력해주세요.")
+            return
+        }
+        if (phoneNumber.isBlank()) {
+            showToast("전화번호를 올바르게 입력해주세요.")
             return
         }
 
@@ -111,13 +113,11 @@ class ModifyParamedicActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
                         if (apiResponse != null && apiResponse.status == 200) {
-                            Toast.makeText(this@ModifyParamedicActivity, "수정 성공", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ModifyParamedicActivity, "구급대원 수정에 성공했습니다.", Toast.LENGTH_SHORT).show()
                             finish()
                         } else {
-                            showToast("수정 실패: ${apiResponse?.message ?: "알 수 없는 오류"}")
+                            showToast("수정 실패에 실패했습니다. ${apiResponse?.message ?: "알 수 없는 오류"}")
                         }
-                    } else {
-                        showToast("수정 실패: ${response.message()}")
                     }
                 }
 

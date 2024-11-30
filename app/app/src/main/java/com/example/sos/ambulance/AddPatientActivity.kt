@@ -35,7 +35,6 @@ class AddPatientActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_patient_add)
 
-        // 툴바 설정
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "환자 접수 등록"
@@ -49,7 +48,7 @@ class AddPatientActivity : AppCompatActivity() {
 
         // seek바 설정
         val seekBar = findViewById<SeekBar>(R.id.seekBar)
-        var severity = "IMMEDIATE" // 초기값 설정
+        var severity = "IMMEDIATE"
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -71,9 +70,6 @@ class AddPatientActivity : AppCompatActivity() {
             }
         })
 
-
-
-        // UI 요소 초기화
         val inputName = findViewById<EditText>(R.id.input_name)
         val inputAge = findViewById<EditText>(R.id.input_age)
         val inputPhoneNumber = findViewById<EditText>(R.id.input_phoneNumber)
@@ -84,7 +80,7 @@ class AddPatientActivity : AppCompatActivity() {
         val selectHospitalButton = findViewById<Button>(R.id.button)
         val hospitalTextView = findViewById<TextView>(R.id.textView4)
         val saveButton = findViewById<Button>(R.id.btn_save)
-        severityTextView = findViewById(R.id.textView5) // IMMEDIATE가 표시될 TextView
+        severityTextView = findViewById(R.id.textView5)
 
         // 병원 선택 버튼 클릭
         selectHospitalButton.setOnClickListener {
@@ -106,13 +102,11 @@ class AddPatientActivity : AppCompatActivity() {
                 else -> null
             }
 
-            // 공백만으로 구성된 필드 확인
             if (name.isBlank() || phoneNumber.isBlank() || gender == null || selectedHospitalName.isNullOrEmpty()) {
                 Toast.makeText(this, "모든 필드를 올바르게 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 추가로 symptom, medication, reference도 체크 (필요시)
             if (symptom.isBlank() || medication.isBlank() || reference.isBlank()) {
                 Toast.makeText(this, "증상, 약물 정보 및 참조 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -131,7 +125,6 @@ class AddPatientActivity : AppCompatActivity() {
 
             createReception(patientReq, selectedHospitalName!!)
         }
-
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.selectedItemId = R.id.nav_request
@@ -196,7 +189,7 @@ class AddPatientActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@AddPatientActivity,
-                            "접수 요청 실패: ${response.message()}",
+                            "접수 요청 실패\n 다시 시도해주세요.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

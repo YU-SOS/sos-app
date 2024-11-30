@@ -29,24 +29,15 @@ class AddParamedicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paramedic_add)
 
-        // 툴바 가져오기
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
-        if (toolbar == null) {
-            showToast("툴바를 찾을 수 없습니다. 레이아웃 ID를 확인하세요.")
-            return
-        }
+
         setSupportActionBar(toolbar)
-
-
         // 툴바를 액션바로 설정
         setSupportActionBar(toolbar)
-
         // 툴바 제목 설정
         supportActionBar?.title = "구급대원 추가"
-
         // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         // 뒤로가기 버튼 클릭 이벤트
         toolbar.setNavigationOnClickListener {
             finish() // 현재 액티비티 종료
@@ -108,14 +99,14 @@ class AddParamedicActivity : AppCompatActivity() {
             authService.addAmbulanceMember(
                 "Bearer $jwtToken",
                 ambulanceId,
-                paramedic // BODY로 전송할 구급대원 정보
+                paramedic
             ).enqueue(object : Callback<MemberResponse> {
                 override fun onResponse(call: Call<MemberResponse>, response: Response<MemberResponse>) {
                     if (response.isSuccessful) {
                         showToast("구급대원 추가 성공")
-                        finish() // 구급대원 페이지로 돌아가기
+                        finish()
                     } else {
-                        showToast("구급대원 추가 실패: ${response.message()}")
+                        showToast("구급대원 추가 실패\n 다시 시도해주세요.")
                     }
                 }
 

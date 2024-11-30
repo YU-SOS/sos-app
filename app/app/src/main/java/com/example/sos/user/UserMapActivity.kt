@@ -57,13 +57,12 @@ class UserMapActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_map -> {
-                    // 이미 현재 화면이므로 아무 작업도 하지 않음
                     true
                 }
                 R.id.nav_reception -> {
                     val intent = Intent(this, UserReceptionActivity::class.java)
                     startActivity(intent)
-                    finish() // 현재 액티비티 종료
+                    finish()
                     true
                 }
                 else -> false
@@ -86,14 +85,12 @@ class UserMapActivity : AppCompatActivity() {
                 val yuCenter = LatLng.from(35.8264595, 128.754132) // 영남대 좌표
                 kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(yuCenter, 15)) // 지도 중심 설정
 
-                // 지도 초기화 완료 후 병원 데이터 요청
                 fetchHospitalData()
 
-                // 지도 클릭 이벤트
                 kakaoMap?.setOnMapClickListener { _, latLng, _, _ ->
                     val clickedHospital = findClosestHospital(latLng)
                     clickedHospital?.let { hospital ->
-                        showHospitalDetails(hospital) // 병원 정보 표시
+                        showHospitalDetails(hospital)
                     }
                 }
             }
@@ -132,7 +129,6 @@ class UserMapActivity : AppCompatActivity() {
             val longitude = hospital.location.longitude.toDoubleOrNull() ?: return@forEach
             val position = LatLng.from(latitude, longitude)
 
-            // 라벨 텍스트 및 스타일 설정
             val labelStyles = LabelStyles.from(
                 "hospitalStyle",
                 LabelStyle.from(R.drawable.hospital_point).setZoomLevel(8),
@@ -180,46 +176,32 @@ class UserMapActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_hospital_detail_button, null)
 
-        // Dialog에 레이아웃 설정
         dialog.setContentView(dialogView)
-
-        // Dialog 크기 조정 (화면의 중앙에 표시)
         dialog.window?.setLayout(
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        // Dialog 배경 설정 (둥근 흰색 배경)
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-
-        // Dialog 화면 중앙 정렬
         dialog.window?.setGravity(android.view.Gravity.CENTER)
 
-        // 레이아웃에서 UI 요소 초기화
         val hospitalName = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_name)
         val hospitalImage = dialogView.findViewById<ImageView>(R.id.bottom_sheet_hospital_image)
         val hospitalAddress = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_address)
         val hospitalPhone = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_phone)
         val hospitalCategories = dialogView.findViewById<TextView>(R.id.bottom_sheet_hospital_categories)
 
-        // 병원 정보 설정
         hospitalName.text = hospital.name
         hospitalAddress.text = "주소: ${hospital.address}"
         hospitalPhone.text = "전화번호: ${hospital.telephoneNumber}"
 
-        // 병원 카테고리 설정
         val categoryNames = hospital.categories.joinToString(", ") { it.name }
         hospitalCategories.text = "카테고리: ${categoryNames}"
-
-        // 병원 이미지 로드
         Glide.with(this).load(hospital.imageUrl).into(hospitalImage)
+        hospitalName.textSize = 42f
+        hospitalAddress.textSize = 18f
+        hospitalPhone.textSize = 18f
+        hospitalCategories.textSize = 18f
 
-        // 텍스트 크기 조정
-        hospitalName.textSize = 42f // 병원 이름 텍스트 크기
-        hospitalAddress.textSize = 18f // 병원 주소 텍스트 크기
-        hospitalPhone.textSize = 18f // 병원 전화번호 텍스트 크기
-        hospitalCategories.textSize = 18f // 병원 카테고리 텍스트 크기
-
-        // 다이얼로그 표시
         dialog.show()
     }
 

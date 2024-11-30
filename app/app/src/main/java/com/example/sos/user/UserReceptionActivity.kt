@@ -54,27 +54,23 @@ class UserReceptionActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_reception -> {
-                    // 이미 현재 화면이므로 아무 작업도 하지 않음
                     true
                 }
                 R.id.nav_map -> {
-                    // '지도 화면'으로 이동
                     val intent = Intent(this, UserMapActivity::class.java)
                     startActivity(intent)
-                    finish() // 현재 액티비티 종료
+                    finish()
                     true
                 }
                 else -> false
             }
         }
 
-        // 로그아웃 버튼 클릭 리스너
         val userLogoutButton: ImageButton = findViewById(R.id.logout_button)
         userLogoutButton.setOnClickListener {
             logoutManager.logout()
         }
 
-        // 뷰 초기화
         val receptionIdInput: EditText = findViewById(R.id.reception_id_input)
         val getHospitalInfoButton: Button = findViewById(R.id.get_hospital_info_button)
         val backButton: Button = findViewById(R.id.back_button) // 뒤로 가기 버튼 초기화
@@ -85,32 +81,28 @@ class UserReceptionActivity : AppCompatActivity() {
 
         shareButton = findViewById(R.id.kakao_share_button)
 
-        // 조회 버튼 클릭 리스너
+        // 조회 버튼
         getHospitalInfoButton.setOnClickListener {
             val receptionId = receptionIdInput.text.toString().trim() // 입력값의 공백 제거
-            if (receptionId.isEmpty()) { // 입력값이 비어있거나 공백만 있는 경우
+            if (receptionId.isEmpty()) {
                 Toast.makeText(this, "공백을 제외하고 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 try {
-                    getReceptionInfo(receptionId) // 입력값 전달
+                    getReceptionInfo(receptionId)
                 } catch (e: IllegalArgumentException) {
                     Toast.makeText(this, "올바른 접수번호 형식이 아닙니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-
-
-        // 뒤로 가기 버튼 클릭 리스너
+        // 뒤로 가기 버튼
         backButton.setOnClickListener {
-            hideHospitalDetails() // 기존 입력 화면으로 돌아가기
+            hideHospitalDetails()
 
-            // 텍스트 다시 표시
             textView2.visibility = View.VISIBLE
             textView3.visibility = View.VISIBLE
             textView4.visibility = View.VISIBLE
 
-            // 카카오톡 공유 버튼 숨기기
             kakaoShareButton.visibility = View.GONE
         }
 
@@ -153,7 +145,6 @@ class UserReceptionActivity : AppCompatActivity() {
     private fun setupMap(latitude: Double, longitude: Double, hospitalName: String) {
         val hospitalLocation = LatLng.from(latitude, longitude) // 병원 위치
 
-        // MapView를 초기화하고 KakaoMap 객체 가져오기
         val mapView: MapView = findViewById(R.id.hospital_map_view)
         mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
@@ -168,7 +159,6 @@ class UserReceptionActivity : AppCompatActivity() {
                 val kakaoMap = map
                 val labelManager = kakaoMap.labelManager
 
-                // 라벨 텍스트 및 스타일 설정
                 val labelStyles = LabelStyles.from(
                     "hospitalStyle",
                     LabelStyle.from(R.drawable.user_map).setZoomLevel(8),
@@ -184,7 +174,6 @@ class UserReceptionActivity : AppCompatActivity() {
                     .setTexts(labelText)
 
                 try {
-                    // 라벨 추가
                     labelManager?.layer?.addLabel(labelOptions)
 
                     // 카메라를 병원 위치로 이동
@@ -213,7 +202,6 @@ class UserReceptionActivity : AppCompatActivity() {
                             val paramedic = receptionInfoResponse.data.paramedic
                             val comments = receptionInfoResponse.data.comments
 
-                            // 병원 정보 설정
                             val hospitalNameTextView: TextView = findViewById(R.id.hospital_name_textview)
                             val hospitalLocationTextView: TextView = findViewById(R.id.hospital_location_textview)
                             val hospitalPhoneTextView: TextView = findViewById(R.id.hospital_phone_textview)
@@ -233,17 +221,14 @@ class UserReceptionActivity : AppCompatActivity() {
                                 "코멘트: 없음"
                             }
 
-                            // 병원 위치 정보를 사용해 지도 설정
                             val latitude = hospital.location.latitude.toDouble()
                             val longitude = hospital.location.longitude.toDouble()
                             val hospitalName = hospital.name ?: "병원 이름 없음"
 
                             setupMap(latitude, longitude, hospitalName)
 
-                            // 조회 성공 시 화면 전환
                             showHospitalDetails()
 
-                            // 텍스트 숨기기 및 카카오톡 공유 버튼 표시
                             val textView2: TextView = findViewById(R.id.textView2)
                             val textView3: TextView = findViewById(R.id.textView3)
                             val textView4: TextView = findViewById(R.id.textView4)

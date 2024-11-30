@@ -91,20 +91,6 @@ class TokenManager(context: Context) {
         Log.d("TokenManager", "모든 토큰 및 저장된 데이터 삭제 완료")
     }
 
-    // 접수 고유 번호 저장
-    fun saveReceptionId(receptionId: String) {
-        sharedPreferences.edit().apply {
-            putString("reception_id", receptionId)
-            apply()
-        }
-        Log.d("TokenManager", "접수 고유 번호 저장 완료")
-    }
-
-    // 저장된 접수 고유 번호 가져오기
-    fun getReceptionId(): String? {
-        return sharedPreferences.getString("reception_id", null)
-    }
-
     // 구급대원 ID 저장
     fun saveSelectedParamedicId(paramedicId: String) {
         sharedPreferences.edit().putString("selected_paramedic_id", paramedicId).apply()

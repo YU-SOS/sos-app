@@ -29,7 +29,6 @@ class DetailParamedicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paramedic_detail)
 
-        // 툴바 설정
         val toolbar = findViewById<Toolbar>(R.id.include_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "구급대원 정보"
@@ -40,7 +39,6 @@ class DetailParamedicActivity : AppCompatActivity() {
             tokenManager = TokenManager(this)
             authService = RetrofitClientInstance.getApiService(tokenManager)
 
-            // Intent로 전달된 데이터 초기화
             paramedicId = intent.getStringExtra("paramedicId")
                 ?: throw IllegalArgumentException("paramedicId is missing")
             ambulanceId = intent.getStringExtra("ambulanceId")
@@ -57,12 +55,12 @@ class DetailParamedicActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.paramedic_name).text = paramedicName
             findViewById<TextView>(R.id.paramedic_phone).text = paramedicPhone
 
-            // 삭제 버튼 설정
+            // 삭제 버튼
             findViewById<Button>(R.id.btn_paramedic_delete).setOnClickListener {
                 deleteParamedic()
             }
 
-            // 수정 버튼 설정
+            // 수정 버튼
             findViewById<Button>(R.id.btn_paramedic_modify).setOnClickListener {
                 val intent = Intent(this, ModifyParamedicActivity::class.java).apply {
                     putExtra("paramedicId", paramedicId)
@@ -74,7 +72,7 @@ class DetailParamedicActivity : AppCompatActivity() {
                 finish()
             }
 
-            // 선탑 구급대원 설정 버튼 설정
+            // 선탑 구급대원 설정 버튼
             findViewById<Button>(R.id.btn_head_paramedic).setOnClickListener {
                 setHeadParamedic()
             }
@@ -82,7 +80,7 @@ class DetailParamedicActivity : AppCompatActivity() {
             Log.d("DetailParamedicActivity", "Activity created successfully")
         } catch (e: Exception) {
             Log.e("DetailParamedicActivity", "Initialization failed: ${e.message}")
-            showToast("필수 데이터가 누락되었습니다. 앱을 다시 실행해주세요.")
+            showToast("필수 데이터가 누락되었습니다.")
             finish()
         }
 
@@ -111,6 +109,7 @@ class DetailParamedicActivity : AppCompatActivity() {
             tokenManager.saveSelectedParamedicId(paramedicId)
             showToast("선탑 구급대원이 설정되었습니다.")
             Log.d("DetailParamedicActivity", "Head Paramedic ID saved: $paramedicId")
+            finish()
         } catch (e: Exception) {
             showToast("선탑 구급대원 설정에 실패했습니다.")
             Log.e("DetailParamedicActivity", "Failed to save Head Paramedic ID: ${e.message}")
@@ -132,15 +131,15 @@ class DetailParamedicActivity : AppCompatActivity() {
                     response: Response<ParamedicDeleteResponse>
                 ) {
                     if (response.isSuccessful && response.body()?.status == 200) {
-                        showToast("삭제 성공")
+                        showToast("구급대원 삭제를 성공하였습니다.")
                         finish()
                     } else {
-                        showToast("삭제 실패: ${response.message()}")
+                        showToast("구급대원 삭제를 실패했습니다.\n 다시 시도해 주세요.")
                     }
                 }
 
                 override fun onFailure(call: Call<ParamedicDeleteResponse>, t: Throwable) {
-                    showToast("삭제 오류: ${t.message}")
+                    showToast("삭제 오류")
                 }
             })
     }

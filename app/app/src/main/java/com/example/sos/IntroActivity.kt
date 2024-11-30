@@ -17,11 +17,11 @@ class IntroActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭 이벤트
         findViewById<ImageButton>(R.id.main_login_button).setOnClickListener {
-            // 다음 화면으로 이동
             val intent = Intent(this, LoginMainActivity::class.java)
             startActivity(intent)
             finish()
         }
+
         // Role에 맞게 화면 전환
         val tokenManager = TokenManager(this)
         val accessToken = tokenManager.getAccessToken()

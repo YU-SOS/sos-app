@@ -1,7 +1,7 @@
 package com.example.sos.retrofit
 
+import com.example.sos.KeywordSearchResponse
 import com.example.sos.res.AmbulanceRes
-import com.example.sos.Data
 import com.example.sos.res.HospitalRes
 import com.example.sos.Location
 import com.example.sos.Page
@@ -9,7 +9,6 @@ import com.example.sos.PatientReq
 import com.example.sos.res.ParamedicsRes
 import com.example.sos.res.ReceptionGuestRes
 import com.example.sos.res.ReceptionRes
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -89,7 +88,6 @@ data class ParamedicsResponse(
     val data: List<ParamedicsRes>
 )
 
-
 data class ParamedicModifyRequest(
     val name: String,
     val phoneNumber: String
@@ -126,24 +124,6 @@ data class ParamedicModifyResponse(
     val data: String? // 서버에서 반환하는 data 필드, 없으면 null로 처리
 )
 
-
-interface KakaoMapService {
-    @GET("/v2/local/search/address.json")
-    suspend fun searchAddress(
-        @Header("Authorization") apiKey: String,
-        @Query("query") query: String
-    ): Response<AddressSearchResponse>
-}
-
-data class AddressSearchResponse(
-    val documents: List<Document>
-)
-
-data class Document(
-    val address_name: String,  // 주소명
-    val x: String,  // 경도 (Longitude)
-    val y: String   // 위도 (Latitude)
-)
 
 data class ReceptionInfoResponse(
     val status: Int,
@@ -282,4 +262,12 @@ interface AuthService {
         @Path("receptionId") receptionId: String,
         @Body body: Map<String, String>
     ): Call<RetryReceptionResponse>
+
+}
+interface KakaoMapService {
+    @GET("/v2/local/search/keyword.json")
+    suspend fun searchKeyword(
+        @Header("Authorization") apiKey: String,
+        @Query("query") query: String
+    ): Response<KeywordSearchResponse>
 }
