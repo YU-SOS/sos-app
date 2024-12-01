@@ -160,8 +160,8 @@ class AmbulanceMainActivity : AppCompatActivity() {
         // 이미지 로드 (Glide 사용)
         Glide.with(this)
             .load(ambulance.imageUrl)
-            .placeholder(R.drawable.image2) // 로딩 중 기본 이미지
-            .error(R.drawable.image)       // 에러 시 기본 이미지
+            .placeholder(R.drawable.ambulance_info) // 로딩 중 기본 이미지
+            .error(R.drawable.sos_logo)       // 에러 시 기본 이미지
             .into(ambulanceImage)
     }
 

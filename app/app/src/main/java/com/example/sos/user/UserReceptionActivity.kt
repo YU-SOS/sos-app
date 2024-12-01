@@ -161,8 +161,8 @@ class UserReceptionActivity : AppCompatActivity() {
 
                 val labelStyles = LabelStyles.from(
                     "hospitalStyle",
-                    LabelStyle.from(R.drawable.user_map).setZoomLevel(8),
-                    LabelStyle.from(R.drawable.user_map).setZoomLevel(11)
+                    LabelStyle.from(R.drawable.hospital_point).setZoomLevel(8),
+                    LabelStyle.from(R.drawable.hospital_point).setZoomLevel(11)
                         .setTextStyles(32, android.graphics.Color.BLACK, 1, android.graphics.Color.GRAY)
                 )
 
