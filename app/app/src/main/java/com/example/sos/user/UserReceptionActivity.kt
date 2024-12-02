@@ -17,6 +17,7 @@ import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
+import com.kakao.sdk.user.model.Gender
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -198,27 +199,42 @@ class UserReceptionActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         response.body()?.let { receptionInfoResponse ->
                             val hospital = receptionInfoResponse.data.hospital
-                            val patient = receptionInfoResponse.data.patient
-                            val paramedic = receptionInfoResponse.data.paramedic
+                            val ambulance = receptionInfoResponse.data.ambulance
                             val comments = receptionInfoResponse.data.comments
+                            val patient = receptionInfoResponse.data.patient
 
+                            val ambulanceInfo: TextView = findViewById(R.id.ambulance_info_textview)
                             val hospitalNameTextView: TextView = findViewById(R.id.hospital_name_textview)
                             val hospitalLocationTextView: TextView = findViewById(R.id.hospital_location_textview)
                             val hospitalPhoneTextView: TextView = findViewById(R.id.hospital_phone_textview)
-                            val patientInfo: TextView = findViewById(R.id.patient_info_textview)
-                            val paramedicInfo: TextView = findViewById(R.id.paramedic_info_textview)
-                            val hospitalComment: TextView = findViewById(R.id.hospital_comment_textview)
+                            val hospitalCommentTextView: TextView = findViewById(R.id.hospital_comment_textview)
+                            val patientInfoTextView: TextView = findViewById(R.id.patient_info_textview)
 
-                            hospitalNameTextView.text = hospital.name
-                            hospitalLocationTextView.text = "주소: ${hospital?.address}"
-                            hospitalPhoneTextView.text = "전화번호: ${hospital?.telephoneNumber}"
-                            patientInfo.text = "환자 정보: ${patient?.name}, ${patient?.age}, ${patient?.gender}, ${patient?.phoneNumber}, ${patient?.medication}"
-                            paramedicInfo.text = "구급대원 정보: ${paramedic?.name}, ${paramedic?.phoneNumber}"
+                            // 구급대 정보
+                            ambulanceInfo.text = "이송 구급대: ${ambulance.name}, ${ambulance.telephoneNumber}"
 
-                            hospitalComment.text = if (!comments.isNullOrEmpty()) {
-                                "코멘트:\n" + comments.joinToString(separator = "\n") { it.content }
+                            // 병원 정보
+                            hospitalNameTextView.text = "이송 병원: ${hospital.name}"
+                            hospitalLocationTextView.text = "병원 주소: ${hospital.address}"
+                            hospitalPhoneTextView.text = "전화 번호: ${hospital.telephoneNumber}"
+
+                            val genderText = when (patient.gender) {
+                                Gender.FEMALE -> "여자"
+                                Gender.MALE -> "남자"
+                                else -> "알 수 없음"
+                            }
+
+                            patientInfoTextView.text = "환자 정보\n이름: ${patient?.name}, 나이: ${patient?.age}, 성별: $genderText, 복용약: ${patient.medication}, 환자 증상: ${patient.symptom}"
+
+                            // 코멘트 표시
+                            if (!comments.isNullOrEmpty()) {
+                                val formattedComments = comments.joinToString(separator = "\n\n") { comment ->
+                                    val formattedDate = comment.createdAt.replace("T", " ")
+                                    "$formattedDate  ${comment.content}"
+                                }
+                                hospitalCommentTextView.text = formattedComments
                             } else {
-                                "코멘트: 없음"
+                                hospitalCommentTextView.text = "병원 코멘트: 없음"
                             }
 
                             val latitude = hospital.location.latitude.toDouble()
@@ -238,6 +254,7 @@ class UserReceptionActivity : AppCompatActivity() {
                             textView3.visibility = View.GONE
                             textView4.visibility = View.GONE
                             kakaoShareButton.visibility = View.VISIBLE
+                            showHospitalDetails()
 
                             Toast.makeText(this@UserReceptionActivity, "조회 성공", Toast.LENGTH_SHORT).show()
                         }
@@ -253,6 +270,7 @@ class UserReceptionActivity : AppCompatActivity() {
             })
         }
     }
+
 
 
     private fun shareViaKakao() {

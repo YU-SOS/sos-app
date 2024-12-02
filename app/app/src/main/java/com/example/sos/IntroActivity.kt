@@ -9,11 +9,14 @@ import com.auth0.android.jwt.JWT
 import com.example.sos.ambulance.AmbulanceMainActivity
 import com.example.sos.token.TokenManager
 import com.example.sos.user.UserMapActivity
+import com.kakao.sdk.common.util.Utility
 
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
+        val keyHash = Utility.getKeyHash(this)
+        Log.d("mykey", keyHash)
 
         // 로그인 버튼 클릭 이벤트
         findViewById<ImageButton>(R.id.main_login_button).setOnClickListener {

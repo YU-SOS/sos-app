@@ -120,43 +120,42 @@
                         android:id="@+id/hospital_location_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="18dp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/hospital_phone_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="18dp"
+                        android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/emergency_room_status_textview"
+                        android:id="@+id/ambulance_info_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
-
-                    <TextView
-                        android:id="@+id/reception_id_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="18dp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/patient_info_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
-
-                    <TextView
-                        android:id="@+id/paramedic_info_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="18dp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/hospital_comment_textview"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:background="#F7F7F7"
+                        android:lineSpacingExtra="4dp"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
+
                 </LinearLayout>
 
                 <!-- 카카오톡 공유 버튼과 뒤로 가기 버튼 -->

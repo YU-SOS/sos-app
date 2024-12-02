@@ -8,5 +8,6 @@ data class PatientRes(
     val phoneNumber: String,
     val medication: String,
     val reference: String,
-    val gender: Gender
+    val gender: Gender,
+    val symptom: String
 )
