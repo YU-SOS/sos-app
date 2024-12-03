@@ -5,7 +5,7 @@
 0. 카카오톡이 설치된 안드로이드 스마트폰을 준비한다.
 1. 아래의 구글 드라이브 설치 링크([https://drive.google.com/file/d/1avWbh2DUx0TJsRvgZlmVnBf0eKWcvy4K/view?usp=sharing](https://drive.google.com/file/d/1avWbh2DUx0TJsRvgZlmVnBf0eKWcvy4K/view?usp=sharing))를 통하여 apk 파일을 설치한다
 2. 일반 사용자 기능(응급실 지도 조회, 접수 조회)은 카카오 로그인 후 사용이 가능하다.
-   - 접수 조회 시 입력할 접수 번호는 웹([www.yu-sos.co.kr](www.yu-sos.co.kr))의 병원으로 로그인하여 특정 접수에 대한 6자리 문자열을 확인하여 입력한다.
+   - 접수 조회 시 입력할 접수 번호는 웹([http://www.yu-sos.co.kr](http://www.yu-sos.co.kr))의 병원으로 로그인하여 특정 접수에 대한 6자리 문자열을 확인하여 입력한다.
    - 📌 웹 실행 방법 참고 : [Web github](https://github.com/YU-SOS/sos-web)
 4. 구급대 기능(구급대원 정보 조회, 구급대원 관리, 접수 요청 등)은 구급대 로그인 후 사용이 가능하다.
    - 테스트용 아이디 1 - ID: testamb1 / PW: testamb1
